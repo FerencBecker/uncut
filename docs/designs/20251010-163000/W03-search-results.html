@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vágatlanul - Keresési Eredmények</title>
+    <link rel="stylesheet" href="web-light-theme.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300;400;600;700&family=Source+Serif+Pro:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            background-color: var(--bg-secondary);
+        }
+
+        .search-results-container {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .results-header {
+            background-color: white;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            padding: 1.5rem 3rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .logo-link {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--museum-primary);
+            text-decoration: none;
+        }
+
+        .search-input-group {
+            flex: 1;
+            max-width: 600px;
+            margin: 0 2rem;
+            position: relative;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 1rem 3rem 1rem 1.5rem;
+            border: 2px solid #E2E8F0;
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--museum-accent);
+        }
+
+        .search-icon {
+            position: absolute;
+            right: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-secondary);
+            opacity: 0.5;
+        }
+
+        .results-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .results-count {
+            font-size: 1rem;
+            color: var(--text-secondary);
+        }
+
+        .results-count strong {
+            color: var(--museum-primary);
+            font-weight: 700;
+        }
+
+        .view-controls {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .sort-select {
+            padding: 0.5rem 1rem;
+            border: 2px solid #E2E8F0;
+            border-radius: 6px;
+            font-size: 0.875rem;
+            cursor: pointer;
+        }
+
+        .view-toggle {
+            display: flex;
+            gap: 0.25rem;
+            background-color: var(--bg-secondary);
+            padding: 0.25rem;
+            border-radius: 6px;
+        }
+
+        .view-btn {
+            width: 40px;
+            height: 40px;
+            background-color: transparent;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s;
+            color: var(--text-secondary);
+        }
+
+        .view-btn.active {
+            background-color: white;
+            color: var(--museum-primary);
+        }
+
+        .results-body {
+            padding: 2rem 3rem;
+            max-width: 1600px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .active-filters {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-bottom: 2rem;
+        }
+
+        .filter-tag {
+            background-color: var(--museum-primary);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.875rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .filter-tag button {
+            background: none;
+            border: none;
+            color: white;
+            cursor: pointer;
+            font-size: 1rem;
+            padding: 0;
+            width: 20px;
+            height: 20px;
+        }
+
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .result-card {
+            background-color: white;
+            border-radius: 12px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .result-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+        }
+
+        .result-image {
+            width: 100%;
+            aspect-ratio: 4/3;
+            background: linear-gradient(135deg, #E8E4DC 0%, #D4CEC0 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            opacity: 0.3;
+        }
+
+        .result-content {
+            padding: 1.5rem;
+        }
+
+        .result-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: var(--museum-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .result-studio {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.75rem;
+            opacity: 0.8;
+        }
+
+        .result-meta {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            opacity: 0.6;
+            padding-top: 0.75rem;
+            border-top: 1px solid #E2E8F0;
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-top: 3rem;
+            padding-bottom: 3rem;
+        }
+
+        .page-btn {
+            width: 44px;
+            height: 44px;
+            background-color: white;
+            border: 2px solid #E2E8F0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-weight: 600;
+            color: var(--text-secondary);
+        }
+
+        .page-btn:hover {
+            border-color: var(--museum-accent);
+            color: var(--museum-accent);
+        }
+
+        .page-btn.active {
+            background-color: var(--museum-primary);
+            border-color: var(--museum-primary);
+            color: white;
+        }
+
+        @media (max-width: 768px) {
+            .results-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="search-results-container">
+        <header class="results-header">
+            <div class="header-top">
+                <a href="#" class="logo-link">VÁGATLANUL</a>
+                <div class="search-input-group">
+                    <input type="text" class="search-input" value="portré Budapest 1900" placeholder="Keresés...">
+                    <span class="search-icon">🔍</span>
+                </div>
+                <button class="btn-primary" style="padding: 0.75rem 1.5rem;">Térkép nézet</button>
+            </div>
+
+            <div class="results-info">
+                <div class="results-count">
+                    <strong>247</strong> találat a kereséshez: <em>"portré Budapest 1900"</em>
+                </div>
+                <div class="view-controls">
+                    <select class="sort-select">
+                        <option>Relevancia szerint</option>
+                        <option>Dátum (növekvő)</option>
+                        <option>Dátum (csökkenő)</option>
+                        <option>Műterem név szerint</option>
+                    </select>
+                    <div class="view-toggle">
+                        <button class="view-btn active">▦</button>
+                        <button class="view-btn">☰</button>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <div class="results-body">
+            <div class="active-filters">
+                <div class="filter-tag">
+                    Portré <button>×</button>
+                </div>
+                <div class="filter-tag">
+                    Budapest <button>×</button>
+                </div>
+                <div class="filter-tag">
+                    1890-1910 <button>×</button>
+                </div>
+            </div>
+
+            <div class="results-grid">
+                <div class="result-card">
+                    <div class="result-image">📷</div>
+                    <div class="result-content">
+                        <h3 class="result-title">Arisztokrata hölgy portréja</h3>
+                        <p class="result-studio">Mai Manó Ház, Budapest</p>
+                        <div class="result-meta">
+                            <span>1898</span>
+                            <span>Műtermi portré</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="result-card">
+                    <div class="result-image">📷</div>
+                    <div class="result-content">
+                        <h3 class="result-title">Polgári család csoportképe</h3>
+                        <p class="result-studio">Erdélyi Mór, Budapest</p>
+                        <div class="result-meta">
+                            <span>1902</span>
+                            <span>Csoportkép</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="result-card">
+                    <div class="result-image">📷</div>
+                    <div class="result-content">
+                        <h3 class="result-title">Katonatiszt portréja</h3>
+                        <p class="result-studio">Koller József, Budapest</p>
+                        <div class="result-meta">
+                            <span>1905</span>
+                            <span>Portré</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="result-card">
+                    <div class="result-image">📷</div>
+                    <div class="result-content">
+                        <h3 class="result-title">Gyermekportré estélyi ruhában</h3>
+                        <p class="result-studio">Angelo Antal, Budapest</p>
+                        <div class="result-meta">
+                            <span>1900</span>
+                            <span>Portré</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="result-card">
+                    <div class="result-image">📷</div>
+                    <div class="result-content">
+                        <h3 class="result-title">Esküvői portré</h3>
+                        <p class="result-studio">Divald Károly, Budapest</p>
+                        <div class="result-meta">
+                            <span>1908</span>
+                            <span>Ceremónia</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="result-card">
+                    <div class="result-image">📷</div>
+                    <div class="result-content">
+                        <h3 class="result-title">Színésznő szerepben</h3>
+                        <p class="result-studio">Mai Manó Ház, Budapest</p>
+                        <div class="result-meta">
+                            <span>1904</span>
+                            <span>Művészi</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="result-card">
+                    <div class="result-image">📷</div>
+                    <div class="result-content">
+                        <h3 class="result-title">Hölgy kalapban</h3>
+                        <p class="result-studio">Mai Manó Ház, Budapest</p>
+                        <div class="result-meta">
+                            <span>1906</span>
+                            <span>Divat</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="result-card">
+                    <div class="result-image">📷</div>
+                    <div class="result-content">
+                        <h3 class="result-title">Üzletember portréja</h3>
+                        <p class="result-studio">Erdélyi Mór, Budapest</p>
+                        <div class="result-meta">
+                            <span>1903</span>
+                            <span>Portré</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="result-card">
+                    <div class="result-image">📷</div>
+                    <div class="result-content">
+                        <h3 class="result-title">Zenész hangszerével</h3>
+                        <p class="result-studio">Koller József, Budapest</p>
+                        <div class="result-meta">
+                            <span>1907</span>
+                            <span>Szakmai</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pagination">
+                <button class="page-btn">‹</button>
+                <button class="page-btn active">1</button>
+                <button class="page-btn">2</button>
+                <button class="page-btn">3</button>
+                <button class="page-btn">4</button>
+                <button class="page-btn">5</button>
+                <button class="page-btn">...</button>
+                <button class="page-btn">28</button>
+                <button class="page-btn">›</button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

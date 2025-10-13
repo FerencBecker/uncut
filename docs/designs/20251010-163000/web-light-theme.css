@@ -1,0 +1,529 @@
+/* VÁGATLANUL - Light Museum Theme for Web Version */
+/* Inspired by Museum of Ethnography contemporary design */
+
+:root {
+  /* Core Museum Palette - Clean & Professional */
+  --museum-primary: #2B2B2B;           /* Deep charcoal for headers */
+  --museum-secondary: #6B6B6B;         /* Medium gray for body text */
+  --museum-accent: #8B7355;            /* Warm brown accent (subtle heritage reference) */
+  --museum-accent-light: #C4A882;      /* Light warm tone */
+
+  /* Backgrounds - Clean White Theme */
+  --bg-primary: #FFFFFF;               /* Pure white */
+  --bg-secondary: #F8F8F8;             /* Very light gray */
+  --bg-tertiary: #F0F0F0;              /* Light gray for subtle contrast */
+
+  /* Text Colors - High Contrast */
+  --text-primary: #2B2B2B;             /* Main text */
+  --text-secondary: #6B6B6B;           /* Secondary text */
+  --text-muted: #999999;               /* Captions, hints */
+
+  /* Border Colors */
+  --border-light: #E5E5E5;             /* Light borders */
+  --border-medium: #D0D0D0;            /* Medium borders */
+  --border-dark: #B0B0B0;              /* Emphasis borders */
+
+  /* Interactive Elements */
+  --link-color: #4A5568;               /* Professional link color */
+  --link-hover: #2D3748;               /* Darker on hover */
+  --focus-ring: rgba(139, 115, 85, 0.4); /* Warm brown focus ring */
+
+  /* Status Colors - Muted & Professional */
+  --success: #2F855A;                  /* Muted green */
+  --warning: #C05621;                  /* Muted orange */
+  --error: #9B2C2C;                    /* Muted red */
+  --info: #2C5282;                     /* Muted blue */
+
+  /* Typography - Clean Sans-Serif */
+  --font-primary: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+  --font-serif: Georgia, 'Times New Roman', serif;
+  --font-mono: 'Courier New', Courier, monospace;
+
+  /* Spacing Scale */
+  --space-xs: 0.25rem;
+  --space-sm: 0.5rem;
+  --space-md: 1rem;
+  --space-lg: 1.5rem;
+  --space-xl: 2rem;
+  --space-2xl: 3rem;
+  --space-3xl: 4rem;
+
+  /* Border Radius */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+
+  /* Shadows - Subtle & Refined */
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.08);
+  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.07);
+  --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.06);
+  --shadow-xl: 0 20px 25px rgba(0, 0, 0, 0.05);
+
+  /* Transitions */
+  --transition-fast: 0.15s ease;
+  --transition-base: 0.2s ease;
+  --transition-slow: 0.3s ease;
+
+  /* Touch Targets */
+  --touch-min: 44px;
+}
+
+/* ==================== GLOBAL STYLES ==================== */
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: var(--font-primary);
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--text-primary);
+  background-color: var(--bg-primary);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ==================== TYPOGRAPHY ==================== */
+
+h1, h2, h3, h4, h5, h6 {
+  color: var(--museum-primary);
+  font-weight: 600;
+  line-height: 1.3;
+  margin-bottom: var(--space-md);
+}
+
+h1 {
+  font-size: 2.5rem;
+  letter-spacing: -0.02em;
+}
+
+h2 {
+  font-size: 2rem;
+  letter-spacing: -0.01em;
+}
+
+h3 {
+  font-size: 1.5rem;
+}
+
+h4 {
+  font-size: 1.25rem;
+}
+
+p {
+  color: var(--text-secondary);
+  margin-bottom: var(--space-md);
+}
+
+a {
+  color: var(--link-color);
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+
+a:hover {
+  color: var(--link-hover);
+  text-decoration: underline;
+}
+
+a:focus {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
+.caption {
+  font-size: 0.875rem;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+/* ==================== BUTTONS ==================== */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-sm) var(--space-lg);
+  font-family: var(--font-primary);
+  font-size: 1rem;
+  font-weight: 500;
+  line-height: 1.5;
+  text-align: center;
+  text-decoration: none;
+  border: 1px solid transparent;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all var(--transition-base);
+  min-height: var(--touch-min);
+}
+
+.btn-primary {
+  background-color: var(--museum-primary);
+  color: white;
+  border-color: var(--museum-primary);
+}
+
+.btn-primary:hover {
+  background-color: #1a1a1a;
+  border-color: #1a1a1a;
+  text-decoration: none;
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+}
+
+.btn-secondary {
+  background-color: transparent;
+  color: var(--museum-primary);
+  border-color: var(--border-dark);
+}
+
+.btn-secondary:hover {
+  background-color: var(--bg-secondary);
+  border-color: var(--museum-primary);
+  text-decoration: none;
+  transform: translateY(-1px);
+}
+
+.btn-accent {
+  background-color: var(--museum-accent);
+  color: white;
+  border-color: var(--museum-accent);
+}
+
+.btn-accent:hover {
+  background-color: #7a6449;
+  border-color: #7a6449;
+  text-decoration: none;
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+}
+
+/* ==================== CARDS ==================== */
+
+.card {
+  background-color: var(--bg-primary);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-lg);
+  padding: var(--space-xl);
+  box-shadow: var(--shadow-sm);
+  transition: all var(--transition-base);
+}
+
+.card:hover {
+  box-shadow: var(--shadow-md);
+  border-color: var(--border-medium);
+}
+
+.card-header {
+  margin-bottom: var(--space-lg);
+  padding-bottom: var(--space-md);
+  border-bottom: 1px solid var(--border-light);
+}
+
+.card-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--museum-primary);
+  margin: 0;
+}
+
+/* ==================== FORMS ==================== */
+
+.form-group {
+  margin-bottom: var(--space-lg);
+}
+
+.form-label {
+  display: block;
+  margin-bottom: var(--space-sm);
+  font-weight: 500;
+  color: var(--text-primary);
+  font-size: 0.875rem;
+}
+
+.form-input,
+.form-select,
+.form-textarea {
+  width: 100%;
+  padding: var(--space-sm) var(--space-md);
+  font-family: var(--font-primary);
+  font-size: 1rem;
+  color: var(--text-primary);
+  background-color: var(--bg-primary);
+  border: 1px solid var(--border-medium);
+  border-radius: var(--radius-md);
+  transition: all var(--transition-fast);
+}
+
+.form-input:focus,
+.form-select:focus,
+.form-textarea:focus {
+  outline: none;
+  border-color: var(--museum-accent);
+  box-shadow: 0 0 0 3px var(--focus-ring);
+}
+
+.form-textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+.form-hint {
+  display: block;
+  margin-top: var(--space-xs);
+  font-size: 0.875rem;
+  color: var(--text-muted);
+}
+
+/* ==================== NAVIGATION ==================== */
+
+.nav {
+  display: flex;
+  gap: var(--space-lg);
+  padding: var(--space-md) 0;
+}
+
+.nav-link {
+  color: var(--text-secondary);
+  font-weight: 500;
+  padding: var(--space-sm) var(--space-md);
+  border-radius: var(--radius-sm);
+  transition: all var(--transition-fast);
+}
+
+.nav-link:hover {
+  color: var(--museum-primary);
+  background-color: var(--bg-secondary);
+  text-decoration: none;
+}
+
+.nav-link.active {
+  color: var(--museum-primary);
+  background-color: var(--bg-tertiary);
+  font-weight: 600;
+}
+
+/* ==================== HEADER ==================== */
+
+header {
+  background-color: var(--bg-primary);
+  border-bottom: 1px solid var(--border-light);
+  padding: var(--space-lg) 0;
+}
+
+.header-content {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 var(--space-xl);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.logo {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--museum-primary);
+  letter-spacing: -0.01em;
+}
+
+/* ==================== FOOTER ==================== */
+
+footer {
+  background-color: var(--bg-secondary);
+  border-top: 1px solid var(--border-light);
+  padding: var(--space-2xl) 0;
+  margin-top: var(--space-3xl);
+}
+
+.footer-content {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 var(--space-xl);
+  color: var(--text-secondary);
+}
+
+/* ==================== IMAGES ==================== */
+
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+.photo-frame {
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  padding: var(--space-sm);
+  background-color: var(--bg-primary);
+  box-shadow: var(--shadow-sm);
+}
+
+.photo-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: var(--space-lg);
+}
+
+/* ==================== CHIPS/TAGS ==================== */
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  padding: var(--space-xs) var(--space-md);
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--text-primary);
+  background-color: var(--bg-tertiary);
+  border: 1px solid var(--border-light);
+  border-radius: 16px;
+  transition: all var(--transition-fast);
+}
+
+.chip:hover {
+  background-color: var(--bg-secondary);
+  border-color: var(--border-medium);
+}
+
+/* ==================== STATUS BADGES ==================== */
+
+.status-badge {
+  display: inline-block;
+  padding: var(--space-xs) var(--space-sm);
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-radius: var(--radius-sm);
+}
+
+.status-published {
+  color: var(--success);
+  background-color: rgba(47, 133, 90, 0.1);
+  border: 1px solid rgba(47, 133, 90, 0.3);
+}
+
+.status-draft {
+  color: var(--warning);
+  background-color: rgba(192, 86, 33, 0.1);
+  border: 1px solid rgba(192, 86, 33, 0.3);
+}
+
+.status-pending {
+  color: var(--info);
+  background-color: rgba(44, 82, 130, 0.1);
+  border: 1px solid rgba(44, 82, 130, 0.3);
+}
+
+/* ==================== UTILITIES ==================== */
+
+.container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 var(--space-xl);
+}
+
+.text-center {
+  text-align: center;
+}
+
+.text-muted {
+  color: var(--text-muted);
+}
+
+.mb-sm { margin-bottom: var(--space-sm); }
+.mb-md { margin-bottom: var(--space-md); }
+.mb-lg { margin-bottom: var(--space-lg); }
+.mb-xl { margin-bottom: var(--space-xl); }
+
+.mt-sm { margin-top: var(--space-sm); }
+.mt-md { margin-top: var(--space-md); }
+.mt-lg { margin-top: var(--space-lg); }
+.mt-xl { margin-top: var(--space-xl); }
+
+.p-sm { padding: var(--space-sm); }
+.p-md { padding: var(--space-md); }
+.p-lg { padding: var(--space-lg); }
+.p-xl { padding: var(--space-xl); }
+
+/* ==================== ACCESSIBILITY ==================== */
+
+.skip-link {
+  position: absolute;
+  top: -40px;
+  left: 0;
+  background: var(--museum-primary);
+  color: white;
+  padding: var(--space-sm) var(--space-md);
+  text-decoration: none;
+  z-index: 100;
+}
+
+.skip-link:focus {
+  top: 0;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/* ==================== RESPONSIVE ==================== */
+
+@media (max-width: 768px) {
+  :root {
+    --space-xl: 1.5rem;
+    --space-2xl: 2rem;
+    --space-3xl: 2.5rem;
+  }
+
+  h1 {
+    font-size: 2rem;
+  }
+
+  h2 {
+    font-size: 1.75rem;
+  }
+
+  h3 {
+    font-size: 1.5rem;
+  }
+
+  .photo-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .nav {
+    flex-direction: column;
+    gap: var(--space-sm);
+  }
+}
+
+/* ==================== PRINT STYLES ==================== */
+
+@media print {
+  body {
+    background: white;
+    color: black;
+  }
+
+  .btn,
+  .nav,
+  header,
+  footer {
+    display: none;
+  }
+
+  .card {
+    border: 1px solid #ccc;
+    box-shadow: none;
+  }
+}

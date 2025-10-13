@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vágatlanul - Műterem Információ</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300;400;600;700&family=Source+Serif+Pro:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            transition: background-color 0.3s ease;
+        }
+
+        .studio-panel-container {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+        }
+
+        .map-section {
+            flex: 1;
+            background-color: var(--surface-color);
+            position: relative;
+            padding: 2rem;
+            transition: background-color 0.3s ease;
+        }
+
+        .map-placeholder {
+            width: 100%;
+            height: 100%;
+            background-color: var(--surface-secondary);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-color);
+            opacity: 0.5;
+            font-size: 1.5rem;
+            transition: background-color 0.3s ease;
+        }
+
+        .info-panel {
+            width: 600px;
+            background-color: var(--surface-color);
+            box-shadow: -4px 0 24px rgba(0, 0, 0, 0.1);
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            transition: background-color 0.3s ease;
+        }
+
+        .panel-header {
+            background-color: var(--primary-deep-blue);
+            color: white;
+            padding: 2rem;
+            position: relative;
+        }
+
+        .panel-controls {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .control-btn {
+            width: 55px;
+            height: 55px;
+            background-color: rgba(255, 255, 255, 0.2);
+            border: none;
+            border-radius: 50%;
+            color: white;
+            font-size: 1.25rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .control-btn:hover {
+            background-color: var(--secondary-warm-gold);
+            transform: scale(1.1);
+        }
+
+        .close-button {
+            font-size: 1.5rem;
+        }
+
+        .close-button:hover {
+            transform: rotate(90deg) scale(1.1);
+        }
+
+        .studio-name {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            padding-right: 120px;
+        }
+
+        .studio-location {
+            font-size: 1.125rem;
+            opacity: 0.9;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .panel-content {
+            padding: 2rem;
+            flex: 1;
+        }
+
+        .info-section {
+            margin-bottom: 2rem;
+        }
+
+        .section-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--primary-deep-blue);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .section-icon {
+            width: 24px;
+            height: 24px;
+            background-color: var(--secondary-warm-gold);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 0.875rem;
+        }
+
+        .info-text {
+            font-family: var(--font-serif);
+            font-size: 1rem;
+            line-height: 1.8;
+            color: var(--text-color);
+            margin-bottom: 1rem;
+            transition: color 0.3s ease;
+        }
+
+        .metadata-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+        }
+
+        .metadata-item {
+            background-color: var(--surface-secondary);
+            padding: 1rem;
+            border-radius: 8px;
+            border-left: 4px solid var(--secondary-warm-gold);
+            transition: background-color 0.3s ease;
+        }
+
+        .metadata-label {
+            font-size: 0.875rem;
+            color: var(--text-color);
+            opacity: 0.7;
+            margin-bottom: 0.25rem;
+        }
+
+        .metadata-value {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--primary-deep-blue);
+        }
+
+        .gallery-preview {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .preview-image {
+            aspect-ratio: 4/3;
+            background-color: var(--surface-secondary);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            overflow: hidden;
+        }
+
+        .preview-image:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .view-gallery-btn {
+            width: 100%;
+            padding: 1.5rem;
+            background-color: var(--secondary-warm-gold);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.125rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-top: 1rem;
+            box-shadow: 0 4px 12px rgba(212, 165, 116, 0.3);
+        }
+
+        .view-gallery-btn:hover {
+            background-color: #C4956A;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(212, 165, 116, 0.4);
+        }
+
+        .back-to-map {
+            position: absolute;
+            top: 2rem;
+            left: 2rem;
+            padding: 1rem 2rem;
+            background-color: var(--surface-color);
+            color: var(--primary-deep-blue);
+            border: 2px solid var(--primary-deep-blue);
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .back-to-map:hover {
+            background-color: var(--primary-deep-blue);
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="studio-panel-container">
+        <div class="map-section">
+            <button class="back-to-map" onclick="window.location.href='K03-interactive-map.html'">
+                <span>←</span> Vissza a térképre
+            </button>
+            <div class="map-placeholder">
+                [Térkép - Dombóvár kiemelve]
+            </div>
+        </div>
+
+        <div class="info-panel">
+            <div class="panel-header">
+                <div class="panel-controls">
+                    <button class="control-btn theme-toggle" onclick="toggleTheme()" id="themeToggle" title="Téma váltás">
+                        <span id="themeIcon">🌙</span>
+                    </button>
+                    <button class="control-btn" onclick="toggleLanguage()" title="Nyelv váltás">
+                        <span id="langIcon">🇬🇧</span>
+                    </button>
+                    <button class="control-btn close-button" aria-label="Bezárás" onclick="window.location.href='K03-interactive-map.html'">×</button>
+                </div>
+                <h2 class="studio-name">Máté Lajos</h2>
+                <div class="studio-location">
+                    <span>📍</span>
+                    <span>Dombóvár, Esterházy utca 7.</span>
+                </div>
+            </div>
+
+            <div class="panel-content">
+                <div class="info-section">
+                    <h3 class="section-title">
+                        <span class="section-icon">ℹ</span>
+                        Történet
+                    </h3>
+                    <p class="info-text">
+                        <strong>Máté Lajos</strong> (1896–1937) Dombóváron működött 1921-től haláláig. Műterme az Esterházy utca 7. szám alatt volt, ahonnan nemcsak a városban, hanem a környező falvakban is dolgozott. Olyan településeken örökítette meg a mindennapi életet, mint Szakcs, Pári, Nagykónyi, Kocsola és Makó.
+                    </p>
+                    <p class="info-text">
+                        A fényképész különleges jellegzetessége a festett vászon háttér volt, amely számos felvételén felismerhető. Munkássága a vidéki magyarság hétköznapjait, ünnepeit, lakodalmait és közösségi eseményeit dokumentálta a két világháború közötti időszakban.
+                    </p>
+                    <p class="info-text">
+                        Máté Lajos elsősorban üvegnegatívokkal dolgozott, amelyekből 192 darab maradt fenn a Néprajzi Múzeum gyűjteményében. Jellegzetes "Máté L." szignója több felvételén is megtalálható. Portréi, csoportképei és eseményfotói egyedülálló betekintést nyújtanak a dél-dunántúli paraszti élet és kultúra világába.
+                    </p>
+                </div>
+
+                <div class="info-section">
+                    <h3 class="section-title">
+                        <span class="section-icon">📊</span>
+                        Adatok
+                    </h3>
+                    <div class="metadata-grid">
+                        <div class="metadata-item">
+                            <div class="metadata-label">Működési időszak</div>
+                            <div class="metadata-value">1921-1937</div>
+                        </div>
+                        <div class="metadata-item">
+                            <div class="metadata-label">Fotográfus</div>
+                            <div class="metadata-value">Máté Lajos</div>
+                        </div>
+                        <div class="metadata-item">
+                            <div class="metadata-label">Szakosodás</div>
+                            <div class="metadata-value">Üvegnegatív</div>
+                        </div>
+                        <div class="metadata-item">
+                            <div class="metadata-label">Képek száma</div>
+                            <div class="metadata-value">192 üvegnegatív</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="info-section">
+                    <h3 class="section-title">
+                        <span class="section-icon">🖼</span>
+                        Képgaléria előnézet
+                    </h3>
+                    <div class="gallery-preview">
+                        <div class="preview-image" style="background-image: url('../data/Dombóvár_Máté_Lajos/thumbs/F41074.jpg'); background-size: cover; background-position: center;"></div>
+                        <div class="preview-image" style="background-image: url('../data/Dombóvár_Máté_Lajos/thumbs/F41159.jpg'); background-size: cover; background-position: center;"></div>
+                        <div class="preview-image" style="background-image: url('../data/Dombóvár_Máté_Lajos/thumbs/F41104.jpg'); background-size: cover; background-position: center;"></div>
+                        <div class="preview-image" style="background-image: url('../data/Dombóvár_Máté_Lajos/thumbs/F41217.jpg'); background-size: cover; background-position: center;"></div>
+                        <div class="preview-image" style="background-image: url('../data/Dombóvár_Máté_Lajos/thumbs/F41135.jpg'); background-size: cover; background-position: center;"></div>
+                        <div class="preview-image" style="background-image: url('../data/Dombóvár_Máté_Lajos/thumbs/F41032.jpg'); background-size: cover; background-position: center;"></div>
+                    </div>
+                    <button class="view-gallery-btn" onclick="window.location.href='K06-fullscreen-gallery.html'">
+                        Galéria megtekintése (10 kép)
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="theme-switcher.js"></script>
+    <script>
+        function toggleLanguage() {
+            const langIcon = document.getElementById('langIcon');
+            const currentLang = localStorage.getItem('selectedLanguage') || 'hu';
+            const newLang = currentLang === 'hu' ? 'en' : 'hu';
+            localStorage.setItem('selectedLanguage', newLang);
+
+            if (newLang === 'en') {
+                langIcon.textContent = '🇭🇺';
+            } else {
+                langIcon.textContent = '🇬🇧';
+            }
+        }
+
+        // Update theme toggle display on load
+        function updateThemeToggle() {
+            const currentTheme = document.documentElement.getAttribute('data-theme') || 'light';
+            const themeIcon = document.getElementById('themeIcon');
+
+            if (currentTheme === 'dark') {
+                themeIcon.textContent = '☀️';
+            } else {
+                themeIcon.textContent = '🌙';
+            }
+        }
+
+        // Initialize displays
+        updateThemeToggle();
+
+        const currentLang = localStorage.getItem('selectedLanguage') || 'hu';
+        if (currentLang === 'en') {
+            document.getElementById('langIcon').textContent = '🇭🇺';
+        }
+
+        // Auto return to screensaver after 2 minutes of inactivity
+        let inactivityTimer;
+        function resetInactivityTimer() {
+            clearTimeout(inactivityTimer);
+            inactivityTimer = setTimeout(() => {
+                window.location.href = 'K01-screensaver.html';
+            }, 120000); // 2 minutes
+        }
+
+        document.addEventListener('click', resetInactivityTimer);
+        document.addEventListener('touchstart', resetInactivityTimer);
+        document.addEventListener('mousemove', resetInactivityTimer);
+        document.addEventListener('scroll', resetInactivityTimer);
+        resetInactivityTimer();
+    </script>
+</body>
+</html>

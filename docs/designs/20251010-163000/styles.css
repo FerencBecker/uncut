@@ -1,0 +1,57 @@
+/* Vágatlanul - Kiosk Application Styles */
+/* Theme-aware variables for light/dark mode support */
+
+:root {
+  /* Typography */
+  --font-primary: 'Source Sans Pro', -apple-system, sans-serif;
+  --font-serif: 'Source Serif Pro', Georgia, serif;
+  --font-header: 'Playfair Display', Georgia, serif;
+  --font-body: 'Source Sans Pro', -apple-system, sans-serif;
+  --font-ui: 'Inter', -apple-system, sans-serif;
+
+  /* Touch targets */
+  --touch-min: 44px;
+  --touch-kiosk: 55px; /* 1.25x for kiosk */
+}
+
+/* Light Theme (Default) */
+:root,
+:root[data-theme="light"] {
+  --bg-color: #FEFCF7;
+  --surface-color: #FFFFFF;
+  --surface-secondary: #F5F3EC;
+  --text-color: #2D3748;
+  --text-secondary: #718096;
+  --heritage-gold: #D4AF74;
+  --museum-deep-blue: #1B365D;
+  --border-color: #E2E8F0;
+}
+
+/* Dark Theme */
+:root[data-theme="dark"] {
+  --bg-color: #1A1A1A;
+  --surface-color: #2C2C2C;
+  --surface-secondary: #3A3A3A;
+  --text-color: #E8E8E8;
+  --text-secondary: #A0AEC0;
+  --heritage-gold: #D4AF74;
+  --museum-deep-blue: #2B4A7C;
+  --border-color: #4A5568;
+}
+
+/* Global Reset */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* Body - uses theme-aware variables */
+body {
+  font-family: var(--font-primary);
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--text-color);
+  background-color: var(--bg-color);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}

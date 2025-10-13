@@ -1,0 +1,33 @@
+Kérdés:
+	1. Kiosk:
+	1.1 Az érintőképernyőhöz épített PC: Windows fut rajta?
+Válasz:
+	1.1 Egyelőre Raspberry pi 5-re gondolunk, de ha ez nem megfelelő, akkor ezen tudunk módosítani. A Raspberry pi 5-ön Debian alapú Linux fut. Van egy régebbi PC, azon  Fedora Linux van jelenleg. Ezen tudunk módosítani, ha nem megfelelő.
+	
+Kérdés:
+	2. Webes megoldás:
+	2.1 A MuseumPlus integráció kérdéses. Úgy tűnik, van API-ja, van egy python példa project. Kaphatunk esetleg több információt az integrációval kapcsolatban?
+Válasz:
+	2.1. Az API dokumentáció itt található: https://docs.zetcom.com/framework-public/index.html, ha ennél részletesebben szeretnének infót, akkor jelezzék.
+
+Kérdés:
+	2.2 A speci minimális CMS-ről ír, de ha jól sejtem, akkor a MuseumPlus-nak is van CMS-e, ott tudná szerkeszteni a szövegeket, bármilyen nyelven. Lehet, hogy ott nem tudja sorrendezni a képeket, de feltölteni és törölni is ott fogja őket. Gondolom, hogy ott a preview-t sem kapja meg, azt is nekünk kellene fejlesztenünk.It minden funkcionalitás darabkához az a kérdés, hogy  Kell-e fejleszteni, vagy elég a MuseumPlus?
+Válasz:
+	Valóban fontos kérdést vetett fel, és bár a MuseumPlusba tartalomszerkesztési funkciót bele lehet fejleszteni, ennek részletes megítéléséhez szakmai támogatást kell kérnem, kérem türelmét. De lehet, hogy sokkal bonyolultabb így, mint egy wysiwyges frontend szerkesztővel. Itt esetleg írhatnak mindkét megoldásra árat.
+
+Kérdés:
+	2.3 Helyadat, térkép: Kell-e térképes megjelenítés? (itt vannak már Magyarországon kívüli helyek is?)
+Válasz:
+	Nincsenek Mo-n kívüli helyek.
+
+Kérdés:
+	2.4 Keresés: Tudja-e a MuseumPlus az efajta keresést? Tud-e a MuseumPlus olyan címkéket (férfi, nő, csoportkép...) kezelni, ami alapján lehet keresni? Tud-e a MuseumPlus "mindenben keres"-t? Kell-e tudnia a keresének helyesen kezelnie helységnév változatokat (akár régies név, akár mai nem magyar név)?
+Válasz:
+	Más, folyamatban lévő fejlesztéseinknél a MuseumPlus lekéri a rekordokat, és a keresés már ezekben az adatokban fog dolgozni és szűrni, lényegében a frontenden. Ez így lehet megoldás itt is?
+
+Kérdés:
+	2.5 Hosting: Mit lehet tudni a környezetről, SSL, hogyan férhetünk hozzá?
+Válasz:
+	Ezt írta a rendszergazdánk: 
+	A kiállításon lehet akár offline is, és amíg offline, addig nincs távoli hozzáférés és SSL tanúsítvány sem.
+	Amikor online lesz, akkor az SSL tanúsítvány akkor lesz, ha [valami].neprajz.hu domain alatt fut, vagy ha egyedi domaint akartok, akkor ahhoz venni kell. Ha online, akkor a távoli elérés megoldható.

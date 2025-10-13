@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vágatlanul - Interaktív Térkép</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Source+Sans+Pro:wght@400;600&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .map-header {
+            background: linear-gradient(135deg, var(--museum-deep-blue) 0%, #243B5E 100%);
+            color: white;
+            padding: 1.5rem 3rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            position: relative;
+            z-index: 100;
+        }
+
+        .map-header h1 {
+            font-family: var(--font-header);
+            font-size: 2.5rem;
+            margin: 0;
+            color: var(--heritage-gold);
+        }
+
+        .map-header p {
+            font-family: var(--font-body);
+            font-size: 1.25rem;
+            margin: 0.5rem 0 0 0;
+            opacity: 0.9;
+        }
+
+        .header-controls {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .theme-toggle, .language-toggle {
+            background: rgba(255, 255, 255, 0.15);
+            border: 2px solid var(--heritage-gold);
+            border-radius: 8px;
+            padding: 0.75rem 1.25rem;
+            color: white;
+            font-family: var(--font-ui);
+            font-size: 1.125rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            min-height: 64px;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .theme-toggle:hover, .language-toggle:hover {
+            background: var(--heritage-gold);
+            transform: scale(1.05);
+        }
+
+        .map-container {
+            flex: 1;
+            position: relative;
+            background: linear-gradient(135deg, var(--bg-color) 0%, var(--surface-secondary) 100%);
+            overflow: hidden;
+        }
+
+        .hungary-map {
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 600"><rect fill="%23F5F3EC" width="1000" height="600"/><path d="M150,250 L200,230 L250,240 L300,220 L350,230 L400,225 L450,240 L500,230 L550,240 L600,250 L650,245 L700,260 L750,250 L780,270 L760,290 L740,310 L700,320 L650,330 L600,325 L550,340 L500,335 L450,345 L400,340 L350,335 L300,345 L250,335 L200,330 L160,310 L140,290 Z" fill="%23D4D1C5" stroke="%231B365D" stroke-width="2"/></svg>') center/contain no-repeat;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .studio-marker {
+            position: absolute;
+            width: 64px;
+            height: 64px;
+            background: linear-gradient(135deg, var(--heritage-gold) 0%, #C49E2D 100%);
+            border: 4px solid white;
+            border-radius: 50%;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.75rem;
+            animation: markerPulse 3s ease-in-out infinite;
+        }
+
+        @keyframes markerPulse {
+            0%, 100% { transform: scale(1); box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); }
+            50% { transform: scale(1.05); box-shadow: 0 8px 20px rgba(212, 175, 55, 0.4); }
+        }
+
+        .studio-marker:hover {
+            transform: scale(1.4) rotate(10deg);
+            background: linear-gradient(135deg, var(--museum-deep-blue) 0%, #243B5E 100%);
+            border-color: var(--heritage-gold);
+            z-index: 10;
+            animation: none;
+        }
+
+        .studio-marker.active {
+            transform: scale(1.5);
+            background: linear-gradient(135deg, var(--museum-deep-blue) 0%, #243B5E 100%);
+            border-color: var(--heritage-gold);
+            animation: activeMarker 1s ease-in-out infinite;
+        }
+
+        @keyframes activeMarker {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(212, 175, 55, 0.7); }
+            50% { box-shadow: 0 0 0 20px rgba(212, 175, 55, 0); }
+        }
+
+        /* Studio marker positions (21 highlighted studios) */
+        .marker-1 { top: 30%; left: 20%; animation-delay: 0s; }
+        .marker-2 { top: 25%; left: 35%; animation-delay: 0.2s; }
+        .marker-3 { top: 35%; left: 50%; animation-delay: 0.4s; }
+        .marker-4 { top: 28%; left: 65%; animation-delay: 0.6s; }
+        .marker-5 { top: 40%; left: 80%; animation-delay: 0.8s; }
+        .marker-6 { top: 50%; left: 25%; animation-delay: 1s; }
+        .marker-7 { top: 48%; left: 42%; animation-delay: 1.2s; }
+        .marker-8 { top: 55%; left: 58%; animation-delay: 1.4s; }
+        .marker-9 { top: 52%; left: 75%; animation-delay: 1.6s; }
+        .marker-10 { top: 65%; left: 30%; animation-delay: 1.8s; }
+        .marker-11 { top: 70%; left: 50%; animation-delay: 2s; }
+        .marker-12 { top: 68%; left: 70%; animation-delay: 2.2s; }
+        .marker-13 { top: 38%; left: 15%; animation-delay: 2.4s; }
+        .marker-14 { top: 42%; left: 38%; animation-delay: 2.6s; }
+        .marker-15 { top: 45%; left: 62%; animation-delay: 2.8s; }
+        .marker-16 { top: 48%; left: 85%; animation-delay: 3s; }
+        .marker-17 { top: 58%; left: 20%; animation-delay: 0.3s; }
+        .marker-18 { top: 62%; left: 45%; animation-delay: 0.5s; }
+        .marker-19 { top: 60%; left: 68%; animation-delay: 0.7s; }
+        .marker-20 { top: 73%; left: 40%; animation-delay: 0.9s; }
+        .marker-21 { top: 75%; left: 65%; animation-delay: 1.1s; }
+
+        .tooltip {
+            position: absolute;
+            background: var(--surface-color);
+            padding: 1rem 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+            font-family: var(--font-body);
+            font-size: 1.125rem;
+            color: var(--text-color);
+            pointer-events: none;
+            opacity: 0;
+            transform: translateY(-10px);
+            transition: all 0.3s ease;
+            z-index: 100;
+            white-space: nowrap;
+        }
+
+        .tooltip.visible {
+            opacity: 1;
+            transform: translateY(-20px);
+        }
+
+        .legend {
+            position: absolute;
+            bottom: 2rem;
+            left: 2rem;
+            background: var(--surface-color);
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+            color: var(--text-color);
+        }
+
+        .legend h3 {
+            font-family: var(--font-ui);
+            font-size: 1rem;
+            color: var(--museum-deep-blue);
+            margin: 0 0 1rem 0;
+            font-weight: 600;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 0.5rem;
+            font-family: var(--font-body);
+            font-size: 1rem;
+        }
+
+        .legend-icon {
+            width: 24px;
+            height: 24px;
+            background: var(--heritage-gold);
+            border: 2px solid white;
+            border-radius: 50%;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        /* 55-inch display scaling */
+        @media (min-width: 3840px) {
+            .map-header h1 { font-size: 3.125rem; }
+            .map-header p { font-size: 1.5625rem; }
+            .theme-toggle, .language-toggle { font-size: 1.40625rem; min-height: 80px; }
+            .studio-marker { width: 80px; height: 80px; font-size: 2.1875rem; }
+            .tooltip { font-size: 1.40625rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="map-header">
+        <div>
+            <h1>VÁGATLANUL</h1>
+            <p>Magyar Fotóműtermek Interaktív Térképe</p>
+        </div>
+        <div class="header-controls">
+            <button class="theme-toggle" onclick="toggleTheme()" id="themeToggle">
+                <span id="themeIcon">🌙</span>
+                <span id="themeText">Dark</span>
+            </button>
+            <button class="language-toggle" onclick="toggleLanguage()">
+                <span id="langText">🇬🇧 English</span>
+            </button>
+        </div>
+    </div>
+
+    <div class="map-container">
+        <div class="hungary-map" id="hungaryMap">
+            <!-- 21 highlighted studios -->
+            <div class="studio-marker marker-1" data-studio="Mai Manó Fotóművészeti Ház">📷</div>
+            <div class="studio-marker marker-2" data-studio="Erdélyi és Lengyel Műterem">🖼️</div>
+            <div class="studio-marker marker-3" data-studio="Koller József Fényképészeti Műintézet">📷</div>
+            <div class="studio-marker marker-4" data-studio="Weinwurm Antal Műterme">🎞️</div>
+            <div class="studio-marker marker-5" data-studio="Klösz György Műterme">📷</div>
+            <div class="studio-marker marker-6" data-studio="Angelo és Pap Fényképészet">🖼️</div>
+            <div class="studio-marker marker-7" data-studio="Máté Lajos Fényképészete (Dombóvár)">📷</div>
+            <div class="studio-marker marker-8" data-studio="Divald Károly Műintézet">🎞️</div>
+            <div class="studio-marker marker-9" data-studio="Borsos József Műterme">📷</div>
+            <div class="studio-marker marker-10" data-studio="Schäffer Ferenc Fotóműterem">🖼️</div>
+            <div class="studio-marker marker-11" data-studio="Spitzer Béla és Fia">📷</div>
+            <div class="studio-marker marker-12" data-studio="Veress Ferenc Műterem">🎞️</div>
+            <div class="studio-marker marker-13" data-studio="Dunky Alajos Fényképészet">📷</div>
+            <div class="studio-marker marker-14" data-studio="Müller Gyula Műterme">🖼️</div>
+            <div class="studio-marker marker-15" data-studio="Karlovszky Bertalan Atelier">📷</div>
+            <div class="studio-marker marker-16" data-studio="Háry Gyula Fényképészet">🎞️</div>
+            <div class="studio-marker marker-17" data-studio="Adler és Féner">📷</div>
+            <div class="studio-marker marker-18" data-studio="Bárdos Artúr Műterme">🖼️</div>
+            <div class="studio-marker marker-19" data-studio="Ellinger Ede Fényképészet">📷</div>
+            <div class="studio-marker marker-20" data-studio="Kintzler Ödön Műterme">🎞️</div>
+            <div class="studio-marker marker-21" data-studio="Székely Aladár Fotóművészet">📷</div>
+        </div>
+
+        <div class="tooltip" id="tooltip"></div>
+
+        <div class="legend">
+            <h3>21 Kiemelt Műterem</h3>
+            <div class="legend-item">
+                <div class="legend-icon"></div>
+                <span>Fotóműterem helyszíne</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-icon" style="background: var(--museum-deep-blue);"></div>
+                <span>Aktív kiválasztás</span>
+            </div>
+        </div>
+    </div>
+
+    <script src="theme-switcher.js"></script>
+    <script>
+        const markers = document.querySelectorAll('.studio-marker');
+        const tooltip = document.getElementById('tooltip');
+        const map = document.getElementById('hungaryMap');
+
+        markers.forEach(marker => {
+            marker.addEventListener('mouseenter', (e) => {
+                const studioName = marker.getAttribute('data-studio');
+                tooltip.textContent = studioName;
+                tooltip.classList.add('visible');
+                updateTooltipPosition(e);
+            });
+
+            marker.addEventListener('mousemove', updateTooltipPosition);
+
+            marker.addEventListener('mouseleave', () => {
+                tooltip.classList.remove('visible');
+            });
+
+            marker.addEventListener('click', (e) => {
+                markers.forEach(m => m.classList.remove('active'));
+                marker.classList.add('active');
+
+                setTimeout(() => {
+                    window.location.href = 'K04-studio-info-panel.html';
+                }, 800);
+            });
+        });
+
+        function updateTooltipPosition(e) {
+            const rect = map.getBoundingClientRect();
+            tooltip.style.left = (e.clientX - rect.left) + 'px';
+            tooltip.style.top = (e.clientY - rect.top - 80) + 'px';
+        }
+
+        function toggleLanguage() {
+            const langText = document.getElementById('langText');
+            const currentLang = localStorage.getItem('selectedLanguage') || 'hu';
+            const newLang = currentLang === 'hu' ? 'en' : 'hu';
+            localStorage.setItem('selectedLanguage', newLang);
+
+            if (newLang === 'en') {
+                langText.textContent = '🇭🇺 Magyar';
+            } else {
+                langText.textContent = '🇬🇧 English';
+            }
+        }
+
+        // Update theme toggle display on load
+        function updateThemeToggle() {
+            const currentTheme = document.documentElement.getAttribute('data-theme') || 'light';
+            const themeIcon = document.getElementById('themeIcon');
+            const themeText = document.getElementById('themeText');
+
+            if (currentTheme === 'dark') {
+                themeIcon.textContent = '☀️';
+                themeText.textContent = 'Light';
+            } else {
+                themeIcon.textContent = '🌙';
+                themeText.textContent = 'Dark';
+            }
+        }
+
+        // Initialize theme toggle display
+        updateThemeToggle();
+
+        // Auto return to screensaver after 2 minutes of inactivity
+        let inactivityTimer;
+        function resetInactivityTimer() {
+            clearTimeout(inactivityTimer);
+            inactivityTimer = setTimeout(() => {
+                window.location.href = 'K01-screensaver.html';
+            }, 120000); // 2 minutes
+        }
+
+        document.addEventListener('click', resetInactivityTimer);
+        document.addEventListener('touchstart', resetInactivityTimer);
+        document.addEventListener('mousemove', resetInactivityTimer);
+        resetInactivityTimer();
+    </script>
+</body>
+</html>

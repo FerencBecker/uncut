@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Szüreti mulatság népies ruhába öltözött társasága - Vágatlanul</title>
+    <link rel="stylesheet" href="web-light-theme.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300;400;600;700&family=Source+Serif+Pro:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            background-color: var(--bg-secondary);
+        }
+
+        .image-detail-container {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .detail-header {
+            background-color: white;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-left {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .back-link {
+            color: var(--museum-primary);
+            text-decoration: none;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: color 0.2s;
+        }
+
+        .back-link:hover {
+            color: var(--museum-accent);
+        }
+
+        .image-counter {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            opacity: 0.7;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .action-icon-btn {
+            width: 44px;
+            height: 44px;
+            background-color: var(--bg-secondary);
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 1.25rem;
+        }
+
+        .action-icon-btn:hover {
+            background-color: var(--museum-accent);
+            color: white;
+        }
+
+        .main-content {
+            flex: 1;
+            display: grid;
+            grid-template-columns: 1fr 450px;
+        }
+
+        .image-viewer {
+            background-color: white;
+            display: flex;
+            flex-direction: column;
+            padding: 2rem;
+        }
+
+        .viewer-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .zoom-controls {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .zoom-btn {
+            width: 40px;
+            height: 40px;
+            background-color: var(--bg-secondary);
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 1.125rem;
+        }
+
+        .zoom-btn:hover {
+            background-color: var(--museum-accent);
+            color: white;
+        }
+
+        .zoom-level {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            padding: 0.5rem 1rem;
+        }
+
+        .image-container {
+            flex: 1;
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+            background-color: #F8F8F8;
+            border-radius: 12px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .main-image {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            background: transparent;
+            width: auto;
+            height: auto;
+            display: block;
+        }
+
+        .nav-arrows {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            padding: 0 1rem;
+            pointer-events: none;
+        }
+
+        .arrow-btn {
+            width: 50px;
+            height: 50px;
+            background-color: rgba(43, 43, 43, 0.9);
+            border: 2px solid var(--museum-accent);
+            border-radius: 50%;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            pointer-events: all;
+        }
+
+        .arrow-btn:hover {
+            background-color: var(--museum-accent);
+            transform: scale(1.1);
+        }
+
+        .metadata-panel {
+            background-color: white;
+            overflow-y: auto;
+            padding: 2rem;
+            border-left: 1px solid #E2E8F0;
+        }
+
+        .image-title {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: var(--museum-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .image-studio {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+            opacity: 0.8;
+        }
+
+        .metadata-section {
+            margin-bottom: 2rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid var(--bg-secondary);
+        }
+
+        .metadata-section:last-child {
+            border-bottom: none;
+        }
+
+        .metadata-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: var(--museum-primary);
+            margin-bottom: 1rem;
+        }
+
+        .metadata-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.75rem;
+            font-size: 0.875rem;
+        }
+
+        .metadata-label {
+            color: var(--text-secondary);
+            opacity: 0.7;
+        }
+
+        .metadata-value {
+            font-weight: 600;
+            color: var(--museum-primary);
+            text-align: right;
+        }
+
+        .description-text {
+            font-family: var(--font-serif);
+            font-size: 1rem;
+            line-height: 1.8;
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+        }
+
+        .tag-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .tag {
+            background-color: var(--bg-secondary);
+            color: var(--museum-primary);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .action-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .action-btn {
+            width: 100%;
+            padding: 1rem;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .action-btn.primary {
+            background-color: var(--museum-accent);
+            color: white;
+        }
+
+        .action-btn.primary:hover {
+            background-color: #7a6449;
+        }
+
+        .action-btn.secondary {
+            background-color: var(--bg-secondary);
+            color: var(--museum-primary);
+            border: 2px solid var(--museum-primary);
+        }
+
+        .action-btn.secondary:hover {
+            background-color: var(--museum-primary);
+            color: white;
+        }
+
+        @media (max-width: 1024px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+
+            .metadata-panel {
+                border-left: none;
+                border-top: 1px solid #E2E8F0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="image-detail-container">
+        <header class="detail-header">
+            <div class="nav-left">
+                <a href="W05-studio-detail.html" class="back-link">
+                    <span>←</span> Vissza a galéria
+                </a>
+                <span class="image-counter">1 / 10</span>
+            </div>
+            <div class="header-actions">
+                <button class="action-icon-btn" id="langToggle" title="Language">🇬🇧 English</button>
+                <button class="action-icon-btn" title="Megosztás">🔗</button>
+                <button class="action-icon-btn" title="Letöltés">⬇</button>
+                <button class="action-icon-btn" title="Kedvencek">♥</button>
+            </div>
+        </header>
+
+        <div class="main-content">
+            <div class="image-viewer">
+                <div class="viewer-controls">
+                    <div class="zoom-controls">
+                        <button class="zoom-btn" title="Kicsinyítés">−</button>
+                        <span class="zoom-level">100%</span>
+                        <button class="zoom-btn" title="Nagyítás">+</button>
+                        <button class="zoom-btn" title="Eredeti méret">⊙</button>
+                        <button class="zoom-btn" title="Teljes képernyő">⛶</button>
+                    </div>
+                </div>
+
+                <div class="image-container">
+                    <img class="main-image" src="../data/Dombóvár_Máté_Lajos/F41074.jpg" alt="Szüreti mulatság népies ruhába öltözött társasága">
+                    <div class="nav-arrows">
+                        <button class="arrow-btn">‹</button>
+                        <button class="arrow-btn">›</button>
+                    </div>
+                </div>
+            </div>
+
+            <aside class="metadata-panel">
+                <h1 class="image-title">Szüreti mulatság népies ruhába öltözött társasága</h1>
+                <p class="image-studio">Máté Lajos • Szakcs • 1920-1921</p>
+
+                <section class="metadata-section">
+                    <h3 class="metadata-title">Leírás</h3>
+                    <p class="description-text">
+                        Szüreti mulatság résztvevői népies ruhába öltözve, Szakcs településen. A felvétel Máté Lajos jellegzetes munkamódszerét mutatja: a vidéki közösség életének autentikus dokumentálása, a két világháború közötti időszak hétköznapi és ünnepi eseményeinek megörökítése. A kép alján a fényképész, Máté L szignója látható.
+                    </p>
+                </section>
+
+                <section class="metadata-section">
+                    <h3 class="metadata-title">Technikai adatok</h3>
+                    <div class="metadata-row">
+                        <span class="metadata-label">Készítés éve</span>
+                        <span class="metadata-value">1920-1921</span>
+                    </div>
+                    <div class="metadata-row">
+                        <span class="metadata-label">Technika</span>
+                        <span class="metadata-value">Fekete-fehér üvegnegatív</span>
+                    </div>
+                    <div class="metadata-row">
+                        <span class="metadata-label">Méret</span>
+                        <span class="metadata-value">10 x 15 cm</span>
+                    </div>
+                    <div class="metadata-row">
+                        <span class="metadata-label">Helyszín</span>
+                        <span class="metadata-value">Szakcs</span>
+                    </div>
+                    <div class="metadata-row">
+                        <span class="metadata-label">Típus</span>
+                        <span class="metadata-value">Csoportkép</span>
+                    </div>
+                    <div class="metadata-row">
+                        <span class="metadata-label">Esemény</span>
+                        <span class="metadata-value">Szüreti mulatság</span>
+                    </div>
+                </section>
+
+                <section class="metadata-section">
+                    <h3 class="metadata-title">Műterem információk</h3>
+                    <div class="metadata-row">
+                        <span class="metadata-label">Fotográfus</span>
+                        <span class="metadata-value">Máté Lajos (1896-1937)</span>
+                    </div>
+                    <div class="metadata-row">
+                        <span class="metadata-label">Műterem</span>
+                        <span class="metadata-value">Dombóvár</span>
+                    </div>
+                    <div class="metadata-row">
+                        <span class="metadata-label">Cím</span>
+                        <span class="metadata-value">Esterházy utca 7.</span>
+                    </div>
+                    <div class="metadata-row">
+                        <span class="metadata-label">Működés</span>
+                        <span class="metadata-value">1921-1937</span>
+                    </div>
+                </section>
+
+                <section class="metadata-section">
+                    <h3 class="metadata-title">Kulcsszavak</h3>
+                    <div class="tag-container">
+                        <span class="tag">Szüret</span>
+                        <span class="tag">Népviselet</span>
+                        <span class="tag">Csoportkép</span>
+                        <span class="tag">Szakcs</span>
+                        <span class="tag">Vidéki élet</span>
+                        <span class="tag">Ünnep</span>
+                    </div>
+                </section>
+
+                <section class="metadata-section">
+                    <h3 class="metadata-title">Leltári adatok</h3>
+                    <div class="metadata-row">
+                        <span class="metadata-label">Leltári szám</span>
+                        <span class="metadata-value">NM F 41074</span>
+                    </div>
+                    <div class="metadata-row">
+                        <span class="metadata-label">Gyűjtemény</span>
+                        <span class="metadata-value">Néprajzi Múzeum</span>
+                    </div>
+                    <div class="metadata-row">
+                        <span class="metadata-label">Gyűjtemény mérete</span>
+                        <span class="metadata-value">192 üvegnegatív</span>
+                    </div>
+                </section>
+
+                <div class="action-buttons">
+                    <button class="action-btn primary">
+                        📧 Kapcsolatfelvétel a múzeummal
+                    </button>
+                    <button class="action-btn secondary">
+                        🗺 Műterem megtekintése
+                    </button>
+                </div>
+            </aside>
+        </div>
+    </div>
+
+    <script>
+        // Language toggle - shows opposite language with flag
+        const langToggle = document.getElementById('langToggle');
+        let currentLang = 'hu';
+
+        langToggle.addEventListener('click', () => {
+            if (currentLang === 'hu') {
+                langToggle.textContent = '🇭🇺 Magyar';
+                currentLang = 'en';
+                // Switch to English version
+            } else {
+                langToggle.textContent = '🇬🇧 English';
+                currentLang = 'hu';
+                // Switch to Hungarian version
+            }
+        });
+    </script>
+</body>
+</html>

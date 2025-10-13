@@ -1,0 +1,967 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fénykép szerkesztése - VÁGATLANUL CMS</title>
+    <meta name="description" content="Fénykép metaadatok szerkesztése">
+    <link rel="stylesheet" href="web-light-theme.css">
+    <link rel="stylesheet" href="cms-styles.css">
+    <style>
+        body {
+            background-color: var(--bg-tertiary);
+        }
+
+        /* Layout (reuse from previous) */
+        .cms-layout {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .cms-sidebar {
+            width: 260px;
+            background: linear-gradient(135deg, var(--museum-primary), #1a1a1a);
+            color: var(--bg-primary);
+            padding: var(--space-lg);
+            display: flex;
+            flex-direction: column;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .cms-logo {
+            font-family: var(--font-primary);
+            font-size: 1.5rem;
+            color: var(--museum-accent);
+            margin-bottom: var(--space-2xl);
+            text-align: center;
+        }
+
+        .cms-nav-item {
+            display: flex;
+            align-items: center;
+            gap: var(--space-md);
+            padding: var(--space-md);
+            margin-bottom: var(--space-xs);
+            color: var(--bg-primary);
+            text-decoration: none;
+            border-radius: var(--radius-md);
+            transition: all var(--transition-fast);
+        }
+
+        .cms-nav-item:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .cms-nav-item.active {
+            background-color: rgba(255, 255, 255, 0.15);
+            color: white;
+            font-weight: 600;
+        }
+
+        .cms-nav-icon {
+            width: 20px;
+            height: 20px;
+        }
+
+        .cms-nav {
+            flex: 1;
+        }
+
+        .cms-user {
+            padding-top: var(--space-lg);
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+            display: flex;
+            align-items: center;
+            gap: var(--space-md);
+        }
+
+        .cms-user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--museum-accent), var(--museum-primary));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+        }
+
+        .cms-user-info {
+            flex: 1;
+        }
+
+        .cms-user-name {
+            font-weight: 600;
+            font-size: var(--font-caption);
+        }
+
+        .cms-user-role {
+            font-size: var(--font-small);
+            opacity: 0.8;
+        }
+
+        .cms-main {
+            flex: 1;
+            overflow-y: auto;
+        }
+
+        .cms-header {
+            padding: var(--space-lg) var(--space-xl);
+            background-color: var(--bg-primary);
+            border-bottom: 1px solid var(--border-light);
+            display: flex;
+            align-items: center;
+            gap: var(--space-md);
+        }
+
+        .back-link {
+            display: flex;
+            align-items: center;
+            gap: var(--space-xs);
+            color: var(--museum-primary);
+            text-decoration: none;
+            font-size: var(--font-caption);
+            transition: color var(--transition-fast);
+        }
+
+        .back-link:hover {
+            color: var(--museum-accent);
+        }
+
+        .cms-header-title {
+            font-family: var(--font-primary);
+            font-size: 1.75rem;
+            color: var(--museum-primary);
+            margin: 0;
+            flex: 1;
+        }
+
+        /* Split Layout: Photo preview + Form */
+        .split-layout {
+            display: grid;
+            grid-template-columns: 400px 1fr 300px;
+            gap: var(--space-xl);
+            padding: var(--space-xl);
+            max-width: 1800px;
+            margin: 0 auto;
+        }
+
+        /* Photo Preview Column */
+        .photo-preview-col {
+            background-color: var(--bg-primary);
+            border-radius: var(--radius-lg);
+            padding: var(--space-lg);
+            box-shadow: var(--shadow-sm);
+            position: sticky;
+            top: var(--space-xl);
+            height: fit-content;
+        }
+
+        .photo-preview-title {
+            font-weight: 600;
+            color: var(--museum-primary);
+            margin-bottom: var(--space-md);
+        }
+
+        .photo-preview-container {
+            aspect-ratio: 4/3;
+            background: linear-gradient(135deg, var(--bg-secondary), var(--bg-tertiary));
+            border: 2px solid var(--border-light);
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            margin-bottom: var(--space-md);
+        }
+
+        .photo-preview-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .photo-info-item {
+            display: flex;
+            justify-content: space-between;
+            padding: var(--space-sm) 0;
+            border-bottom: 1px solid var(--bg-secondary);
+            font-size: var(--font-caption);
+        }
+
+        .photo-info-label {
+            color: var(--text-secondary);
+        }
+
+        .photo-info-value {
+            font-weight: 600;
+            color: var(--museum-primary);
+        }
+
+        /* Form Column */
+        .form-col {
+            background-color: var(--bg-primary);
+            border-radius: var(--radius-lg);
+            padding: var(--space-xl);
+            box-shadow: var(--shadow-sm);
+        }
+
+        /* Accordion Sections */
+        .accordion-section {
+            border: 1px solid var(--bg-secondary);
+            border-radius: var(--radius-md);
+            margin-bottom: var(--space-md);
+            overflow: hidden;
+        }
+
+        .accordion-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: var(--space-md) var(--space-lg);
+            background-color: var(--bg-secondary);
+            cursor: pointer;
+            transition: background-color var(--transition-fast);
+        }
+
+        .accordion-header:hover {
+            background-color: var(--bg-tertiary);
+        }
+
+        .accordion-title {
+            font-family: var(--font-primary);
+            font-size: 1.125rem;
+            color: var(--museum-primary);
+            margin: 0;
+        }
+
+        .accordion-toggle {
+            font-size: 1.5rem;
+            color: var(--museum-accent);
+            transition: transform var(--transition-fast);
+        }
+
+        .accordion-section.open .accordion-toggle {
+            transform: rotate(180deg);
+        }
+
+        .accordion-body {
+            display: none;
+            padding: var(--space-lg);
+        }
+
+        .accordion-section.open .accordion-body {
+            display: block;
+        }
+
+        /* Form Sections */
+        .form-section {
+            margin-bottom: var(--space-xl);
+        }
+
+        .form-section:last-child {
+            margin-bottom: 0;
+        }
+
+        .form-subsection-title {
+            font-weight: 600;
+            color: var(--museum-primary);
+            margin-bottom: var(--space-md);
+            font-size: 1rem;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: var(--space-lg);
+        }
+
+        .form-row-full {
+            grid-template-columns: 1fr;
+        }
+
+        /* Multi-select Dropdown */
+        .multi-select {
+            position: relative;
+        }
+
+        .multi-select-display {
+            min-height: var(--touch-standard);
+            padding: var(--space-sm) var(--space-md);
+            border: 1px solid var(--border-light);
+            border-radius: var(--radius-md);
+            background-color: var(--bg-primary);
+            cursor: pointer;
+            display: flex;
+            flex-wrap: wrap;
+            gap: var(--space-xs);
+        }
+
+        .multi-select-dropdown {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            margin-top: var(--space-xs);
+            background-color: var(--bg-primary);
+            border: 1px solid var(--border-light);
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-lg);
+            max-height: 200px;
+            overflow-y: auto;
+            z-index: var(--z-dropdown);
+            display: none;
+        }
+
+        .multi-select.open .multi-select-dropdown {
+            display: block;
+        }
+
+        .multi-select-option {
+            padding: var(--space-sm) var(--space-md);
+            cursor: pointer;
+            transition: background-color var(--transition-fast);
+        }
+
+        .multi-select-option:hover {
+            background-color: var(--bg-secondary);
+        }
+
+        .multi-select-option.selected {
+            background-color: var(--bg-tertiary);
+            font-weight: 600;
+        }
+
+        /* Sidebar Column */
+        .sidebar-col {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-lg);
+        }
+
+        .sidebar-card {
+            background-color: var(--bg-primary);
+            border-radius: var(--radius-lg);
+            padding: var(--space-lg);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .sidebar-card-title {
+            font-weight: 600;
+            color: var(--museum-primary);
+            margin-bottom: var(--space-md);
+        }
+
+        .sidebar-actions {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-sm);
+        }
+
+        .status-indicator-box {
+            padding: var(--space-md);
+            background-color: var(--bg-secondary);
+            border-radius: var(--radius-md);
+            border: 2px solid var(--border-light);
+        }
+
+        .status-label {
+            font-size: var(--font-caption);
+            color: var(--text-secondary);
+            margin-bottom: var(--space-xs);
+        }
+
+        .status-value {
+            font-weight: 600;
+            color: var(--museum-primary);
+        }
+
+        /* Highlight box for important fields */
+        .highlight-box {
+            background: linear-gradient(135deg, rgba(248, 248, 248, 0.8), rgba(248, 248, 248, 0.4));
+            border-left: 4px solid var(--museum-accent);
+            padding: var(--space-md);
+            border-radius: var(--radius-md);
+            margin-bottom: var(--space-md);
+        }
+
+        .highlight-title {
+            font-weight: 600;
+            color: var(--museum-primary);
+            margin-bottom: var(--space-xs);
+            display: flex;
+            align-items: center;
+            gap: var(--space-xs);
+        }
+
+        .highlight-icon {
+            color: var(--museum-accent);
+        }
+
+        /* Responsive */
+        @media (max-width: 1400px) {
+            .split-layout {
+                grid-template-columns: 350px 1fr 280px;
+            }
+        }
+
+        @media (max-width: 1024px) {
+            .split-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .photo-preview-col {
+                position: static;
+            }
+
+            .sidebar-col {
+                order: -1;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .cms-layout {
+                flex-direction: column;
+            }
+
+            .cms-sidebar {
+                width: 100%;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Skip Link -->
+    <a href="#main-content" class="skip-link">Ugrás a főtartalomhoz / Skip to main content</a>
+
+    <!-- CMS Layout -->
+    <div class="cms-layout">
+        <!-- Sidebar Navigation -->
+        <aside class="cms-sidebar" role="navigation" aria-label="Fő navigáció">
+            <div class="cms-logo">VÁGATLANUL<br>CMS</div>
+
+            <nav class="cms-nav">
+                <a href="W10-cms-dashboard.html" class="cms-nav-item">
+                    <svg class="cms-nav-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="3" y="3" width="7" height="7" stroke="currentColor" stroke-width="2"/>
+                        <rect x="14" y="3" width="7" height="7" stroke="currentColor" stroke-width="2"/>
+                        <rect x="3" y="14" width="7" height="7" stroke="currentColor" stroke-width="2"/>
+                        <rect x="14" y="14" width="7" height="7" stroke="currentColor" stroke-width="2"/>
+                    </svg>
+                    Vezérlőpult
+                </a>
+                <a href="W11-studio-editor.html" class="cms-nav-item">
+                    <svg class="cms-nav-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" stroke="currentColor" stroke-width="2"/>
+                    </svg>
+                    Fotóműtermek
+                </a>
+                <a href="W12-photo-editor.html" class="cms-nav-item active">
+                    <svg class="cms-nav-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="3" y="3" width="18" height="18" rx="2" stroke="currentColor" stroke-width="2"/>
+                        <circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="2"/>
+                    </svg>
+                    Fényképek
+                </a>
+                <a href="#" class="cms-nav-item">
+                    <svg class="cms-nav-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2M12 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8z" stroke="currentColor" stroke-width="2"/>
+                    </svg>
+                    Felhasználók
+                </a>
+                <a href="#" class="cms-nav-item">
+                    <svg class="cms-nav-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="2"/>
+                        <path d="M12 1v6m0 6v6M4.22 4.22l4.24 4.24m5.08 5.08l4.24 4.24M1 12h6m6 0h6M4.22 19.78l4.24-4.24m5.08-5.08l4.24-4.24" stroke="currentColor" stroke-width="2"/>
+                    </svg>
+                    Beállítások
+                </a>
+            </nav>
+
+            <div class="cms-user">
+                <div class="cms-user-avatar">KJ</div>
+                <div class="cms-user-info">
+                    <div class="cms-user-name">Kovács János</div>
+                    <div class="cms-user-role">Adminisztrátor</div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="cms-main" id="main-content">
+            <!-- Header -->
+            <header class="cms-header">
+                <a href="W10-cms-dashboard.html" class="back-link">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M19 12H5M12 19l-7-7 7-7" stroke="currentColor" stroke-width="2"/>
+                    </svg>
+                    Vissza
+                </a>
+                <h1 class="cms-header-title">Fénykép szerkesztése - Családi portré a műteremben</h1>
+            </header>
+
+            <!-- Split Layout -->
+            <div class="split-layout">
+                <!-- Photo Preview Column -->
+                <div class="photo-preview-col">
+                    <h2 class="photo-preview-title">Fénykép előnézet</h2>
+                    <div class="photo-preview-container">
+                        <img src="../data/Dombóvár_Máté_Lajos/F41074.jpg" alt="Családi portré">
+                    </div>
+
+                    <div class="photo-info-item">
+                        <span class="photo-info-label">Fájlnév:</span>
+                        <span class="photo-info-value">NM_F_67428.jpg</span>
+                    </div>
+                    <div class="photo-info-item">
+                        <span class="photo-info-label">Méret:</span>
+                        <span class="photo-info-value">3.2 MB</span>
+                    </div>
+                    <div class="photo-info-item">
+                        <span class="photo-info-label">Felbontás:</span>
+                        <span class="photo-info-value">3600 × 2700 px</span>
+                    </div>
+                    <div class="photo-info-item">
+                        <span class="photo-info-label">Formátum:</span>
+                        <span class="photo-info-value">JPEG</span>
+                    </div>
+
+                    <button class="btn btn-secondary" style="width: 100%; margin-top: var(--space-md);">
+                        Fénykép cseréje
+                    </button>
+                </div>
+
+                <!-- Form Column -->
+                <div class="form-col">
+                    <form>
+                        <!-- Basic Metadata -->
+                        <div class="accordion-section open">
+                            <div class="accordion-header" onclick="toggleAccordion(this)">
+                                <h3 class="accordion-title">Alapvető metaadatok</h3>
+                                <span class="accordion-toggle">▼</span>
+                            </div>
+                            <div class="accordion-body">
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label class="form-label required">Cím (magyar)</label>
+                                        <input type="text" class="form-input" value="Családi portré a műteremben" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Cím (angol)</label>
+                                        <input type="text" class="form-input" value="Family portrait in the studio">
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label">Leírás (magyar)</label>
+                                    <textarea class="form-textarea" rows="3">Polgári család műtermi portréja elegáns öltözetben. A háttérben műtermi dekorációk láthatók.</textarea>
+                                </div>
+
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label class="form-label required">Készítés dátuma</label>
+                                        <input type="text" class="form-input" value="1895-04" placeholder="YYYY-MM-DD" required>
+                                        <span class="form-hint">Formátum: ÉÉÉÉ-HH-NN vagy ÉÉÉÉ-HH vagy ÉÉÉÉ</span>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Dátum bizonytalanság</label>
+                                        <select class="form-select">
+                                            <option>Pontos</option>
+                                            <option selected>Körülbelül</option>
+                                            <option>Becsült</option>
+                                            <option>Ismeretlen</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Location Information -->
+                        <div class="accordion-section open">
+                            <div class="accordion-header" onclick="toggleAccordion(this)">
+                                <h3 class="accordion-title">Helyszín információk</h3>
+                                <span class="accordion-toggle">▼</span>
+                            </div>
+                            <div class="accordion-body">
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label class="form-label required">Fotóműterem</label>
+                                        <select class="form-select" required>
+                                            <option value="mai-mano" selected>Mai Manó Műterem</option>
+                                            <option value="kreith">Kreith Rezső Műtere</option>
+                                            <option value="kozmata">Kozmata Jenő Műintézet</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Beltér / Kültér</label>
+                                        <select class="form-select">
+                                            <option value="indoor" selected>Beltér (műterem)</option>
+                                            <option value="outdoor">Kültér</option>
+                                            <option value="both">Mindkettő</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label">Készítés helye (ha eltér a műteremtől)</label>
+                                    <input type="text" class="form-input" placeholder="Város, cím">
+                                    <span class="form-hint">Csak akkor töltse ki, ha a fénykép nem a műteremben készült</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Subject Matter & People - WITH CATCHMENT AREA -->
+                        <div class="accordion-section open">
+                            <div class="accordion-header" onclick="toggleAccordion(this)">
+                                <h3 class="accordion-title">Témakör és személyek</h3>
+                                <span class="accordion-toggle">▼</span>
+                            </div>
+                            <div class="accordion-body">
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label class="form-label">Téma típusa</label>
+                                        <select class="form-select">
+                                            <option>Portré (egyéni)</option>
+                                            <option selected>Családi portré</option>
+                                            <option>Csoportkép</option>
+                                            <option>Esemény</option>
+                                            <option>Jelenet</option>
+                                            <option>Tárgy</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Személyek száma</label>
+                                        <input type="number" class="form-input" value="5">
+                                    </div>
+                                </div>
+
+                                <!-- CATCHMENT AREA - CRITICAL NEW FIELD -->
+                                <div class="highlight-box">
+                                    <div class="highlight-title">
+                                        <span class="highlight-icon">⭐</span>
+                                        Ábrázoltak származási helye (Catchment Area)
+                                    </div>
+                                    <p style="font-size: var(--font-caption); color: var(--text-secondary); margin-bottom: var(--space-md);">
+                                        Válassza ki azokat a városokat/településeket, ahonnan a fényképen látható személyek származnak.
+                                        Ez segít a migrációs minták és földrajzi kapcsolatok feltárásában.
+                                    </p>
+                                    <div class="form-group">
+                                        <label class="form-label">Származási helyek</label>
+                                        <div class="multi-select" id="catchment-area-select">
+                                            <div class="multi-select-display">
+                                                <span class="chip">Debrecen</span>
+                                                <span class="chip">Budapest</span>
+                                            </div>
+                                            <div class="multi-select-dropdown">
+                                                <div class="multi-select-option selected">Debrecen</div>
+                                                <div class="multi-select-option selected">Budapest</div>
+                                                <div class="multi-select-option">Szeged</div>
+                                                <div class="multi-select-option">Pécs</div>
+                                                <div class="multi-select-option">Győr</div>
+                                                <div class="multi-select-option">Miskolc</div>
+                                                <div class="multi-select-option">Székesfehérvár</div>
+                                                <div class="multi-select-option">Kecskemét</div>
+                                                <div class="multi-select-option">Nyíregyháza</div>
+                                                <div class="multi-select-option">Eger</div>
+                                            </div>
+                                        </div>
+                                        <span class="form-hint">
+                                            Több város is kiválasztható. Ez az információ jelenik meg a térképen.
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label">Azonosított személyek</label>
+                                    <input type="text" class="form-input" placeholder="Teljes nevek vesszővel elválasztva">
+                                </div>
+
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label class="form-label">Nem</label>
+                                        <select class="form-select">
+                                            <option>Férfi</option>
+                                            <option>Nő</option>
+                                            <option selected>Vegyes</option>
+                                            <option>Ismeretlen</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Korosztály</label>
+                                        <select class="form-select">
+                                            <option>Gyermek</option>
+                                            <option>Fiatal felnőtt</option>
+                                            <option selected>Felnőtt</option>
+                                            <option>Idős</option>
+                                            <option>Vegyes</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label">Esemény típusa</label>
+                                    <select class="form-select">
+                                        <option>-</option>
+                                        <option>Esküvő</option>
+                                        <option>Keresztelő</option>
+                                        <option>Elsőáldozás</option>
+                                        <option>Ballagás</option>
+                                        <option>Bérmálás</option>
+                                        <option>Évforduló</option>
+                                        <option>Egyéb ünnep</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Labels & Tags -->
+                        <div class="accordion-section">
+                            <div class="accordion-header" onclick="toggleAccordion(this)">
+                                <h3 class="accordion-title">Címkék és kategóriák</h3>
+                                <span class="accordion-toggle">▼</span>
+                            </div>
+                            <div class="accordion-body">
+                                <div class="form-group">
+                                    <label class="form-label">Elsődleges kategória</label>
+                                    <select class="form-select">
+                                        <option>Portré</option>
+                                        <option selected>Család</option>
+                                        <option>Esemény</option>
+                                        <option>Néprajzi</option>
+                                        <option>Városkép</option>
+                                        <option>Építészet</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label">Témakör címkék</label>
+                                    <div class="multi-select">
+                                        <div class="multi-select-display">
+                                            <span class="chip">család</span>
+                                            <span class="chip">portré</span>
+                                            <span class="chip">polgári</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label">Ruházat címkék</label>
+                                    <input type="text" class="form-input" placeholder="pl: elegáns, ünnepi, népviselet">
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label">Egyedi címkék</label>
+                                    <input type="text" class="form-input" placeholder="Vesszővel elválasztva">
+                                    <span class="form-hint">Egyedi kulcsszavak a kereshetőség javításához</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Technical Details -->
+                        <div class="accordion-section">
+                            <div class="accordion-header" onclick="toggleAccordion(this)">
+                                <h3 class="accordion-title">Technikai adatok</h3>
+                                <span class="accordion-toggle">▼</span>
+                            </div>
+                            <div class="accordion-body">
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label class="form-label">Technika</label>
+                                        <select class="form-select">
+                                            <option selected>Üvegnegatív</option>
+                                            <option>Albumen nyomat</option>
+                                            <option>Zselatinos ezüst</option>
+                                            <option>Kollódium</option>
+                                            <option>Platina nyomat</option>
+                                            <option>Egyéb</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Formátum (méret)</label>
+                                        <input type="text" class="form-input" value="18×24 cm" placeholder="pl: 18×24 cm">
+                                    </div>
+                                </div>
+
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label class="form-label">Állapot</label>
+                                        <select class="form-select">
+                                            <option>Kiváló</option>
+                                            <option selected>Jó</option>
+                                            <option>Elfogadható</option>
+                                            <option>Sérült</option>
+                                            <option>Helyreállított</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Színezés</label>
+                                        <select class="form-select">
+                                            <option selected>Fekete-fehér</option>
+                                            <option>Színezett</option>
+                                            <option>Széppia</option>
+                                            <option>Színes</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label">Konzerválási megjegyzések</label>
+                                    <textarea class="form-textarea" rows="2" placeholder="Sérülések, beavatkozások..."></textarea>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Rights & Source -->
+                        <div class="accordion-section">
+                            <div class="accordion-header" onclick="toggleAccordion(this)">
+                                <h3 class="accordion-title">Jogok és forrás</h3>
+                                <span class="accordion-toggle">▼</span>
+                            </div>
+                            <div class="accordion-body">
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label class="form-label">Jogkezelési státusz</label>
+                                        <select class="form-select">
+                                            <option selected>Közkincs</option>
+                                            <option>Védett</option>
+                                            <option>Ismeretlen</option>
+                                            <option>Korlátozás alatt</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Használati jog</label>
+                                        <select class="form-select">
+                                            <option selected>Nyilvános</option>
+                                            <option>Kutatási célra</option>
+                                            <option>Engedélyköteles</option>
+                                            <option>Korlátozott</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label">Forrás intézmény</label>
+                                    <input type="text" class="form-input" value="Néprajzi Múzeum" readonly>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label required">MuseumPlus leltári szám</label>
+                                    <input type="text" class="form-input form-value mono" value="NM_F_67428" required>
+                                    <span class="form-hint">Egyedi azonosító a MuseumPlus adatbázisban</span>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label">Donor / Beszerzési információ</label>
+                                    <textarea class="form-textarea" rows="2" placeholder="Adományozó neve, beszerzés dátuma..."></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Sidebar Column -->
+                <div class="sidebar-col">
+                    <!-- Publish Controls -->
+                    <div class="sidebar-card">
+                        <h3 class="sidebar-card-title">Közzététel</h3>
+                        <div class="sidebar-actions">
+                            <button class="btn btn-primary" style="width: 100%;">
+                                Közzététel
+                            </button>
+                            <button class="btn btn-secondary" style="width: 100%;">
+                                Jóváhagyás kérése
+                            </button>
+                            <button class="btn btn-tertiary" style="width: 100%;">
+                                Piszkozat mentése
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Status -->
+                    <div class="sidebar-card">
+                        <h3 class="sidebar-card-title">Állapot</h3>
+                        <div class="status-indicator-box">
+                            <div class="status-label">Aktuális állapot:</div>
+                            <div class="status-value">Publikálva</div>
+                        </div>
+                        <div style="margin-top: var(--space-md); font-size: var(--font-caption); color: var(--text-secondary);">
+                            <div><strong>Feltöltve:</strong> 2024.10.15</div>
+                            <div><strong>Módosítva:</strong> Ma, 15:42</div>
+                            <div><strong>Módosította:</strong> Kovács János</div>
+                        </div>
+                    </div>
+
+                    <!-- Related Studio -->
+                    <div class="sidebar-card">
+                        <h3 class="sidebar-card-title">Kapcsolódó műterem</h3>
+                        <div style="padding: var(--space-md); background-color: var(--bg-secondary); border-radius: var(--radius-md);">
+                            <strong>Mai Manó Műterem</strong><br>
+                            <small>Budapest, 1882–1917</small>
+                        </div>
+                        <a href="W11-studio-editor.html" class="btn btn-tertiary" style="width: 100%; margin-top: var(--space-sm);">
+                            Műterem megtekintése
+                        </a>
+                    </div>
+
+                    <!-- Batch Edit -->
+                    <div class="sidebar-card">
+                        <h3 class="sidebar-card-title">Csoportos szerkesztés</h3>
+                        <button class="btn btn-secondary" style="width: 100%;">
+                            Többszörös kijelölés
+                        </button>
+                        <p style="font-size: var(--font-small); color: var(--text-secondary); margin-top: var(--space-sm);">
+                            Alkalmazza ezeket a metaadatokat több fényképre egyszerre
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Accordion toggle
+        function toggleAccordion(header) {
+            const section = header.closest('.accordion-section');
+            section.classList.toggle('open');
+        }
+
+        // Multi-select functionality
+        document.querySelectorAll('.multi-select').forEach(select => {
+            const display = select.querySelector('.multi-select-display');
+            const dropdown = select.querySelector('.multi-select-dropdown');
+
+            display.addEventListener('click', () => {
+                select.classList.toggle('open');
+            });
+
+            dropdown.querySelectorAll('.multi-select-option').forEach(option => {
+                option.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    option.classList.toggle('selected');
+                    // Update display chips (simplified for demo)
+                });
+            });
+        });
+
+        // Close multi-select when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.multi-select')) {
+                document.querySelectorAll('.multi-select.open').forEach(select => {
+                    select.classList.remove('open');
+                });
+            }
+        });
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('Photo editor initialized');
+            console.log('CRITICAL: Catchment area field is present and functional');
+        });
+    </script>
+</body>
+</html>

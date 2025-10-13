@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kapcsolat - Vágatlanul</title>
+    <link rel="stylesheet" href="web-light-theme.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300;400;600;700&family=Source+Serif+Pro:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            background-color: var(--bg-secondary);
+        }
+
+        .contact-container {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .contact-header {
+            background-color: white;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            padding: 1.5rem 3rem;
+        }
+
+        .logo-link {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--museum-primary);
+            text-decoration: none;
+        }
+
+        .contact-content {
+            flex: 1;
+            padding: 3rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .page-title {
+            font-size: 2.5rem;
+            color: var(--museum-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .page-description {
+            font-size: 1.125rem;
+            color: var(--text-secondary);
+            opacity: 0.8;
+            margin-bottom: 3rem;
+        }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+        }
+
+        .contact-info {
+            background-color: white;
+            border-radius: 16px;
+            padding: 3rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .info-section {
+            margin-bottom: 2.5rem;
+        }
+
+        .info-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--museum-primary);
+            margin-bottom: 1rem;
+        }
+
+        .info-text {
+            font-size: 1rem;
+            line-height: 1.8;
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+        }
+
+        .contact-detail {
+            display: flex;
+            align-items: start;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .contact-icon {
+            width: 40px;
+            height: 40px;
+            background-color: var(--bg-secondary);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+            flex-shrink: 0;
+        }
+
+        .contact-detail-content {
+            flex: 1;
+        }
+
+        .contact-detail-label {
+            font-size: 0.875rem;
+            opacity: 0.7;
+            margin-bottom: 0.25rem;
+        }
+
+        .contact-detail-value {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--museum-primary);
+        }
+
+        .contact-form {
+            background-color: white;
+            border-radius: 16px;
+            padding: 3rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .form-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--museum-primary);
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+        }
+
+        .form-label.required::after {
+            content: " *";
+            color: var(--error);
+        }
+
+        .form-input,
+        .form-textarea,
+        .form-select {
+            width: 100%;
+            padding: 0.875rem 1rem;
+            border: 2px solid #E2E8F0;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-family: var(--font-primary);
+            transition: all 0.2s;
+        }
+
+        .form-input:focus,
+        .form-textarea:focus,
+        .form-select:focus {
+            outline: none;
+            border-color: var(--museum-accent);
+            box-shadow: 0 0 0 3px var(--focus-ring);
+        }
+
+        .form-textarea {
+            min-height: 150px;
+            resize: vertical;
+        }
+
+        .image-reference {
+            background-color: var(--bg-secondary);
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .reference-thumbnail {
+            width: 80px;
+            height: 60px;
+            background: linear-gradient(135deg, #E8E4DC 0%, #D4CEC0 100%);
+            border-radius: 6px;
+            flex-shrink: 0;
+        }
+
+        .reference-info {
+            flex: 1;
+        }
+
+        .reference-title {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--museum-primary);
+            margin-bottom: 0.25rem;
+        }
+
+        .reference-meta {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            opacity: 0.7;
+        }
+
+        .remove-reference {
+            padding: 0.5rem;
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            font-size: 1.25rem;
+            opacity: 0.5;
+            transition: opacity 0.2s;
+        }
+
+        .remove-reference:hover {
+            opacity: 1;
+            color: var(--error);
+        }
+
+        .form-help {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            opacity: 0.6;
+            margin-top: 0.25rem;
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .btn-submit {
+            flex: 1;
+            padding: 1rem 2rem;
+            background-color: var(--museum-accent);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-submit:hover {
+            background-color: #7a6449;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(139, 115, 85, 0.3);
+        }
+
+        .btn-cancel {
+            padding: 1rem 2rem;
+            background-color: transparent;
+            color: var(--text-secondary);
+            border: 2px solid #E2E8F0;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-cancel:hover {
+            border-color: var(--text-secondary);
+        }
+
+        @media (max-width: 1024px) {
+            .contact-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="contact-container">
+        <header class="contact-header">
+            <a href="#" class="logo-link">VÁGATLANUL</a>
+        </header>
+
+        <div class="contact-content">
+            <h1 class="page-title">Kapcsolat</h1>
+            <p class="page-description">
+                Kérdése van a gyűjteményről, vagy további információt szeretne kérni?
+                Vegye fel velünk a kapcsolatot!
+            </p>
+
+            <div class="contact-grid">
+                <div class="contact-info">
+                    <div class="info-section">
+                        <h2 class="info-title">Néprajzi Múzeum</h2>
+                        <p class="info-text">
+                            A Vágatlanul projekt a Néprajzi Múzeum fotótári gyűjteményét mutatja be
+                            interaktív online formában. Kutatási kérdésekkel, képfelhasználási
+                            kérelmekkel vagy egyéb megkeresésekkel forduljon hozzánk bizalommal.
+                        </p>
+                    </div>
+
+                    <div class="info-section">
+                        <h2 class="info-title">Elérhetőségek</h2>
+                        <div class="contact-detail">
+                            <div class="contact-icon">📍</div>
+                            <div class="contact-detail-content">
+                                <div class="contact-detail-label">Cím</div>
+                                <div class="contact-detail-value">
+                                    1146 Budapest<br>
+                                    Dózsa György út 35.
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="contact-detail">
+                            <div class="contact-icon">📧</div>
+                            <div class="contact-detail-content">
+                                <div class="contact-detail-label">E-mail</div>
+                                <div class="contact-detail-value">fototar@neprajz.hu</div>
+                            </div>
+                        </div>
+
+                        <div class="contact-detail">
+                            <div class="contact-icon">📞</div>
+                            <div class="contact-detail-content">
+                                <div class="contact-detail-label">Telefon</div>
+                                <div class="contact-detail-value">+36 1 474 2100</div>
+                            </div>
+                        </div>
+
+                        <div class="contact-detail">
+                            <div class="contact-icon">🕐</div>
+                            <div class="contact-detail-content">
+                                <div class="contact-detail-label">Nyitvatartás</div>
+                                <div class="contact-detail-value">
+                                    Kedd–Vasárnap: 10:00–18:00<br>
+                                    Hétfő: zárva
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="info-section">
+                        <h2 class="info-title">Válaszidő</h2>
+                        <p class="info-text">
+                            Megkeresésére igyekszünk 3-5 munkanapon belül válaszolni. Kutatási
+                            kérelmek feldolgozása hosszabb időt vehet igénybe.
+                        </p>
+                    </div>
+                </div>
+
+                <form class="contact-form">
+                    <h2 class="form-title">Üzenet küldése</h2>
+
+                    <div class="image-reference">
+                        <div class="reference-thumbnail"></div>
+                        <div class="reference-info">
+                            <div class="reference-title">Arisztokrata házaspár portréja</div>
+                            <div class="reference-meta">Mai Manó Ház • 1898 • NM-2024-15678</div>
+                        </div>
+                        <button class="remove-reference" type="button">×</button>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label required" for="name">Név</label>
+                        <input type="text" id="name" class="form-input" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label required" for="email">E-mail cím</label>
+                        <input type="email" id="email" class="form-input" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="phone">Telefonszám</label>
+                        <input type="tel" id="phone" class="form-input">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label required" for="subject">Tárgy</label>
+                        <select id="subject" class="form-select" required>
+                            <option value="">Válasszon témát...</option>
+                            <option value="research">Kutatási kérelem</option>
+                            <option value="usage">Képfelhasználási engedély</option>
+                            <option value="info">További információ kérése</option>
+                            <option value="technical">Technikai probléma</option>
+                            <option value="other">Egyéb</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label required" for="message">Üzenet</label>
+                        <textarea id="message" class="form-textarea" required></textarea>
+                        <span class="form-help">
+                            Kérjük, írja le részletesen kérését vagy kérdését.
+                        </span>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="submit" class="btn-submit">Üzenet küldése</button>
+                        <button type="reset" class="btn-cancel">Mégse</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

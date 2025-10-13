@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vágatlanul - Interaktív Térkép</title>
+    <link rel="stylesheet" href="web-light-theme.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300;400;600;700&family=Source+Serif+Pro:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+        }
+
+        .map-app-container {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .map-header {
+            background-color: white;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 100;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .logo-link {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--museum-primary);
+            text-decoration: none;
+        }
+
+        .search-bar {
+            width: 400px;
+            padding: 0.75rem 1.5rem;
+            border: 2px solid #E2E8F0;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.2s;
+        }
+
+        .search-bar:focus {
+            outline: none;
+            border-color: var(--museum-accent);
+            box-shadow: 0 0 0 3px var(--focus-ring);
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .icon-btn {
+            width: 44px;
+            height: 44px;
+            background-color: var(--bg-secondary);
+            border: none;
+            border-radius: 8px;
+            color: var(--museum-primary);
+            font-size: 1.25rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .icon-btn:hover {
+            background-color: var(--museum-accent);
+            color: white;
+        }
+
+        .map-body {
+            flex: 1;
+            display: flex;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .filter-sidebar {
+            width: 320px;
+            background-color: white;
+            box-shadow: 2px 0 8px rgba(0, 0, 0, 0.05);
+            overflow-y: auto;
+            padding: 2rem;
+        }
+
+        .sidebar-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--museum-primary);
+            margin-bottom: 1.5rem;
+        }
+
+        .filter-group {
+            margin-bottom: 2rem;
+        }
+
+        .filter-label {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            margin-bottom: 0.75rem;
+            display: block;
+        }
+
+        .filter-select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #E2E8F0;
+            border-radius: 8px;
+            font-size: 0.875rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .filter-select:focus {
+            outline: none;
+            border-color: var(--museum-accent);
+        }
+
+        .filter-checkbox-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .checkbox-item input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+
+        .checkbox-item label {
+            font-size: 0.875rem;
+            cursor: pointer;
+        }
+
+        .range-inputs {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .range-input {
+            flex: 1;
+            padding: 0.5rem;
+            border: 2px solid #E2E8F0;
+            border-radius: 6px;
+            font-size: 0.875rem;
+        }
+
+        .apply-filters-btn {
+            width: 100%;
+            padding: 1rem;
+            background-color: var(--museum-accent);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-top: 1rem;
+        }
+
+        .apply-filters-btn:hover {
+            background-color: #7a6449;
+        }
+
+        .map-canvas {
+            flex: 1;
+            background-color: #F0EDE5;
+            position: relative;
+        }
+
+        .map-placeholder {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-secondary);
+            opacity: 0.3;
+            font-size: 2rem;
+        }
+
+        .map-controls {
+            position: absolute;
+            bottom: 2rem;
+            right: 2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .map-control-btn {
+            width: 44px;
+            height: 44px;
+            background-color: white;
+            border: none;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            color: var(--museum-primary);
+            font-size: 1.25rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .map-control-btn:hover {
+            background-color: var(--museum-accent);
+            color: white;
+        }
+
+        .layer-toggle {
+            position: absolute;
+            top: 2rem;
+            right: 2rem;
+            background-color: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+            min-width: 200px;
+        }
+
+        .layer-toggle-title {
+            font-size: 0.875rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--museum-primary);
+        }
+
+        .layer-option {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .layer-option input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+        }
+
+        .results-summary {
+            position: absolute;
+            top: 2rem;
+            left: 2rem;
+            background-color: white;
+            padding: 1rem 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--museum-primary);
+        }
+
+        .studio-marker-web {
+            position: absolute;
+            width: 32px;
+            height: 32px;
+            background-color: var(--museum-primary);
+            border: 3px solid var(--museum-accent);
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .studio-marker-web:hover {
+            transform: scale(1.3);
+            z-index: 10;
+        }
+
+        @media (max-width: 768px) {
+            .filter-sidebar {
+                position: absolute;
+                left: -320px;
+                z-index: 50;
+                transition: left 0.3s;
+            }
+
+            .filter-sidebar.open {
+                left: 0;
+            }
+
+            .search-bar {
+                width: 200px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="map-app-container">
+        <header class="map-header">
+            <div class="header-left">
+                <a href="#" class="logo-link">VÁGATLANUL</a>
+                <input type="text" class="search-bar" placeholder="Keresés műterem, fotográfus vagy helyszín szerint...">
+            </div>
+            <div class="header-actions">
+                <button class="icon-btn" title="Szűrők">⚙</button>
+                <button class="icon-btn" title="Lista nézet">☰</button>
+                <button class="icon-btn" id="langToggle" title="Language">🇬🇧 English</button>
+            </div>
+        </header>
+
+        <div class="map-body">
+            <aside class="filter-sidebar">
+                <h2 class="sidebar-title">Szűrők</h2>
+
+                <div class="filter-group">
+                    <label class="filter-label">Évszak</label>
+                    <div class="range-inputs">
+                        <input type="number" class="range-input" placeholder="1850" min="1850" max="1950">
+                        <span>-</span>
+                        <input type="number" class="range-input" placeholder="1950" min="1850" max="1950">
+                    </div>
+                </div>
+
+                <div class="filter-group">
+                    <label class="filter-label">Helyszín</label>
+                    <select class="filter-select">
+                        <option value="">Összes település</option>
+                        <option value="budapest">Budapest</option>
+                        <option value="debrecen">Debrecen</option>
+                        <option value="gyor">Győr</option>
+                        <option value="pecs">Pécs</option>
+                    </select>
+                </div>
+
+                <div class="filter-group">
+                    <label class="filter-label">Fotó típusa</label>
+                    <div class="filter-checkbox-group">
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="type-portrait" checked>
+                            <label for="type-portrait">Portré</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="type-group">
+                            <label for="type-group">Csoportkép</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="type-studio">
+                            <label for="type-studio">Műtermi</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="type-outdoor">
+                            <label for="type-outdoor">Kültéri</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="filter-group">
+                    <label class="filter-label">Fotográfus neme</label>
+                    <div class="filter-checkbox-group">
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="gender-male" checked>
+                            <label for="gender-male">Férfi</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="gender-female" checked>
+                            <label for="gender-female">Nő</label>
+                        </div>
+                    </div>
+                </div>
+
+                <button class="apply-filters-btn">Szűrők alkalmazása</button>
+            </aside>
+
+            <div class="map-canvas">
+                <div class="results-summary">
+                    78 műterem • 3,142 fénykép
+                </div>
+
+                <div class="layer-toggle">
+                    <div class="layer-toggle-title">Rétegek</div>
+                    <div class="layer-option">
+                        <input type="checkbox" id="layer-studios" checked>
+                        <label for="layer-studios">Műterem helyszínek</label>
+                    </div>
+                    <div class="layer-option">
+                        <input type="checkbox" id="layer-photos">
+                        <label for="layer-photos">Fotó helyszínek</label>
+                    </div>
+                    <div class="layer-option">
+                        <input type="checkbox" id="layer-catchment">
+                        <label for="layer-catchment">Vonzáskörzetek</label>
+                    </div>
+                </div>
+
+                <div class="map-placeholder">
+                    [Nagyítható interaktív térkép - OpenStreetMap vagy Leaflet]
+                </div>
+
+                <div class="map-controls">
+                    <button class="map-control-btn" title="Nagyítás">+</button>
+                    <button class="map-control-btn" title="Kicsinyítés">−</button>
+                    <button class="map-control-btn" title="Saját pozíció">⊙</button>
+                    <button class="map-control-btn" title="Teljes képernyő">⛶</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Language toggle - shows opposite language with flag
+        const langToggle = document.getElementById('langToggle');
+        let currentLang = 'hu';
+
+        langToggle.addEventListener('click', () => {
+            if (currentLang === 'hu') {
+                langToggle.textContent = '🇭🇺 Magyar';
+                currentLang = 'en';
+            } else {
+                langToggle.textContent = '🇬🇧 English';
+                currentLang = 'hu';
+            }
+        });
+    </script>
+</body>
+</html>

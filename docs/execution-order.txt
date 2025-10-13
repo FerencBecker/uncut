@@ -1,0 +1,96 @@
+﻿  First User Story to Execute: #38 (K03 - Interactive Map Navigation)
+
+  Rationale:
+  - K03 is the main landing page and core interaction point
+  - K01 (screensaver) is just an attraction mode that leads to K03
+  - Starting with K03 establishes the foundation for all other user interactions
+  - K04 and K06 are drill-down experiences from K03
+
+  ---
+  Complete Execution Order
+
+  Phase 1: Core Infrastructure (Sequential)
+
+  1. #31 - Setup .NET 8 BFF-Mini Backend Service (3 days)
+  - Dependencies: None
+  - Why first: Foundational - everything depends on this
+
+  2. #32 - Setup React 18 TypeScript Frontend Application (4 days)
+  - Dependencies: #31
+  - Why second: Required by all user stories and #33
+
+  3. #33 - Create Hungary Map SVG with Studio Locations (2 days)
+  - Dependencies: #32
+  - Why third: Needed by K01 and K03, relatively quick
+
+  ---
+  Phase 2: Parallel Track - Data & Containerization
+
+  4A. #35 - Create Museum Content Data Import Pipeline (4 days)
+  - Dependencies: #31
+  - Can run parallel with: #33, #34
+  - Why here: Enables testing with real data
+
+  4B. #34 - Setup Docker Containerization for Multi-Architecture Deployment (3 days)
+  - Dependencies: #31, #32
+  - Can run parallel with: #35
+  - Why here: Needed before production deployment
+
+  ---
+  Phase 3: User Stories (Can be parallelized by different developers)
+
+  5. #38 - K03: Interactive Map Navigation (5 days) ⭐ FIRST USER STORY
+  - Dependencies: #31, #32, #33
+  - Why first: Landing page, core interaction, other pages navigate from here
+  - Priority: HIGH - This is the hub
+
+  6. #37 - K01: Screensaver Attraction Mode (4 days)
+  - Dependencies: #31, #32, #33
+  - Can run parallel with: #38, #39, #40
+  - Why here: Entry point, but simpler than K03
+
+  7. #39 - K04: Studio Information Panel (4 days)
+  - Dependencies: #31, #32
+  - Can run parallel with: #37, #38, #40
+  - Why here: Natural next step after K03
+
+  8. #40 - K06: Fullscreen Gallery Lightbox (5 days)
+  - Dependencies: #31, #32
+  - Can run parallel with: #37, #38, #39
+  - Why here: Deepest navigation level, most complex UI
+
+  ---
+  Phase 4: Production Deployment
+
+  9. #36 - Setup Production Environment and Hardware Configuration (5 days)
+  - Dependencies: #34 (Docker)
+  - Why last: Requires all application code to be complete for testing
+
+  ---
+  Recommended Development Strategy
+
+  Week 1-2: Infrastructure
+  - Dev 1: #31 → #32 (7 days total)
+  - Result: Backend + Frontend foundation ready
+
+  Week 2-3: Assets + Data
+  - Dev 1: #33 (2 days) → User stories
+  - Dev 2: #35 (4 days) → User stories
+  - Dev 3: #34 (3 days) → #36
+
+  Week 3-5: User Stories (All devs work in parallel)
+  - Dev 1: #38 (K03 - 5 days)
+  - Dev 2: #37 (K01 - 4 days) → #39 (K04 - 4 days)
+  - Dev 3: #40 (K06 - 5 days)
+
+  Week 5-6: Integration & Production
+  - All devs: Integration testing
+  - Dev 3: #36 (Production - 5 days)
+
+  ---
+  Critical Path (Longest dependency chain)
+
+  #31 (3d) → #32 (4d) → #33 (2d) → #38 (5d) → #36 (5d)
+  Total: 19 days on critical path
+
+  With proper parallelization: ~25-30 working days (5-6 weeks) for complete delivery.

@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A projektről - Vágatlanul</title>
+    <link rel="stylesheet" href="web-light-theme.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300;400;600;700&family=Source+Serif+Pro:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            background-color: var(--bg-secondary);
+        }
+
+        .about-container {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .about-header {
+            background-color: white;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            padding: 1.5rem 3rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo-link {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--museum-primary);
+            text-decoration: none;
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-link {
+            text-decoration: none;
+            color: var(--text-secondary);
+            font-weight: 600;
+            transition: color 0.2s;
+        }
+
+        .nav-link:hover {
+            color: var(--museum-accent);
+        }
+
+        .hero-section {
+            background: linear-gradient(135deg, var(--museum-primary) 0%, #1a1a1a 100%);
+            color: white;
+            padding: 5rem 3rem;
+            text-align: center;
+        }
+
+        .hero-title {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .hero-subtitle {
+            font-family: var(--font-serif);
+            font-size: 1.5rem;
+            opacity: 0.9;
+        }
+
+        .content-wrapper {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 4rem 3rem;
+        }
+
+        .content-section {
+            background-color: white;
+            border-radius: 16px;
+            padding: 3rem;
+            margin-bottom: 3rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .section-title {
+            font-size: 2rem;
+            color: var(--museum-primary);
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 2px solid var(--bg-secondary);
+        }
+
+        .content-text {
+            font-family: var(--font-serif);
+            font-size: 1.125rem;
+            line-height: 1.8;
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+        }
+
+        .highlight-box {
+            background-color: var(--bg-secondary);
+            border-left: 4px solid var(--museum-accent);
+            padding: 2rem;
+            margin: 2rem 0;
+            border-radius: 8px;
+        }
+
+        .highlight-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--museum-primary);
+            margin-bottom: 1rem;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 2rem;
+            background-color: var(--bg-secondary);
+            border-radius: 12px;
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--museum-accent);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            opacity: 0.7;
+        }
+
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .team-member {
+            text-align: center;
+        }
+
+        .team-avatar {
+            width: 120px;
+            height: 120px;
+            background: linear-gradient(135deg, var(--museum-primary), var(--museum-accent));
+            border-radius: 50%;
+            margin: 0 auto 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 2rem;
+        }
+
+        .team-name {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: var(--museum-primary);
+            margin-bottom: 0.25rem;
+        }
+
+        .team-role {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            opacity: 0.7;
+        }
+
+        .partner-logos {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .partner-logo {
+            background-color: var(--bg-secondary);
+            border-radius: 12px;
+            padding: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 120px;
+            color: var(--text-secondary);
+            opacity: 0.5;
+        }
+
+        @media (max-width: 1024px) {
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .team-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .partner-logos {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="about-container">
+        <header class="about-header">
+            <a href="#" class="logo-link">VÁGATLANUL</a>
+            <nav class="nav-menu">
+                <a href="#" class="nav-link">Főoldal</a>
+                <a href="#" class="nav-link">Térkép</a>
+                <a href="#" class="nav-link">Keresés</a>
+                <a href="#" class="nav-link">Kapcsolat</a>
+            </nav>
+        </header>
+
+        <section class="hero-section">
+            <h1 class="hero-title">A projektről</h1>
+            <p class="hero-subtitle">Történeti Fotóműtermek Magyarországon</p>
+        </section>
+
+        <div class="content-wrapper">
+            <section class="content-section">
+                <h2 class="section-title">Küldetésünk</h2>
+                <p class="content-text">
+                    A Vágatlanul projekt célja a magyar fotográfia 19-20. századi aranykorának
+                    bemutatása és megőrzése. A Néprajzi Múzeum fotótárának kincseit interaktív,
+                    digitális formában tesszük hozzáférhetővé a kutatók, oktatók, diákok és a
+                    fotótörténet iránt érdeklődők számára.
+                </p>
+                <p class="content-text">
+                    Több mint 70 fotóműterem és 3000 történeti fénykép kerül bemutatásra, amelyek
+                    egyedülálló betekintést nyújtanak a magyarországi fotográfia kultúrájába, a
+                    műtermek működésébe és a korszak társadalmi életébe.
+                </p>
+
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <div class="stat-number">70+</div>
+                        <div class="stat-label">Fotóműterem</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">3000+</div>
+                        <div class="stat-label">Történeti fénykép</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">50+</div>
+                        <div class="stat-label">Település</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">100+</div>
+                        <div class="stat-label">Év fotótörténet</div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="content-section">
+                <h2 class="section-title">A gyűjtemény</h2>
+                <p class="content-text">
+                    A projekt keretében bemutatott fotográfiák a Néprajzi Múzeum fotótárának
+                    részét képezik. A gyűjtemény magában foglalja a 19. század közepétől a
+                    20. század közepéig működő magyar fotóműtermek munkáit.
+                </p>
+
+                <div class="highlight-box">
+                    <h3 class="highlight-title">Kiemelt műtermek</h3>
+                    <p class="content-text" style="margin: 0;">
+                        Mai Manó Ház (Budapest), Erdélyi Mór (Győr), Koller József (Debrecen),
+                        Angelo Antal (Veszprém), Divald Károly (Kassa), és számos más jelentős
+                        fotóműterem munkái.
+                    </p>
+                </div>
+
+                <p class="content-text">
+                    A digitalizált képek műszaki adatokkal, történeti kontextussal és részletes
+                    metaadatokkal kerülnek publikálásra. Az interaktív térkép lehetővé teszi a
+                    földrajzi alapú böngészést, míg a fejlett keresési funkciók segítségével
+                    célzott kutatást végezhetünk.
+                </p>
+            </section>
+
+            <section class="content-section">
+                <h2 class="section-title">A projekt csapata</h2>
+                <p class="content-text">
+                    A Vágatlanul projektet kurátorok, fotótörténészek, digitális szakemberek
+                    és múzeumi munkatársak közös munkája hozta létre.
+                </p>
+
+                <div class="team-grid">
+                    <div class="team-member">
+                        <div class="team-avatar">👤</div>
+                        <div class="team-name">Dr. Kiss Anna</div>
+                        <div class="team-role">Projektvezetéscsapata</div>
+                    </div>
+                    <div class="team-member">
+                        <div class="team-avatar">👤</div>
+                        <div class="team-name">Szabó Péter</div>
+                        <div class="team-role">Főkurátor</div>
+                    </div>
+                    <div class="team-member">
+                        <div class="team-avatar">👤</div>
+                        <div class="team-name">Nagy Eszter</div>
+                        <div class="team-role">Digitális archívumvezető</div>
+                    </div>
+                    <div class="team-member">
+                        <div class="team-avatar">👤</div>
+                        <div class="team-name">Dr. Kovács László</div>
+                        <div class="team-role">Fotótörténész</div>
+                    </div>
+                    <div class="team-member">
+                        <div class="team-avatar">👤</div>
+                        <div class="team-name">Tóth Márta</div>
+                        <div class="team-role">Restaurátor</div>
+                    </div>
+                    <div class="team-member">
+                        <div class="team-avatar">👤</div>
+                        <div class="team-name">Molnár Gábor</div>
+                        <div class="team-role">Technológiai vezető</div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="content-section">
+                <h2 class="section-title">Támogatók és partnerek</h2>
+                <p class="content-text">
+                    A projekt megvalósítását több intézmény és szervezet támogatta.
+                    Köszönjük partnereink segítségét!
+                </p>
+
+                <div class="partner-logos">
+                    <div class="partner-logo">Néprajzi Múzeum</div>
+                    <div class="partner-logo">Emberi Erőforrások Minisztériuma</div>
+                    <div class="partner-logo">Magyar Fotográfusok Háza</div>
+                    <div class="partner-logo">Digitális Örökség Program</div>
+                </div>
+            </section>
+
+            <section class="content-section">
+                <h2 class="section-title">Technológia és megközelíthetőség</h2>
+                <p class="content-text">
+                    A Vágatlanul online platform modern webes technológiákra épül, biztosítva
+                    a gyors, biztonságos és akadálymentes hozzáférést. A rendszer WCAG 2.1 AA
+                    szintű akadálymentességi szabványoknak felel meg.
+                </p>
+                <p class="content-text">
+                    A projekt kiállítási formában is elérhető a Néprajzi Múzeumban, ahol
+                    interaktív érintőképernyős állomásokon keresztül fedezhetik fel a látogatók
+                    a gyűjteményt.
+                </p>
+
+                <div class="highlight-box">
+                    <h3 class="highlight-title">Nyílt hozzáférés</h3>
+                    <p class="content-text" style="margin: 0;">
+                        A platform tartalmai kutatási és oktatási célokra szabadon használhatók
+                        a megfelelő forrásmegjelölés mellett. Kereskedelmi felhasználáshoz kérjük,
+                        vegye fel velünk a kapcsolatot.
+                    </p>
+                </div>
+            </section>
+        </div>
+    </div>
+</body>
+</html>

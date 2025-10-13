@@ -1,0 +1,8 @@
+﻿.idea/
+
+# Ignore .claude and calude folders at all levels
+.claude/
+calude/
+
+# Ignore all _archive folders
+_archive

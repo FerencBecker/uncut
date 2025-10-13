@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vágatlanul - Történeti Fotóműtermek Magyarországon</title>
+    <link rel="stylesheet" href="web-light-theme.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300;400;600;700&family=Source+Serif+Pro:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+        }
+
+        .landing-container {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .nav-header {
+            background-color: white;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            padding: 1.5rem 3rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: var(--museum-primary);
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-link {
+            text-decoration: none;
+            color: var(--text-secondary);
+            font-weight: 600;
+            transition: color 0.2s;
+            padding: 0.5rem 1rem;
+        }
+
+        .nav-link:hover {
+            color: var(--museum-accent);
+            background-color: var(--bg-secondary);
+            border-radius: 4px;
+        }
+
+        .lang-switch {
+            padding: 0.5rem 1rem;
+            background-color: transparent;
+            border: 1px solid var(--border-dark);
+            border-radius: 6px;
+            color: var(--museum-primary);
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .lang-switch:hover {
+            background-color: var(--museum-primary);
+            color: white;
+            border-color: var(--museum-primary);
+        }
+
+        .hero-section {
+            background: linear-gradient(135deg, var(--museum-primary) 0%, #1a1a1a 100%);
+            color: white;
+            padding: 6rem 3rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0.1;
+            background-image: url('data:image/svg+xml,<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="2" fill="%23C4A882"/></svg>');
+        }
+
+        .hero-content {
+            position: relative;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .hero-title {
+            font-size: 4rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            letter-spacing: 0.02em;
+        }
+
+        .hero-subtitle {
+            font-family: Georgia, serif;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            opacity: 0.9;
+        }
+
+        .hero-description {
+            font-size: 1.125rem;
+            max-width: 800px;
+            margin: 0 auto 3rem;
+            line-height: 1.8;
+            opacity: 0.85;
+        }
+
+        .hero-cta {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+        }
+
+        .cta-primary {
+            padding: 1.25rem 3rem;
+            background-color: var(--museum-accent);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.125rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .cta-primary:hover {
+            background-color: #7a6449;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(139, 115, 85, 0.3);
+        }
+
+        .cta-secondary {
+            padding: 1.25rem 3rem;
+            background-color: transparent;
+            color: white;
+            border: 2px solid white;
+            border-radius: 12px;
+            font-size: 1.125rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .cta-secondary:hover {
+            background-color: white;
+            color: var(--museum-primary);
+        }
+
+        .features-section {
+            padding: 5rem 3rem;
+            background-color: white;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            color: var(--museum-primary);
+            margin-bottom: 3rem;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 3rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .feature-card {
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .feature-icon {
+            width: 80px;
+            height: 80px;
+            background-color: var(--bg-tertiary);
+            border: 2px solid var(--border-light);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            margin: 0 auto 1.5rem;
+        }
+
+        .feature-title {
+            font-size: 1.5rem;
+            color: var(--museum-primary);
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+
+        .feature-description {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        .stats-section {
+            background-color: var(--bg-secondary);
+            padding: 4rem 3rem;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .stat-card {
+            text-align: center;
+            padding: 2rem;
+            background-color: white;
+            border: 1px solid var(--border-light);
+            border-radius: 12px;
+            box-shadow: var(--shadow-sm);
+            transition: all 0.2s;
+        }
+
+        .stat-card:hover {
+            box-shadow: var(--shadow-md);
+            border-color: var(--museum-accent-light);
+        }
+
+        .stat-number {
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--museum-accent);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            font-size: 1rem;
+            color: var(--text-secondary);
+        }
+
+        .map-preview-section {
+            padding: 5rem 3rem;
+            background-color: white;
+        }
+
+        .map-preview {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: var(--bg-tertiary);
+            border: 1px solid var(--border-light);
+            height: 500px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: var(--text-muted);
+            margin-bottom: 2rem;
+        }
+
+        .footer {
+            background-color: var(--museum-primary);
+            color: white;
+            padding: 3rem;
+            text-align: center;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .footer-link {
+            color: white;
+            text-decoration: none;
+            opacity: 0.8;
+            transition: opacity 0.2s;
+        }
+
+        .footer-link:hover {
+            opacity: 1;
+            color: var(--museum-accent-light);
+        }
+
+        @media (max-width: 768px) {
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .hero-title {
+                font-size: 2.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="landing-container">
+        <nav class="nav-header">
+            <div class="logo">VÁGATLANUL</div>
+            <div class="nav-menu">
+                <a href="W02-interactive-map.html" class="nav-link">Térkép</a>
+                <a href="W03-search-results.html" class="nav-link">Keresés</a>
+                <a href="W09-about-project.html" class="nav-link">A projektről</a>
+                <a href="W08-contact-form.html" class="nav-link">Kapcsolat</a>
+                <button class="lang-switch" id="langToggle">🇬🇧 English</button>
+            </div>
+        </nav>
+
+        <section class="hero-section">
+            <div class="hero-background"></div>
+            <div class="hero-content">
+                <h1 class="hero-title">VÁGATLANUL</h1>
+                <p class="hero-subtitle">Történeti Fotóműtermek Magyarországon</p>
+                <p class="hero-description">
+                    Fedezze fel a magyar fotográfia aranykorát! Több mint 70 műterem, 3000
+                    történeti fénykép és a fotografálás 19-20. századi kultúrája interaktív
+                    térképen és részletes dokumentációval.
+                </p>
+                <div class="hero-cta">
+                    <a href="W02-interactive-map.html" class="cta-primary">Térkép felfedezése</a>
+                    <a href="W09-about-project.html" class="cta-secondary">További információk</a>
+                </div>
+            </div>
+        </section>
+
+        <section class="stats-section">
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-number">70+</div>
+                    <div class="stat-label">Fotóműterem</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">3000+</div>
+                    <div class="stat-label">Történeti fénykép</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">50+</div>
+                    <div class="stat-label">Település</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">100+</div>
+                    <div class="stat-label">Év fotótörténet</div>
+                </div>
+            </div>
+        </section>
+
+        <section class="features-section">
+            <h2 class="section-title">Fedezze fel a gyűjteményt</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🗺</div>
+                    <h3 class="feature-title">Interaktív térkép</h3>
+                    <p class="feature-description">
+                        Böngésszen földrajzi elhelyezkedés szerint, fedezze fel a műtermek,
+                        fotóhelyszínek és vonzáskörzetek kapcsolatait.
+                    </p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🔍</div>
+                    <h3 class="feature-title">Fejlett keresés</h3>
+                    <p class="feature-description">
+                        Szűrjön évszám, helyszín, fotográfus vagy téma szerint.
+                        Találja meg pontosan azt, amit keres.
+                    </p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📸</div>
+                    <h3 class="feature-title">Részletes képek</h3>
+                    <p class="feature-description">
+                        Nagyítható, nagy felbontású képek műszaki adatokkal,
+                        történeti kontextussal és kutatási információkkal.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <section class="map-preview-section">
+            <h2 class="section-title">Induljon el a felfedezésre</h2>
+            <div class="map-preview">[Interaktív térkép előnézet]</div>
+            <div style="text-align: center;">
+                <a href="W02-interactive-map.html" class="cta-primary">Térkép megnyitása</a>
+            </div>
+        </section>
+
+        <footer class="footer">
+            <div class="footer-content">
+                <div>&copy; 2025 Néprajzi Múzeum</div>
+                <div class="footer-links">
+                    <a href="#" class="footer-link">Adatvédelem</a>
+                    <a href="#" class="footer-link">Impresszum</a>
+                    <a href="#" class="footer-link">Felhasználási feltételek</a>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        // Language toggle - shows opposite language with flag
+        const langToggle = document.getElementById('langToggle');
+        let currentLang = 'hu';
+
+        langToggle.addEventListener('click', () => {
+            if (currentLang === 'hu') {
+                langToggle.textContent = '🇭🇺 Magyar';
+                currentLang = 'en';
+                // Switch to English version
+            } else {
+                langToggle.textContent = '🇬🇧 English';
+                currentLang = 'hu';
+                // Switch to Hungarian version
+            }
+        });
+    </script>
+</body>
+</html>

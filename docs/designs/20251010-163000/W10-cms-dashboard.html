@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CMS Vezérlőpult - VÁGATLANUL</title>
+    <meta name="description" content="Tartalomkezelő rendszer vezérlőpultja">
+    <link rel="stylesheet" href="web-light-theme.css">
+    <link rel="stylesheet" href="cms-styles.css">
+    <style>
+        body {
+            background-color: var(--bg-tertiary);
+        }
+
+        /* Layout */
+        .cms-layout {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar Navigation */
+        .cms-sidebar {
+            width: 260px;
+            background: linear-gradient(135deg, var(--museum-primary), #1a1a1a);
+            color: var(--bg-primary);
+            padding: var(--space-lg);
+            display: flex;
+            flex-direction: column;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .cms-logo {
+            font-family: var(--font-primary);
+            font-size: 1.5rem;
+            color: var(--museum-accent);
+            margin-bottom: var(--space-2xl);
+            text-align: center;
+        }
+
+        .cms-nav {
+            flex: 1;
+        }
+
+        .cms-nav-item {
+            display: flex;
+            align-items: center;
+            gap: var(--space-md);
+            padding: var(--space-md);
+            margin-bottom: var(--space-xs);
+            color: var(--bg-primary);
+            text-decoration: none;
+            border-radius: var(--radius-md);
+            transition: all var(--transition-fast);
+        }
+
+        .cms-nav-item:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .cms-nav-item.active {
+            background-color: rgba(255, 255, 255, 0.15);
+            color: var(--bg-primary);
+            font-weight: 600;
+        }
+
+        .cms-nav-icon {
+            width: 20px;
+            height: 20px;
+        }
+
+        .cms-user {
+            padding-top: var(--space-lg);
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+            display: flex;
+            align-items: center;
+            gap: var(--space-md);
+        }
+
+        .cms-user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--museum-accent), var(--museum-primary));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--bg-primary);
+            font-weight: 600;
+        }
+
+        .cms-user-info {
+            flex: 1;
+        }
+
+        .cms-user-name {
+            font-weight: 600;
+            font-size: 0.875rem;
+        }
+
+        .cms-user-role {
+            font-size: 0.75rem;
+            opacity: 0.8;
+        }
+
+        /* Main Content */
+        .cms-main {
+            flex: 1;
+            overflow-y: auto;
+        }
+
+        /* Header */
+        .cms-header {
+            padding: var(--space-lg) var(--space-xl);
+            background-color: var(--bg-primary);
+            border-bottom: 1px solid var(--border-light);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .cms-header-title {
+            font-family: var(--font-primary);
+            font-size: 1.75rem;
+            color: var(--museum-primary);
+            margin: 0;
+        }
+
+        /* Dashboard Content */
+        .dashboard-content {
+            padding: var(--space-xl);
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+
+        /* Statistics Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: var(--space-lg);
+            margin-bottom: var(--space-2xl);
+        }
+
+        .stat-card {
+            background-color: var(--bg-primary);
+            padding: var(--space-lg);
+            border-radius: var(--radius-lg);
+            border: 2px solid var(--border-light);
+            box-shadow: var(--shadow-sm);
+            transition: all var(--transition-base);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, var(--museum-accent), var(--museum-primary));
+            opacity: 0.1;
+            border-radius: 50%;
+            transform: translate(40%, -40%);
+        }
+
+        .stat-card:hover {
+            border-color: var(--museum-accent);
+            box-shadow: var(--shadow-md);
+            transform: translateY(-2px);
+        }
+
+        .stat-card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: var(--space-md);
+        }
+
+        .stat-card-title {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .stat-card-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--museum-accent), var(--museum-primary));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--bg-primary);
+        }
+
+        .stat-card-value {
+            font-family: var(--font-primary);
+            font-size: 2.5rem;
+            color: var(--museum-primary);
+            margin-bottom: var(--space-xs);
+        }
+
+        .stat-card-change {
+            font-size: 0.875rem;
+            color: var(--success);
+        }
+
+        .stat-card-change.negative {
+            color: var(--error);
+        }
+
+        /* Two Column Layout */
+        .two-column-layout {
+            display: grid;
+            grid-template-columns: 1.5fr 1fr;
+            gap: var(--space-xl);
+            margin-bottom: var(--space-2xl);
+        }
+
+        /* Widget Card */
+        .widget-card {
+            background-color: var(--bg-primary);
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--border-light);
+            box-shadow: var(--shadow-sm);
+            overflow: hidden;
+        }
+
+        .widget-header {
+            padding: var(--space-lg);
+            border-bottom: 1px solid var(--border-light);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .widget-title {
+            font-family: var(--font-primary);
+            font-size: 1.125rem;
+            color: var(--museum-primary);
+            margin: 0;
+        }
+
+        .widget-body {
+            padding: var(--space-lg);
+        }
+
+        /* Activity Table */
+        .activity-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .activity-table th {
+            text-align: left;
+            padding: var(--space-sm);
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-bottom: 2px solid var(--border-light);
+        }
+
+        .activity-table td {
+            padding: var(--space-md) var(--space-sm);
+            font-size: 0.875rem;
+            border-bottom: 1px solid var(--border-light);
+        }
+
+        .activity-table tr:hover {
+            background-color: var(--bg-secondary);
+        }
+
+        .activity-action {
+            font-weight: 600;
+            color: var(--museum-primary);
+        }
+
+        .activity-user {
+            color: var(--text-primary);
+        }
+
+        .activity-time {
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.625rem;
+            color: var(--text-secondary);
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 2px 8px;
+            font-size: 0.625rem;
+            font-weight: 600;
+            border-radius: 100px;
+            text-transform: uppercase;
+        }
+
+        .status-badge.published {
+            background-color: rgba(47, 133, 90, 0.1);
+            color: var(--success);
+        }
+
+        .status-badge.draft {
+            background-color: rgba(192, 86, 33, 0.1);
+            color: var(--warning);
+        }
+
+        .status-badge.pending {
+            background-color: rgba(107, 107, 107, 0.1);
+            color: var(--text-secondary);
+        }
+
+        /* Quick Actions */
+        .quick-actions {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: var(--space-md);
+        }
+
+        .quick-action-btn {
+            padding: var(--space-md);
+            background: linear-gradient(135deg, var(--bg-secondary), var(--bg-primary));
+            border: 2px solid var(--border-medium);
+            border-radius: var(--radius-md);
+            text-align: center;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            text-decoration: none;
+            color: var(--museum-primary);
+            font-weight: 600;
+        }
+
+        .quick-action-btn:hover {
+            border-color: var(--museum-accent);
+            background: linear-gradient(135deg, var(--bg-primary), var(--bg-secondary));
+        }
+
+        /* Pending Approvals */
+        .approval-item {
+            padding: var(--space-md);
+            border-bottom: 1px solid var(--border-light);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: var(--space-md);
+        }
+
+        .approval-item:last-child {
+            border-bottom: none;
+        }
+
+        .approval-info {
+            flex: 1;
+        }
+
+        .approval-title {
+            font-weight: 600;
+            color: var(--museum-primary);
+            margin-bottom: var(--space-xs);
+        }
+
+        .approval-meta {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+
+        .approval-actions {
+            display: flex;
+            gap: var(--space-xs);
+        }
+
+        .approval-btn {
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: none;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            transition: all var(--transition-fast);
+        }
+
+        .approval-btn.approve {
+            background-color: rgba(47, 133, 90, 0.1);
+            color: var(--success);
+        }
+
+        .approval-btn.reject {
+            background-color: rgba(155, 44, 44, 0.1);
+            color: var(--error);
+        }
+
+        .approval-btn:hover {
+            transform: scale(1.1);
+        }
+
+        /* System Status */
+        .system-status-item {
+            margin-bottom: var(--space-lg);
+        }
+
+        .system-status-label {
+            font-size: 0.875rem;
+            color: var(--text-primary);
+            margin-bottom: var(--space-xs);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .status-indicator {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            display: inline-block;
+            margin-left: var(--space-xs);
+        }
+
+        .status-indicator.healthy {
+            background-color: var(--success);
+        }
+
+        .status-indicator.warning {
+            background-color: var(--warning);
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background-color: var(--bg-secondary);
+            border-radius: 100px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--museum-accent), var(--museum-primary));
+            transition: width var(--transition-base);
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .two-column-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .cms-layout {
+                flex-direction: column;
+            }
+
+            .cms-sidebar {
+                width: 100%;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .quick-actions {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Skip Link -->
+    <a href="#main-content" class="skip-link">Ugrás a főtartalomhoz / Skip to main content</a>
+
+    <!-- CMS Layout -->
+    <div class="cms-layout">
+        <!-- Sidebar Navigation -->
+        <aside class="cms-sidebar" role="navigation" aria-label="Fő navigáció">
+            <div class="cms-logo">VÁGATLANUL<br>CMS</div>
+
+            <nav class="cms-nav">
+                <a href="W10-cms-dashboard.html" class="cms-nav-item active">
+                    <svg class="cms-nav-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="3" y="3" width="7" height="7" stroke="currentColor" stroke-width="2"/>
+                        <rect x="14" y="3" width="7" height="7" stroke="currentColor" stroke-width="2"/>
+                        <rect x="3" y="14" width="7" height="7" stroke="currentColor" stroke-width="2"/>
+                        <rect x="14" y="14" width="7" height="7" stroke="currentColor" stroke-width="2"/>
+                    </svg>
+                    Vezérlőpult
+                </a>
+                <a href="W11-studio-editor.html" class="cms-nav-item">
+                    <svg class="cms-nav-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" stroke="currentColor" stroke-width="2"/>
+                    </svg>
+                    Fotóműtermek
+                </a>
+                <a href="W12-photo-editor.html" class="cms-nav-item">
+                    <svg class="cms-nav-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="3" y="3" width="18" height="18" rx="2" stroke="currentColor" stroke-width="2"/>
+                        <circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="2"/>
+                    </svg>
+                    Fényképek
+                </a>
+                <a href="#" class="cms-nav-item">
+                    <svg class="cms-nav-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2M12 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8z" stroke="currentColor" stroke-width="2"/>
+                    </svg>
+                    Felhasználók
+                </a>
+                <a href="#" class="cms-nav-item">
+                    <svg class="cms-nav-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="2"/>
+                        <path d="M12 1v6m0 6v6M4.22 4.22l4.24 4.24m5.08 5.08l4.24 4.24M1 12h6m6 0h6M4.22 19.78l4.24-4.24m5.08-5.08l4.24-4.24" stroke="currentColor" stroke-width="2"/>
+                    </svg>
+                    Beállítások
+                </a>
+            </nav>
+
+            <div class="cms-user">
+                <div class="cms-user-avatar">KJ</div>
+                <div class="cms-user-info">
+                    <div class="cms-user-name">Kovács János</div>
+                    <div class="cms-user-role">Adminisztrátor</div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="cms-main" id="main-content">
+            <!-- Header -->
+            <header class="cms-header">
+                <h1 class="cms-header-title">Vezérlőpult</h1>
+                <div class="language-toggle" role="group" aria-label="Nyelv választás">
+                    <button class="active" aria-pressed="true">HU</button>
+                    <button aria-pressed="false">EN</button>
+                </div>
+            </header>
+
+            <!-- Dashboard Content -->
+            <div class="dashboard-content">
+                <!-- Statistics Cards -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-card-header">
+                            <div class="stat-card-title">Fotóműtermek</div>
+                            <div class="stat-card-icon">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" stroke="currentColor" stroke-width="2"/>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="stat-card-value">78</div>
+                        <div class="stat-card-change">+3 az elmúlt hónapban</div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-card-header">
+                            <div class="stat-card-title">Fényképek</div>
+                            <div class="stat-card-icon">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <rect x="3" y="3" width="18" height="18" rx="2" stroke="currentColor" stroke-width="2"/>
+                                    <circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="2"/>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="stat-card-value">3,247</div>
+                        <div class="stat-card-change">+124 az elmúlt hónapban</div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-card-header">
+                            <div class="stat-card-title">Jóváhagyásra vár</div>
+                            <div class="stat-card-icon">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+                                    <path d="M12 6v6l4 2" stroke="currentColor" stroke-width="2"/>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="stat-card-value">12</div>
+                        <div class="stat-card-change negative">Azonnali figyelem szükséges</div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-card-header">
+                            <div class="stat-card-title">Piszkozatok</div>
+                            <div class="stat-card-icon">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" stroke="currentColor" stroke-width="2"/>
+                                    <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" stroke="currentColor" stroke-width="2"/>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="stat-card-value">8</div>
+                        <div class="stat-card-change">Várakozik a befejezésre</div>
+                    </div>
+                </div>
+
+                <!-- Two Column Layout -->
+                <div class="two-column-layout">
+                    <!-- Left Column -->
+                    <div>
+                        <!-- Recent Activity -->
+                        <div class="widget-card">
+                            <div class="widget-header">
+                                <h2 class="widget-title">Legutóbbi tevékenységek</h2>
+                                <a href="#" class="btn btn-tertiary btn-sm">Összes megtekintése</a>
+                            </div>
+                            <div class="widget-body" style="padding: 0;">
+                                <table class="activity-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Művelet</th>
+                                            <th>Felhasználó</th>
+                                            <th>Időpont</th>
+                                            <th>Állapot</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="activity-action">Fénykép hozzáadva</td>
+                                            <td class="activity-user">Nagy Eszter</td>
+                                            <td class="activity-time">5 perce</td>
+                                            <td><span class="status-badge published">Publikálva</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="activity-action">Műterem szerkesztve</td>
+                                            <td class="activity-user">Kovács János</td>
+                                            <td class="activity-time">12 perce</td>
+                                            <td><span class="status-badge published">Publikálva</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="activity-action">Fénykép feltöltve</td>
+                                            <td class="activity-user">Szabó Anna</td>
+                                            <td class="activity-time">1 órája</td>
+                                            <td><span class="status-badge pending">Jóváhagyásra vár</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="activity-action">Műterem létrehozva</td>
+                                            <td class="activity-user">Kiss Péter</td>
+                                            <td class="activity-time">2 órája</td>
+                                            <td><span class="status-badge draft">Piszkozat</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="activity-action">Metaadat frissítve</td>
+                                            <td class="activity-user">Nagy Eszter</td>
+                                            <td class="activity-time">3 órája</td>
+                                            <td><span class="status-badge published">Publikálva</span></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- Quick Actions -->
+                        <div class="widget-card" style="margin-top: var(--spacing-xl);">
+                            <div class="widget-header">
+                                <h2 class="widget-title">Gyors műveletek</h2>
+                            </div>
+                            <div class="widget-body">
+                                <div class="quick-actions">
+                                    <a href="W11-studio-editor.html" class="quick-action-btn">
+                                        + Új fotóműterem
+                                    </a>
+                                    <a href="W12-photo-editor.html" class="quick-action-btn">
+                                        + Fénykép feltöltése
+                                    </a>
+                                    <a href="#" class="quick-action-btn">
+                                        📊 Statisztikák megtekintése
+                                    </a>
+                                    <a href="#" class="quick-action-btn">
+                                        🔄 Szinkronizálás MuseumPlus
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right Column -->
+                    <div>
+                        <!-- Pending Approvals -->
+                        <div class="widget-card">
+                            <div class="widget-header">
+                                <h2 class="widget-title">Jóváhagyásra vár</h2>
+                            </div>
+                            <div class="widget-body" style="padding: 0;">
+                                <div class="approval-item">
+                                    <div class="approval-info">
+                                        <div class="approval-title">Esküvői portré 1887</div>
+                                        <div class="approval-meta">Nagy Eszter • 2 órája</div>
+                                    </div>
+                                    <div class="approval-actions">
+                                        <button class="approval-btn approve" aria-label="Jóváhagyás">✓</button>
+                                        <button class="approval-btn reject" aria-label="Elutasítás">✕</button>
+                                    </div>
+                                </div>
+                                <div class="approval-item">
+                                    <div class="approval-info">
+                                        <div class="approval-title">Weinwurm Antal műterem</div>
+                                        <div class="approval-meta">Kiss Péter • 4 órája</div>
+                                    </div>
+                                    <div class="approval-actions">
+                                        <button class="approval-btn approve" aria-label="Jóváhagyás">✓</button>
+                                        <button class="approval-btn reject" aria-label="Elutasítás">✕</button>
+                                    </div>
+                                </div>
+                                <div class="approval-item">
+                                    <div class="approval-info">
+                                        <div class="approval-title">Gyermekportré 1892</div>
+                                        <div class="approval-meta">Szabó Anna • tegnap</div>
+                                    </div>
+                                    <div class="approval-actions">
+                                        <button class="approval-btn approve" aria-label="Jóváhagyás">✓</button>
+                                        <button class="approval-btn reject" aria-label="Elutasítás">✕</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- System Status -->
+                        <div class="widget-card" style="margin-top: var(--spacing-xl);">
+                            <div class="widget-header">
+                                <h2 class="widget-title">Rendszer állapot</h2>
+                            </div>
+                            <div class="widget-body">
+                                <div class="system-status-item">
+                                    <div class="system-status-label">
+                                        <span>Tárhely használat</span>
+                                        <span>42.8 GB / 100 GB <span class="status-indicator healthy"></span></span>
+                                    </div>
+                                    <div class="progress-bar">
+                                        <div class="progress-fill" style="width: 42.8%;"></div>
+                                    </div>
+                                </div>
+
+                                <div class="system-status-item">
+                                    <div class="system-status-label">
+                                        <span>Utolsó mentés</span>
+                                        <span>Ma, 08:24 <span class="status-indicator healthy"></span></span>
+                                    </div>
+                                </div>
+
+                                <div class="system-status-item">
+                                    <div class="system-status-label">
+                                        <span>MuseumPlus API</span>
+                                        <span>Kapcsolódva <span class="status-indicator healthy"></span></span>
+                                    </div>
+                                </div>
+
+                                <div class="system-status-item">
+                                    <div class="system-status-label">
+                                        <span>Feldolgozási sor</span>
+                                        <span>3 elem <span class="status-indicator warning"></span></span>
+                                    </div>
+                                    <div class="progress-bar">
+                                        <div class="progress-fill" style="width: 67%;"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Initialize dashboard
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('CMS Dashboard initialized');
+        });
+    </script>
+</body>
+</html>

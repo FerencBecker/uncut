@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vágatlanul - Képgaléria</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300;400;600;700&family=Source+Serif+Pro:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            background-color: var(--bg-color);
+            overflow: hidden;
+            transition: background-color 0.3s ease;
+        }
+
+        .gallery-container {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Header */
+        .gallery-header {
+            padding: 1.5rem 2rem;
+            background-color: var(--surface-color);
+            border-bottom: 1px solid var(--surface-secondary);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            transition: background-color 0.3s ease;
+            position: relative;
+            z-index: 100;
+        }
+
+        .gallery-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--text-color);
+        }
+
+        .gallery-subtitle {
+            font-size: 0.875rem;
+            color: var(--text-color);
+            opacity: 0.7;
+            margin-top: 0.25rem;
+        }
+
+        .header-controls {
+            display: flex;
+            gap: 0.75rem;
+            align-items: center;
+        }
+
+        .control-btn {
+            width: 55px;
+            height: 55px;
+            background-color: var(--surface-secondary);
+            border: 2px solid var(--surface-secondary);
+            border-radius: 50%;
+            color: var(--text-color);
+            font-size: 1.25rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .control-btn:hover {
+            background-color: var(--secondary-warm-gold);
+            border-color: var(--secondary-warm-gold);
+            color: white;
+            transform: scale(1.1);
+        }
+
+        .close-btn {
+            font-size: 1.5rem;
+        }
+
+        .close-btn:hover {
+            transform: rotate(90deg) scale(1.1);
+        }
+
+        /* Main Content Area */
+        .gallery-main {
+            flex: 1;
+            display: flex;
+            padding: 2rem;
+            gap: 2rem;
+            overflow: hidden;
+        }
+
+        /* Left: Main Image Display */
+        .image-display {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            background-color: var(--surface-secondary);
+            border-radius: 12px;
+            overflow: hidden;
+            transition: background-color 0.3s ease;
+        }
+
+        .main-image {
+            max-width: 100%;
+            max-height: 100%;
+            width: auto;
+            height: auto;
+            object-fit: contain;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            border-radius: 4px;
+        }
+
+        .nav-arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 60px;
+            height: 60px;
+            background-color: rgba(27, 54, 93, 0.8);
+            border: 3px solid var(--secondary-warm-gold);
+            border-radius: 50%;
+            color: white;
+            font-size: 1.75rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+        }
+
+        .nav-arrow:hover {
+            background-color: var(--secondary-warm-gold);
+            transform: translateY(-50%) scale(1.15);
+        }
+
+        .nav-arrow.prev { left: 1rem; }
+        .nav-arrow.next { right: 1rem; }
+
+        .image-counter {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background-color: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 0.75rem 1.25rem;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+        }
+
+        /* Right: Metadata Panel */
+        .metadata-panel {
+            width: 380px;
+            background-color: var(--surface-color);
+            border-radius: 12px;
+            padding: 2rem;
+            overflow-y: auto;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s ease;
+        }
+
+        .metadata-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--text-color);
+            margin-bottom: 1rem;
+            line-height: 1.4;
+        }
+
+        .metadata-item {
+            margin-bottom: 1.5rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid var(--surface-secondary);
+        }
+
+        .metadata-item:last-child {
+            border-bottom: none;
+        }
+
+        .metadata-label {
+            font-size: 0.875rem;
+            color: var(--text-color);
+            opacity: 0.7;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .metadata-value {
+            font-family: var(--font-serif);
+            font-size: 1rem;
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        .metadata-description {
+            font-family: var(--font-serif);
+            font-size: 0.9375rem;
+            color: var(--text-color);
+            line-height: 1.7;
+            margin-top: 0.5rem;
+        }
+
+        /* Bottom: Thumbnail Strip */
+        .thumbnail-strip-container {
+            background-color: var(--surface-color);
+            border-top: 1px solid var(--surface-secondary);
+            padding: 1.5rem 2rem;
+            transition: background-color 0.3s ease;
+        }
+
+        .thumbnail-strip {
+            display: flex;
+            gap: 1rem;
+            overflow-x: auto;
+            padding: 0.5rem 0;
+            scrollbar-width: thin;
+            scrollbar-color: var(--secondary-warm-gold) var(--surface-secondary);
+        }
+
+        .thumbnail-strip::-webkit-scrollbar {
+            height: 8px;
+        }
+
+        .thumbnail-strip::-webkit-scrollbar-track {
+            background: var(--surface-secondary);
+            border-radius: 4px;
+        }
+
+        .thumbnail-strip::-webkit-scrollbar-thumb {
+            background: var(--secondary-warm-gold);
+            border-radius: 4px;
+        }
+
+        .thumbnail {
+            min-width: 120px;
+            width: 120px;
+            height: 90px;
+            background-color: var(--surface-secondary);
+            border-radius: 8px;
+            cursor: pointer;
+            opacity: 0.6;
+            transition: all 0.2s;
+            border: 3px solid transparent;
+            object-fit: cover;
+        }
+
+        .thumbnail:hover {
+            opacity: 0.9;
+            transform: scale(1.05);
+        }
+
+        .thumbnail.active {
+            opacity: 1;
+            border: 3px solid var(--primary-deep-blue);
+            box-shadow: 0 4px 12px rgba(27, 54, 93, 0.3);
+        }
+
+        /* 55-inch display scaling */
+        @media (min-width: 3840px) {
+            .gallery-header { padding: 1.875rem 2.5rem; }
+            .gallery-title { font-size: 1.875rem; }
+            .gallery-subtitle { font-size: 1.09375rem; }
+            .control-btn { width: 69px; height: 69px; font-size: 1.5625rem; }
+            .nav-arrow { width: 75px; height: 75px; font-size: 2.1875rem; }
+            .image-counter { font-size: 1.25rem; padding: 0.9375rem 1.5625rem; }
+            .metadata-panel { width: 475px; padding: 2.5rem; }
+            .metadata-title { font-size: 1.875rem; }
+            .metadata-label { font-size: 1.09375rem; }
+            .metadata-value { font-size: 1.25rem; }
+            .metadata-description { font-size: 1.171875rem; }
+            .thumbnail { min-width: 150px; width: 150px; height: 112.5px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="gallery-container">
+        <!-- Header -->
+        <div class="gallery-header">
+            <div>
+                <div class="gallery-title" id="galleryTitle">Máté Lajos Képgaléria</div>
+                <div class="gallery-subtitle">Dombóvár, 1921-1937</div>
+            </div>
+            <div class="header-controls">
+                <button class="control-btn" onclick="toggleTheme()" id="themeToggle" title="Téma váltás">
+                    <span id="themeIcon">🌙</span>
+                </button>
+                <button class="control-btn" onclick="toggleLanguage()" title="Nyelv váltás">
+                    <span id="langIcon">🇬🇧</span>
+                </button>
+                <button class="control-btn close-btn" onclick="closeGallery()" title="Bezárás">×</button>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="gallery-main">
+            <!-- Left: Main Image Display -->
+            <div class="image-display">
+                <button class="nav-arrow prev" onclick="previousPhoto()" aria-label="Előző kép">‹</button>
+                <img id="mainImage" class="main-image" src="" alt="">
+                <button class="nav-arrow next" onclick="nextPhoto()" aria-label="Következő kép">›</button>
+                <div class="image-counter">
+                    <span id="currentIndex">1</span> / <span id="totalCount">10</span>
+                </div>
+            </div>
+
+            <!-- Right: Metadata Panel -->
+            <div class="metadata-panel">
+                <h2 class="metadata-title" id="photoTitle">Loading...</h2>
+
+                <div class="metadata-item">
+                    <div class="metadata-label">Leírás</div>
+                    <div class="metadata-description" id="photoDescription">Loading...</div>
+                </div>
+
+                <div class="metadata-item">
+                    <div class="metadata-label">Helyszín</div>
+                    <div class="metadata-value" id="photoLocation">Loading...</div>
+                </div>
+
+                <div class="metadata-item">
+                    <div class="metadata-label">Készítés éve</div>
+                    <div class="metadata-value" id="photoYear">Loading...</div>
+                </div>
+
+                <div class="metadata-item">
+                    <div class="metadata-label">Fényképész</div>
+                    <div class="metadata-value">Máté Lajos</div>
+                </div>
+
+                <div class="metadata-item">
+                    <div class="metadata-label">Típus</div>
+                    <div class="metadata-value" id="photoType">Loading...</div>
+                </div>
+
+                <div class="metadata-item">
+                    <div class="metadata-label">Leltári szám</div>
+                    <div class="metadata-value" id="photoInventory">Loading...</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bottom: Thumbnail Strip -->
+        <div class="thumbnail-strip-container">
+            <div class="thumbnail-strip" id="thumbnailStrip">
+                <!-- Thumbnails will be generated by JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <script src="theme-switcher.js"></script>
+    <script>
+        // Photo data - All 10 photos in correct order
+        const photos = [
+            {
+                id: 'F41074',
+                title: 'Szüreti mulatság népies ruhába öltözött társasága',
+                description: 'Szüreti mulatság népies ruhába öltözött társasága. A kép alján a fényképész, Máté L szignója / Members of grape harvest festival in Hungarian costume. At the bottom of the glass negative is the photographers\' signature',
+                location: 'Szakcs',
+                year: '1920-1921',
+                type: 'Fekete-fehér üvegnegatív, 10 x 15 cm',
+                inventory: 'NM F 41074'
+            },
+            {
+                id: 'F41159',
+                title: 'Két lány Dombóvár vidékéről',
+                description: 'Két lány Dombóvár vidékéről, a kép a fényképész tornácán készülhetett. A kép alján a fényképész, Máté L. szignója / Two girls from the Dombóvár region. The photo should taken at the lounge of the photographer. At the bottom of the glass negative is the photographers\' signature',
+                location: 'Dombóvár',
+                year: '1920-1921',
+                type: 'Fekete-fehér üvegnegatív, 10 x 15 cm felén',
+                inventory: 'NM F 41159'
+            },
+            {
+                id: 'F41104',
+                title: 'Férfi',
+                description: 'Férfi / Man',
+                location: 'Pári',
+                year: '1920-1921',
+                type: 'Fekete-fehér üvegnegatív, 10 x 15 cm felén',
+                inventory: 'NM F 41104'
+            },
+            {
+                id: 'F41217',
+                title: 'Házaspár',
+                description: 'Házaspár – összemontázsolt fotó, a fiatalasszony képe utólag került a férj mellé. A kép alján a fényképész, Máté L. szignója',
+                location: 'Nagykónyi',
+                year: '1920-1921',
+                type: 'Fekete-fehér üvegnegatív, 10 x 15 cm felén',
+                inventory: 'NM F 41217'
+            },
+            {
+                id: 'F41135',
+                title: 'Fiatalasszony',
+                description: 'Fiatalasszony, mögötte Máté jellegzetes festett vászon háttere',
+                location: 'Kocsola',
+                year: '1920-1921',
+                type: 'Fekete-fehér üvegnegatív, 10 x 15 cm felén',
+                inventory: 'NM F 41135'
+            },
+            {
+                id: 'F41032',
+                title: 'Kettős lakodalom',
+                description: 'Kettős lakodalom',
+                location: 'Dombóvár vidéke',
+                year: '1920-1921',
+                type: 'Fekete-fehér üvegnegatív, 13 x 18 cm',
+                inventory: 'NM F 41032'
+            },
+            {
+                id: 'F41085',
+                title: 'Násznép fúvós zenekarral',
+                description: 'Násznép fúvós zenekarral, középen a menyasszony és a vőlegény',
+                location: 'Kocsola',
+                year: '1920-1921',
+                type: 'Fekete-fehér üvegnegatív, 10 x 15 cm',
+                inventory: 'NM F 41085'
+            },
+            {
+                id: 'F41054',
+                title: 'Munkásokról készült csoportkép',
+                description: 'Munkásokról készült csoportkép, mögöttük Máté jellegzetes festett vászon háttere',
+                location: 'Makó',
+                year: '1920-1921',
+                type: 'Fekete-fehér üvegnegatív, 13 x 18 cm',
+                inventory: 'NM F 41054'
+            },
+            {
+                id: 'F41063',
+                title: 'Iskolai csoportkép',
+                description: 'Iskolai csoportkép, a háttérben nézelődők',
+                location: 'Nagykónyi',
+                year: '1920-1921',
+                type: 'Fekete-fehér üvegnegatív, 13 x 18 cm',
+                inventory: 'NM F 41063'
+            },
+            {
+                id: 'F41175',
+                title: 'Négy portré egy üvegnegatívon',
+                description: 'Négy portré egy üvegnegatívon',
+                location: 'Dombóvár',
+                year: '1920-1921',
+                type: 'Fekete-fehér üvegnegatív, 10 x 15 cm',
+                inventory: 'NM F 41175'
+            }
+        ];
+
+        let currentPhoto = parseInt(localStorage.getItem('currentPhoto')) || 1;
+
+        // Initialize
+        function init() {
+            createThumbnails();
+            updatePhoto();
+            updateThemeToggle();
+            updateLanguageToggle();
+        }
+
+        // Create thumbnail elements
+        function createThumbnails() {
+            const strip = document.getElementById('thumbnailStrip');
+            strip.innerHTML = '';
+
+            photos.forEach((photo, index) => {
+                const thumb = document.createElement('img');
+                thumb.className = 'thumbnail';
+                thumb.src = `../data/Dombóvár_Máté_Lajos/thumbs/${photo.id}.jpg`;
+                thumb.alt = photo.title;
+                thumb.onclick = () => goToPhoto(index + 1);
+                strip.appendChild(thumb);
+            });
+        }
+
+        // Update current photo
+        function updatePhoto() {
+            const photo = photos[currentPhoto - 1];
+
+            // Update main image
+            document.getElementById('mainImage').src = `../data/Dombóvár_Máté_Lajos/${photo.id}.jpg`;
+            document.getElementById('mainImage').alt = photo.title;
+
+            // Update metadata
+            document.getElementById('photoTitle').textContent = photo.title;
+            document.getElementById('photoDescription').textContent = photo.description;
+            document.getElementById('photoLocation').textContent = photo.location;
+            document.getElementById('photoYear').textContent = photo.year;
+            document.getElementById('photoType').textContent = photo.type;
+            document.getElementById('photoInventory').textContent = photo.inventory;
+
+            // Update counter
+            document.getElementById('currentIndex').textContent = currentPhoto;
+            document.getElementById('totalCount').textContent = photos.length;
+
+            // Update active thumbnail
+            const thumbnails = document.querySelectorAll('.thumbnail');
+            thumbnails.forEach((thumb, index) => {
+                thumb.classList.toggle('active', index + 1 === currentPhoto);
+            });
+
+            // Scroll active thumbnail into view
+            const activeThumb = thumbnails[currentPhoto - 1];
+            if (activeThumb) {
+                activeThumb.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+            }
+
+            // Save to localStorage
+            localStorage.setItem('currentPhoto', currentPhoto);
+        }
+
+        // Navigation functions
+        function previousPhoto() {
+            currentPhoto = currentPhoto > 1 ? currentPhoto - 1 : photos.length;
+            updatePhoto();
+        }
+
+        function nextPhoto() {
+            currentPhoto = currentPhoto < photos.length ? currentPhoto + 1 : 1;
+            updatePhoto();
+        }
+
+        function goToPhoto(index) {
+            currentPhoto = index;
+            updatePhoto();
+        }
+
+        function closeGallery() {
+            window.location.href = 'K04-studio-info-panel.html';
+        }
+
+        function toggleLanguage() {
+            const langIcon = document.getElementById('langIcon');
+            const currentLang = localStorage.getItem('selectedLanguage') || 'hu';
+            const newLang = currentLang === 'hu' ? 'en' : 'hu';
+            localStorage.setItem('selectedLanguage', newLang);
+
+            if (newLang === 'en') {
+                langIcon.textContent = '🇭🇺';
+            } else {
+                langIcon.textContent = '🇬🇧';
+            }
+        }
+
+        // Update theme toggle display
+        function updateThemeToggle() {
+            const currentTheme = document.documentElement.getAttribute('data-theme') || 'light';
+            const themeIcon = document.getElementById('themeIcon');
+
+            if (currentTheme === 'dark') {
+                themeIcon.textContent = '☀️';
+            } else {
+                themeIcon.textContent = '🌙';
+            }
+        }
+
+        // Update language toggle display
+        function updateLanguageToggle() {
+            const currentLang = localStorage.getItem('selectedLanguage') || 'hu';
+            const langIcon = document.getElementById('langIcon');
+
+            if (currentLang === 'en') {
+                langIcon.textContent = '🇭🇺';
+            } else {
+                langIcon.textContent = '🇬🇧';
+            }
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowLeft') previousPhoto();
+            if (e.key === 'ArrowRight') nextPhoto();
+            if (e.key === 'Escape') closeGallery();
+        });
+
+        // Touch swipe support
+        let touchStartX = 0;
+        let touchEndX = 0;
+
+        document.addEventListener('touchstart', (e) => {
+            touchStartX = e.changedTouches[0].screenX;
+        });
+
+        document.addEventListener('touchend', (e) => {
+            touchEndX = e.changedTouches[0].screenX;
+            handleSwipe();
+        });
+
+        function handleSwipe() {
+            const swipeThreshold = 50;
+            if (touchStartX - touchEndX > swipeThreshold) {
+                nextPhoto();
+            }
+            if (touchEndX - touchStartX > swipeThreshold) {
+                previousPhoto();
+            }
+        }
+
+        // Auto return to screensaver after 2 minutes of inactivity
+        let inactivityTimer;
+        function resetInactivityTimer() {
+            clearTimeout(inactivityTimer);
+            inactivityTimer = setTimeout(() => {
+                window.location.href = 'K01-screensaver.html';
+            }, 120000); // 2 minutes
+        }
+
+        document.addEventListener('click', resetInactivityTimer);
+        document.addEventListener('touchstart', resetInactivityTimer);
+        document.addEventListener('mousemove', resetInactivityTimer);
+        document.addEventListener('keydown', resetInactivityTimer);
+        resetInactivityTimer();
+
+        // Initialize on load
+        init();
+    </script>
+</body>
+</html>

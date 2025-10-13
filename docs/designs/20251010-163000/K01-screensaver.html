@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vágatlanul - Screensaver | Kiosk Mode</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Source+Sans+Pro:wght@400;600&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+  <!-- Kiosk Screensaver - Attraction Mode -->
+  <div class="screensaver" onclick="window.location.href='K03-interactive-map.html'">
+    <h1 class="screensaver-title">Vágatlanul</h1>
+    <p class="screensaver-subtitle">
+      Magyar fotóműtermek térképe / Hungarian Photo Studios Map
+    </p>
+
+    <!-- Animated Map Container -->
+    <div class="map-animation-container">
+      <svg class="hungary-map-animated" viewBox="0 0 1000 600" xmlns="http://www.w3.org/2000/svg">
+        <!-- Simplified Hungary outline -->
+        <path class="map-outline" d="M150,250 L200,230 L250,240 L300,220 L350,230 L400,225 L450,240 L500,230 L550,240 L600,250 L650,245 L700,260 L750,250 L780,270 L760,290 L740,310 L700,320 L650,330 L600,325 L550,340 L500,335 L450,345 L400,340 L350,335 L300,345 L250,335 L200,330 L160,310 L140,290 Z"
+              fill="rgba(212, 165, 116, 0.2)"
+              stroke="rgba(212, 165, 116, 0.5)"
+              stroke-width="2"/>
+
+        <!-- Animated studio markers -->
+        <circle class="marker marker-1" cx="200" cy="250" r="8" />
+        <circle class="marker marker-2" cx="350" cy="240" r="8" />
+        <circle class="marker marker-3" cx="500" cy="250" r="8" />
+        <circle class="marker marker-4" cx="650" cy="260" r="8" />
+        <circle class="marker marker-5" cx="400" cy="300" r="8" />
+        <circle class="marker marker-6" cx="550" cy="290" r="8" />
+        <circle class="marker marker-7" cx="300" cy="280" r="8" />
+        <circle class="marker marker-8" cx="450" cy="270" r="8" />
+      </svg>
+    </div>
+
+    <p class="screensaver-cta">
+      Érintse meg a képernyőt a kezdéshez<br>
+      <span class="cta-english">Touch screen to begin</span>
+    </p>
+  </div>
+
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(135deg, #1A1A1A 0%, #2C2C2C 100%);
+      color: #E8E8E8;
+      overflow: hidden;
+    }
+
+    .screensaver {
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .screensaver::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(212, 165, 116, 0.08) 0%, transparent 70%);
+      animation: rotateBackground 30s linear infinite;
+    }
+
+    @keyframes rotateBackground {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    .screensaver-title {
+      font-family: var(--font-header);
+      font-size: 5rem;
+      font-weight: 700;
+      color: var(--heritage-gold);
+      margin: 0 0 1rem 0;
+      text-shadow: 0 4px 16px rgba(212, 175, 55, 0.4);
+      letter-spacing: 0.05em;
+      position: relative;
+      z-index: 1;
+      animation: titlePulse 4s ease-in-out infinite;
+    }
+
+    @keyframes titlePulse {
+      0%, 100% { opacity: 0.9; transform: scale(1); }
+      50% { opacity: 1; transform: scale(1.02); }
+    }
+
+    .screensaver-subtitle {
+      font-family: var(--font-body);
+      font-size: 1.5rem;
+      opacity: 0.8;
+      text-align: center;
+      position: relative;
+      z-index: 1;
+      margin-bottom: 3rem;
+    }
+
+    .map-animation-container {
+      width: 600px;
+      height: 400px;
+      margin: 2rem 0;
+      position: relative;
+      z-index: 1;
+    }
+
+    .hungary-map-animated {
+      width: 100%;
+      height: 100%;
+      filter: drop-shadow(0 8px 24px rgba(212, 165, 116, 0.3));
+    }
+
+    .map-outline {
+      animation: mapGlow 4s ease-in-out infinite;
+    }
+
+    @keyframes mapGlow {
+      0%, 100% {
+        fill: rgba(212, 165, 116, 0.15);
+        stroke: rgba(212, 165, 116, 0.4);
+      }
+      50% {
+        fill: rgba(212, 165, 116, 0.25);
+        stroke: rgba(212, 165, 116, 0.6);
+      }
+    }
+
+    .marker {
+      fill: var(--heritage-gold);
+      opacity: 0;
+      animation: markerAppear 6s ease-in-out infinite;
+    }
+
+    .marker-1 { animation-delay: 0s; }
+    .marker-2 { animation-delay: 0.3s; }
+    .marker-3 { animation-delay: 0.6s; }
+    .marker-4 { animation-delay: 0.9s; }
+    .marker-5 { animation-delay: 1.2s; }
+    .marker-6 { animation-delay: 1.5s; }
+    .marker-7 { animation-delay: 1.8s; }
+    .marker-8 { animation-delay: 2.1s; }
+
+    @keyframes markerAppear {
+      0%, 90%, 100% { opacity: 0; transform: scale(0); }
+      10%, 80% { opacity: 1; transform: scale(1); }
+      45% { opacity: 1; transform: scale(1.3); }
+    }
+
+    .screensaver-cta {
+      font-family: var(--font-ui);
+      font-size: 1.5rem;
+      text-align: center;
+      position: relative;
+      z-index: 1;
+      margin-top: 3rem;
+      animation: ctaBlink 2s ease-in-out infinite;
+    }
+
+    .cta-english {
+      display: block;
+      margin-top: 0.5rem;
+      font-size: 1.25rem;
+      opacity: 0.8;
+    }
+
+    @keyframes ctaBlink {
+      0%, 100% { opacity: 0.7; }
+      50% { opacity: 1; }
+    }
+
+    /* 55-inch display scaling */
+    @media (min-width: 3840px) {
+      .screensaver-title { font-size: 6.25rem; }
+      .screensaver-subtitle { font-size: 1.875rem; }
+      .map-animation-container { width: 750px; height: 500px; }
+      .screensaver-cta { font-size: 1.875rem; }
+      .cta-english { font-size: 1.5625rem; }
+    }
+  </style>
+
+  <script src="theme-switcher.js"></script>
+  <script>
+    console.log('Vágatlanul Kiosk - Screensaver Mode (20251010-163000)');
+    console.log('Click anywhere to enter interactive map');
+  </script>
+</body>
+</html>
