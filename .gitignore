@@ -6,3 +6,8 @@ calude/
 
 # Ignore all _archive folders
 _archive
+
+# Windows-specific files
+nul
+Thumbs.db
+Desktop.ini

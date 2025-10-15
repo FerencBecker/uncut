@@ -1,0 +1,6 @@
+# Metadata about story and task creation
+stories/
+tasks/
+
+# Design data - example/reference only, may contain large files
+designs/data/
