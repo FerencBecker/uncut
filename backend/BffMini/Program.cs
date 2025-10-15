@@ -23,8 +23,10 @@ builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(policy =>
     {
-        policy.WithOrigins(
-            builder.Configuration.GetSection("Cors:AllowedOrigins").Get<string[]>() ?? ["http://localhost:3000"])
+        var allowedOrigins = builder.Configuration.GetSection("Cors:AllowedOrigins").Get<string[]>()
+            ?? throw new InvalidOperationException("CORS AllowedOrigins must be configured");
+
+        policy.WithOrigins(allowedOrigins)
             .AllowAnyMethod()
             .AllowAnyHeader()
             .AllowCredentials();
@@ -58,13 +60,16 @@ app.UseSerilogRequestLogging(options =>
     };
 });
 
-// Enable Swagger in all environments (for development and testing)
-app.UseSwagger();
-app.UseSwaggerUI(c =>
+// Enable Swagger only in development environment
+if (app.Environment.IsDevelopment())
 {
-    c.SwaggerEndpoint("/swagger/v1/swagger.json", "BffMini API v1");
-    c.RoutePrefix = "swagger";
-});
+    app.UseSwagger();
+    app.UseSwaggerUI(c =>
+    {
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "BffMini API v1");
+        c.RoutePrefix = "swagger";
+    });
+}
 
 app.UseCors();
 
