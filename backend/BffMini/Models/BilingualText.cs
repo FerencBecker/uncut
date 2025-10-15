@@ -26,6 +26,4 @@ public class BilingualText
             _ => Hungarian
         };
     }
-
-    public override string ToString() => Hungarian;
 }

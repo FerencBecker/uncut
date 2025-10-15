@@ -155,7 +155,7 @@ public class ModelSerializationTests
         {
             Type = ManifestType.Studios,
             TotalCount = 1,
-            Items = new List<ManifestItem>
+            Items = new[]
             {
                 new ManifestItem
                 {

@@ -30,7 +30,7 @@ public class Studio
     public CollectionInfo? Collection { get; set; }
 
     [JsonPropertyName("catchmentArea")]
-    public List<string>? CatchmentArea { get; set; }
+    public string[] CatchmentArea { get; set; } = Array.Empty<string>();
 
     [JsonPropertyName("createdAt")]
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
@@ -50,8 +50,6 @@ public class Photographer
 
     [JsonPropertyName("deathYear")]
     public int? DeathYear { get; set; }
-
-    public override string ToString() => Name.Hungarian;
 }
 
 public class StudioAddress
@@ -65,8 +63,6 @@ public class StudioAddress
 
     [JsonPropertyName("location")]
     public Location? Location { get; set; }
-
-    public override string ToString() => City.Hungarian;
 }
 
 public class OperatingPeriod
@@ -76,17 +72,6 @@ public class OperatingPeriod
 
     [JsonPropertyName("endYear")]
     public int? EndYear { get; set; }
-
-    public override string ToString()
-    {
-        if (StartYear.HasValue && EndYear.HasValue)
-            return $"{StartYear}–{EndYear}";
-        if (StartYear.HasValue)
-            return $"{StartYear}–";
-        if (EndYear.HasValue)
-            return $"–{EndYear}";
-        return "Unknown";
-    }
 }
 
 public class StudioCharacteristics
@@ -98,7 +83,7 @@ public class StudioCharacteristics
     public BilingualText? Backdrop { get; set; }
 
     [JsonPropertyName("specialties")]
-    public List<BilingualText>? Specialties { get; set; }
+    public BilingualText[] Specialties { get; set; } = Array.Empty<BilingualText>();
 }
 
 public class CollectionInfo

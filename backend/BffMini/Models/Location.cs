@@ -43,6 +43,4 @@ public class Location : IValidatableObject
                 new[] { nameof(Latitude), nameof(Longitude) });
         }
     }
-
-    public override string ToString() => PlaceName.Hungarian;
 }

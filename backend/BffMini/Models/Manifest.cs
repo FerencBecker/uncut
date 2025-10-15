@@ -17,7 +17,7 @@ public class Manifest
 
     [JsonPropertyName("items")]
     [Required]
-    public List<ManifestItem> Items { get; set; } = new();
+    public ManifestItem[] Items { get; set; } = Array.Empty<ManifestItem>();
 
     [JsonPropertyName("lastUpdated")]
     public DateTime LastUpdated { get; set; } = DateTime.UtcNow;

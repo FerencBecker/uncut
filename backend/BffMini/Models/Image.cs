@@ -40,7 +40,7 @@ public class Image
     public TechnicalMetadata? Technical { get; set; }
 
     [JsonPropertyName("subjects")]
-    public List<string>? Subjects { get; set; }
+    public string[] Subjects { get; set; } = Array.Empty<string>();
 
     [JsonPropertyName("photographerSignatureVisible")]
     public bool PhotographerSignatureVisible { get; set; }
@@ -60,8 +60,6 @@ public class ShootingLocation
 
     [JsonPropertyName("location")]
     public Location? Location { get; set; }
-
-    public override string ToString() => PlaceName.Hungarian;
 }
 
 public class DateTaken
@@ -78,15 +76,6 @@ public class DateTaken
     [JsonPropertyName("precision")]
     [JsonConverter(typeof(JsonStringEnumConverter))]
     public DatePrecision Precision { get; set; } = DatePrecision.Approximate;
-
-    public override string ToString()
-    {
-        if (Year.HasValue)
-            return Year.ToString()!;
-        if (YearRangeStart.HasValue && YearRangeEnd.HasValue)
-            return $"{YearRangeStart}–{YearRangeEnd}";
-        return "Unknown";
-    }
 }
 
 public enum DatePrecision
@@ -119,6 +108,4 @@ public class Dimensions
 
     [JsonPropertyName("unit")]
     public string Unit { get; set; } = "cm";
-
-    public override string ToString() => $"{Width} × {Height} {Unit}";
 }
