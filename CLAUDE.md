@@ -116,10 +116,9 @@ This ensures the architecture document remains the living source of truth for th
 ### Commit Messages
 
 **Keep commits brief** - focus on high-level achievements only:
-- ✅ "Add backend infrastructure with Docker support"
-- ✅ "Improve source control hygiene"
 - ❌ No implementation details, no file lists
 - One or two sentences maximum describing what was accomplished
+- Always reference the GitHub issue number
 
 ### Testing Requirements
 

@@ -1,0 +1,57 @@
+{
+  "id": "f41159",
+  "version": "1.0.0",
+  "studioId": "mate-lajos-dombovar",
+  "inventoryNumber": "F41159",
+  "museumCatalogNumber": "NM F 41159",
+  "title": {
+    "hu": "Két lány Dombóvár vidékéről",
+    "en": "Two girls from the Dombóvár region"
+  },
+  "description": {
+    "hu": "Két lány Dombóvár vidékéről, a kép a fényképész tornácán készülhetett. A kép alján a fényképész, Máté L. szignója",
+    "en": "Two girls from the Dombóvár region. The photo should taken at the lounge of the photographer. At the bottom of the glass negative is the photographers' signature"
+  },
+  "shootingLocation": {
+    "placeName": {
+      "hu": "Dombóvár",
+      "en": "Dombóvár"
+    },
+    "location": {
+      "placeName": {
+        "hu": "Dombóvár",
+        "en": "Dombóvár"
+      },
+      "latitude": 46.3761,
+      "longitude": 18.1300
+    }
+  },
+  "dateTaken": {
+    "yearRangeStart": 1920,
+    "yearRangeEnd": 1921,
+    "precision": "Approximate"
+  },
+  "technical": {
+    "medium": {
+      "hu": "üvegnegatív",
+      "en": "glass negative"
+    },
+    "format": {
+      "hu": "fekete-fehér",
+      "en": "black-and-white"
+    },
+    "dimensions": {
+      "width": 10,
+      "height": 15,
+      "unit": "cm"
+    }
+  },
+  "subjects": [
+    "portrait",
+    "studio-photography",
+    "young-women"
+  ],
+  "photographerSignatureVisible": true,
+  "createdAt": "2025-10-15T00:00:00Z",
+  "updatedAt": "2025-10-15T00:00:00Z"
+}
