@@ -97,6 +97,8 @@
 ## Anti-Patterns to Avoid (if they violate the basics)
 - **Overengineering:** Adding complexity for "flexibility" that isn't needed → Start simple, refactor when needed (violates KISS, YAGNI).
 - **Wrong data structures:** Using arrays when objects/maps are more appropriate → Use maps/objects for lookups, arrays for sequences (violates KISS).
+- **Lists instead of arrays:** Using `List<T>` for read-only data → Prefer arrays for immutable/fixed data, use List only when you need Add/Remove operations (violates KISS, wastes memory).
+- **Nullable collections:** Using nullable arrays/lists (e.g., `string[]?`) → Always initialize with empty array/list, never null - avoids null checks everywhere (violates KISS).
 - **Excessive filtering/transformation:** Converting efficient structures to inefficient ones → Choose the right structure from the start (violates KISS).
 - **Speculative abstractions:** Creating generic solutions for specific problems → Solve the problem at hand, generalize when you have 3+ cases (violates YAGNI).
 - **Premature shared abstractions:** Extracting common code across contexts too early → Wait for Rule of Three, prefer duplication across contexts (violates Context Boundaries).

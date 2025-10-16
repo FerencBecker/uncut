@@ -1,0 +1,49 @@
+{
+  "id": "f41074",
+  "version": "1.0.0",
+  "studioId": "mate-lajos-dombovar",
+  "inventoryNumber": "F41074",
+  "museumCatalogNumber": "NM F 41074",
+  "title": {
+    "hu": "Szüreti mulatság",
+    "en": "Grape harvest festival"
+  },
+  "description": {
+    "hu": "Szüreti mulatság népies ruhába öltözött társasága. A kép alján a fényképész, Máté L szignója",
+    "en": "Members of grape harvest festival in Hungarian costume. At the bottom of the glass negative is the photographers' signature"
+  },
+  "shootingLocation": {
+    "placeName": {
+      "hu": "Szakcs",
+      "en": "Szakcs"
+    }
+  },
+  "dateTaken": {
+    "yearRangeStart": 1920,
+    "yearRangeEnd": 1921,
+    "precision": "Approximate"
+  },
+  "technical": {
+    "medium": {
+      "hu": "üvegnegatív",
+      "en": "glass negative"
+    },
+    "format": {
+      "hu": "fekete-fehér",
+      "en": "black-and-white"
+    },
+    "dimensions": {
+      "width": 10,
+      "height": 15,
+      "unit": "cm"
+    }
+  },
+  "subjects": [
+    "harvest-festival",
+    "group-photo",
+    "traditional-costume"
+  ],
+  "photographerSignatureVisible": true,
+  "createdAt": "2025-10-15T00:00:00Z",
+  "updatedAt": "2025-10-15T00:00:00Z"
+}

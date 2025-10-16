@@ -1,4 +1,5 @@
 using BffMini.Services;
+using BffMini.Validation;
 
 namespace BffMini.Extensions;
 
@@ -20,6 +21,7 @@ public static class ServiceCollectionExtensions
 
         // Register services
         services.AddSingleton<IJsonFileService, JsonFileService>();
+        services.AddSingleton<ISchemaValidator, SchemaValidator>();
 
         return services;
     }
