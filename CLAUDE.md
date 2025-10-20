@@ -103,6 +103,36 @@ The architecture document is maintained as a living document and updated as part
 
 These principles prevent over-engineering, premature abstraction, and unnecessary complexity.
 
+**Architectural preferences:** See [ARCHITECTURAL_CONVENTIONS.md](ARCHITECTURAL_CONVENTIONS.md) for project-specific patterns (vertical slicing, null object pattern, repository pattern).
+
+### Code Review Process
+
+**Verify all coding principles, guidelines, and standards were followed. Question whether code should exist at all, even if tests pass and it compiles.**
+
+**Review order:**
+1. **Check issue** - What was actually requested?
+2. **Review each file** - Apply 5-question framework:
+   - Is it used? (Grep for actual callers)
+   - What problem does it solve? (Must be explicit in issue)
+   - What are the trade-offs? (Costs vs. benefits for this project)
+   - Does YAGNI apply? (Needed now or solving future problems?)
+   - Hype vs. reality? (Industry pattern vs. actual project needs)
+3. **Verify architecture fit** - Does this match documented approach?
+4. **Check coding standards** - SRP, YAGNI, KISS, null object pattern, etc.
+
+**Red flags indicating violations:**
+- Code with tests but no callers
+- Abstraction layers with single implementation
+- Features not mentioned in issue
+- Horizontal infrastructure without vertical features
+- Patterns designed for scale/complexity we don't have
+
+**Remove code that:**
+- Solves future problems (YAGNI violation)
+- Wrong abstraction level (doesn't match consumer needs)
+- Built before features need it (speculative infrastructure)
+- Implements something not requested (issue mismatch)
+
 ### Documentation Updates
 
 When completing tasks, always update the architecture document (docs/architecture/) with:
@@ -113,13 +143,29 @@ When completing tasks, always update the architecture document (docs/architectur
 
 This ensures the architecture document remains the living source of truth for the project.
 
+### Git Workflow
+
+**IMPORTANT: Never commit code or create pull requests without explicit user permission.**
+
+**Workflow:**
+1. Make code changes as requested
+2. Run tests to verify changes work
+3. Show summary of changes to user
+4. **STOP and ASK the user for permission to commit and create PR**
+5. Only after explicit approval, proceed with:
+   - Create git commit with appropriate message
+   - Push changes to remote branch
+   - Create pull request
+   - Return the PR URL to the user
+
+**Rationale:** The user wants to review all code changes before they are committed to version control. Single approval covers both commit and PR creation for efficiency. Always wait for explicit "yes, commit and create PR" from the user.
+
 ### Commit Messages
 
 **Keep commits brief** - focus on high-level achievements only:
-- ✅ "Add backend infrastructure with Docker support"
-- ✅ "Improve source control hygiene"
 - ❌ No implementation details, no file lists
 - One or two sentences maximum describing what was accomplished
+- Always reference the GitHub issue number
 
 ### Testing Requirements
 

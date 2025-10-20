@@ -1,5 +1,3 @@
-using BffMini.Services;
-
 namespace BffMini.Extensions;
 
 /// <summary>
@@ -14,13 +12,7 @@ public static class ServiceCollectionExtensions
         this IServiceCollection services,
         IConfiguration configuration)
     {
-        // Configure file service options
-        services.Configure<FileServiceOptions>(
-            configuration.GetSection("FileService"));
-
-        // Register services
-        services.AddSingleton<IJsonFileService, JsonFileService>();
-
+        // TODO: Register repository services when implemented (Issue #50)
         return services;
     }
 }

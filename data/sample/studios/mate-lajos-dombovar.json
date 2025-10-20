@@ -1,0 +1,79 @@
+{
+  "id": "mate-lajos-dombovar",
+  "version": "1.0.0",
+  "photographer": {
+    "name": {
+      "hu": "Máté Lajos",
+      "en": "Lajos Máté"
+    },
+    "birthYear": 1896,
+    "deathYear": 1937
+  },
+  "studioAddress": {
+    "street": {
+      "hu": "Esterházy utca 7.",
+      "en": "7 Esterházy Street"
+    },
+    "city": {
+      "hu": "Dombóvár",
+      "en": "Dombóvár"
+    },
+    "location": {
+      "placeName": {
+        "hu": "Dombóvár",
+        "en": "Dombóvár"
+      },
+      "coordinates": {
+        "latitude": 46.3761,
+        "longitude": 18.1300
+      },
+      "county": {
+        "hu": "Tolna",
+        "en": "Tolna"
+      }
+    }
+  },
+  "operatingPeriod": {
+    "startYear": 1921,
+    "endYear": 1937
+  },
+  "characteristics": {
+    "signatureStyle": {
+      "hu": "Máté L. szignó a kép alján",
+      "en": "Máté L. signature at the bottom of the image"
+    },
+    "backdrop": {
+      "hu": "Jellegzetes festett vászon háttér",
+      "en": "Characteristic painted canvas backdrop"
+    },
+    "specialties": [
+      {
+        "hu": "Portré",
+        "en": "Portrait"
+      },
+      {
+        "hu": "Csoportkép",
+        "en": "Group photo"
+      },
+      {
+        "hu": "Lakodalmak",
+        "en": "Weddings"
+      }
+    ]
+  },
+  "collection": {
+    "totalImages": 192,
+    "inventoryRangeStart": "F41032",
+    "inventoryRangeEnd": "F41223"
+  },
+  "catchmentArea": [
+    "Dombóvár",
+    "Szakcs",
+    "Pári",
+    "Nagykónyi",
+    "Kocsola",
+    "Makó"
+  ],
+  "createdAt": "2025-10-15T00:00:00Z",
+  "updatedAt": "2025-10-15T00:00:00Z"
+}

@@ -1,0 +1,107 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://vagatlanul.neprajz.hu/schemas/image/v1.0.0",
+  "title": "Image",
+  "description": "Photography image schema for VÁGATLANUL project",
+  "type": "object",
+  "required": ["id", "version", "studioId", "inventoryNumber", "description"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Unique identifier for the image (e.g., 'f41074')"
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$",
+      "default": "1.0.0"
+    },
+    "studioId": {
+      "type": "string",
+      "description": "Reference to the studio that took this photograph"
+    },
+    "inventoryNumber": {
+      "type": "string",
+      "description": "Museum inventory number (e.g., 'F41074')"
+    },
+    "museumCatalogNumber": {
+      "type": "string",
+      "description": "Full museum catalog number (e.g., 'NM F 41074')"
+    },
+    "title": { "$ref": "#/definitions/bilingualText" },
+    "description": { "$ref": "#/definitions/bilingualText" },
+    "shootingLocation": {
+      "type": "object",
+      "required": ["placeName"],
+      "properties": {
+        "placeName": { "$ref": "#/definitions/bilingualText" },
+        "location": { "$ref": "#/definitions/location" }
+      }
+    },
+    "dateTaken": {
+      "type": "object",
+      "properties": {
+        "year": { "type": "integer", "minimum": 1800, "maximum": 2100 },
+        "yearRangeStart": { "type": "integer", "minimum": 1800, "maximum": 2100 },
+        "yearRangeEnd": { "type": "integer", "minimum": 1800, "maximum": 2100 },
+        "precision": {
+          "type": "string",
+          "enum": ["Exact", "Approximate", "Decade", "Unknown"]
+        }
+      }
+    },
+    "technical": {
+      "type": "object",
+      "properties": {
+        "medium": { "$ref": "#/definitions/bilingualText" },
+        "format": { "$ref": "#/definitions/bilingualText" },
+        "dimensions": {
+          "type": "object",
+          "required": ["width", "height"],
+          "properties": {
+            "width": { "type": "number", "minimum": 0 },
+            "height": { "type": "number", "minimum": 0 },
+            "unit": { "type": "string", "default": "cm" }
+          }
+        }
+      }
+    },
+    "subjects": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "photographerSignatureVisible": {
+      "type": "boolean",
+      "default": false
+    },
+    "createdAt": { "type": "string", "format": "date-time" },
+    "updatedAt": { "type": "string", "format": "date-time" }
+  },
+  "definitions": {
+    "bilingualText": {
+      "type": "object",
+      "required": ["hu"],
+      "properties": {
+        "hu": { "type": "string", "minLength": 1 },
+        "en": { "type": "string" }
+      }
+    },
+    "location": {
+      "type": "object",
+      "required": ["placeName"],
+      "properties": {
+        "placeName": { "$ref": "#/definitions/bilingualText" },
+        "coordinates": { "$ref": "#/definitions/coordinates" },
+        "region": { "$ref": "#/definitions/bilingualText" },
+        "county": { "$ref": "#/definitions/bilingualText" }
+      }
+    },
+    "coordinates": {
+      "type": "object",
+      "required": ["latitude", "longitude"],
+      "properties": {
+        "latitude": { "type": "number", "minimum": 45.7, "maximum": 48.6 },
+        "longitude": { "type": "number", "minimum": 16.1, "maximum": 22.9 }
+      }
+    }
+  }
+}

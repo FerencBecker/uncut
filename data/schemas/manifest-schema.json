@@ -1,0 +1,40 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://vagatlanul.neprajz.hu/schemas/manifest/v1.0.0",
+  "title": "Manifest",
+  "description": "Manifest file schema for ordering and metadata",
+  "type": "object",
+  "required": ["version", "type", "totalCount", "items"],
+  "properties": {
+    "version": {
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$",
+      "default": "1.0.0"
+    },
+    "type": {
+      "type": "string",
+      "enum": ["Studios", "Images"]
+    },
+    "totalCount": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "items": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id"],
+        "properties": {
+          "id": { "type": "string" },
+          "order": { "type": "integer", "minimum": 0 },
+          "featured": { "type": "boolean", "default": false },
+          "metadata": { "type": "object" }
+        }
+      }
+    },
+    "lastUpdated": {
+      "type": "string",
+      "format": "date-time"
+    }
+  }
+}

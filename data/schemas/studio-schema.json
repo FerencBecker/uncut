@@ -1,0 +1,97 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://vagatlanul.neprajz.hu/schemas/studio/v1.0.0",
+  "title": "Studio",
+  "description": "Photography studio schema for VÁGATLANUL project",
+  "type": "object",
+  "required": ["id", "version", "photographer", "studioAddress"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Unique identifier for the studio (e.g., 'mate-lajos-dombovar')"
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$",
+      "default": "1.0.0"
+    },
+    "photographer": {
+      "type": "object",
+      "required": ["name"],
+      "properties": {
+        "name": { "$ref": "#/definitions/bilingualText" },
+        "birthYear": { "type": "integer", "minimum": 1800, "maximum": 2100 },
+        "deathYear": { "type": "integer", "minimum": 1800, "maximum": 2100 }
+      }
+    },
+    "studioAddress": {
+      "type": "object",
+      "required": ["city"],
+      "properties": {
+        "street": { "$ref": "#/definitions/bilingualText" },
+        "city": { "$ref": "#/definitions/bilingualText" },
+        "location": { "$ref": "#/definitions/location" }
+      }
+    },
+    "operatingPeriod": {
+      "type": "object",
+      "properties": {
+        "startYear": { "type": "integer", "minimum": 1800, "maximum": 2100 },
+        "endYear": { "type": "integer", "minimum": 1800, "maximum": 2100 }
+      }
+    },
+    "characteristics": {
+      "type": "object",
+      "properties": {
+        "signatureStyle": { "$ref": "#/definitions/bilingualText" },
+        "backdrop": { "$ref": "#/definitions/bilingualText" },
+        "specialties": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/bilingualText" }
+        }
+      }
+    },
+    "collection": {
+      "type": "object",
+      "properties": {
+        "totalImages": { "type": "integer", "minimum": 0 },
+        "inventoryRangeStart": { "type": "string" },
+        "inventoryRangeEnd": { "type": "string" }
+      }
+    },
+    "catchmentArea": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "createdAt": { "type": "string", "format": "date-time" },
+    "updatedAt": { "type": "string", "format": "date-time" }
+  },
+  "definitions": {
+    "bilingualText": {
+      "type": "object",
+      "required": ["hu"],
+      "properties": {
+        "hu": { "type": "string", "minLength": 1 },
+        "en": { "type": "string" }
+      }
+    },
+    "location": {
+      "type": "object",
+      "required": ["placeName"],
+      "properties": {
+        "placeName": { "$ref": "#/definitions/bilingualText" },
+        "coordinates": { "$ref": "#/definitions/coordinates" },
+        "region": { "$ref": "#/definitions/bilingualText" },
+        "county": { "$ref": "#/definitions/bilingualText" }
+      }
+    },
+    "coordinates": {
+      "type": "object",
+      "required": ["latitude", "longitude"],
+      "properties": {
+        "latitude": { "type": "number", "minimum": 45.7, "maximum": 48.6 },
+        "longitude": { "type": "number", "minimum": 16.1, "maximum": 22.9 }
+      }
+    }
+  }
+}
