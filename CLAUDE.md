@@ -103,6 +103,36 @@ The architecture document is maintained as a living document and updated as part
 
 These principles prevent over-engineering, premature abstraction, and unnecessary complexity.
 
+**Architectural preferences:** See [ARCHITECTURAL_CONVENTIONS.md](ARCHITECTURAL_CONVENTIONS.md) for project-specific patterns (vertical slicing, null object pattern, repository pattern).
+
+### Code Review Process
+
+**Verify all coding principles, guidelines, and standards were followed. Question whether code should exist at all, even if tests pass and it compiles.**
+
+**Review order:**
+1. **Check issue** - What was actually requested?
+2. **Review each file** - Apply 5-question framework:
+   - Is it used? (Grep for actual callers)
+   - What problem does it solve? (Must be explicit in issue)
+   - What are the trade-offs? (Costs vs. benefits for this project)
+   - Does YAGNI apply? (Needed now or solving future problems?)
+   - Hype vs. reality? (Industry pattern vs. actual project needs)
+3. **Verify architecture fit** - Does this match documented approach?
+4. **Check coding standards** - SRP, YAGNI, KISS, null object pattern, etc.
+
+**Red flags indicating violations:**
+- Code with tests but no callers
+- Abstraction layers with single implementation
+- Features not mentioned in issue
+- Horizontal infrastructure without vertical features
+- Patterns designed for scale/complexity we don't have
+
+**Remove code that:**
+- Solves future problems (YAGNI violation)
+- Wrong abstraction level (doesn't match consumer needs)
+- Built before features need it (speculative infrastructure)
+- Implements something not requested (issue mismatch)
+
 ### Documentation Updates
 
 When completing tasks, always update the architecture document (docs/architecture/) with:

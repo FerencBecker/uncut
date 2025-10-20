@@ -7,75 +7,72 @@ public class Image
 {
     [JsonPropertyName("id")]
     [Required]
-    public string Id { get; set; } = string.Empty;
-
-    [JsonPropertyName("version")]
-    public string Version { get; set; } = "1.0.0";
+    public string Id { get; init; } = string.Empty;
 
     [JsonPropertyName("studioId")]
     [Required]
-    public string StudioId { get; set; } = string.Empty;
+    public string StudioId { get; init; } = string.Empty;
 
     [JsonPropertyName("inventoryNumber")]
     [Required]
-    public string InventoryNumber { get; set; } = string.Empty;
+    public string InventoryNumber { get; init; } = string.Empty;
 
     [JsonPropertyName("museumCatalogNumber")]
-    public string? MuseumCatalogNumber { get; set; }
+    public string MuseumCatalogNumber { get; init; } = string.Empty;
 
     [JsonPropertyName("title")]
-    public BilingualText? Title { get; set; }
+    public BilingualText Title { get; init; } = new();
 
     [JsonPropertyName("description")]
     [Required]
-    public BilingualText Description { get; set; } = new();
+    public BilingualText Description { get; init; } = new();
 
     [JsonPropertyName("shootingLocation")]
-    public ShootingLocation? ShootingLocation { get; set; }
+    public ShootingLocation ShootingLocation { get; init; } = new();
 
     [JsonPropertyName("dateTaken")]
-    public DateTaken? DateTaken { get; set; }
+    public DateTaken? DateTaken { get; init; }
 
     [JsonPropertyName("technical")]
-    public TechnicalMetadata? Technical { get; set; }
+    public TechnicalMetadata Technical { get; init; } = new();
 
     [JsonPropertyName("subjects")]
-    public string[] Subjects { get; set; } = Array.Empty<string>();
+    public string[] Subjects { get; init; } = [];
 
     [JsonPropertyName("photographerSignatureVisible")]
-    public bool PhotographerSignatureVisible { get; set; }
+    public bool PhotographerSignatureVisible { get; init; }
 
     [JsonPropertyName("createdAt")]
-    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+    public DateTime CreatedAt { get; init; } = DateTime.UtcNow;
 
     [JsonPropertyName("updatedAt")]
-    public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
+    public DateTime UpdatedAt { get; init; } = DateTime.UtcNow;
 }
 
 public class ShootingLocation
 {
     [JsonPropertyName("placeName")]
     [Required]
-    public BilingualText PlaceName { get; set; } = new();
+    public BilingualText PlaceName { get; init; } = new();
 
     [JsonPropertyName("location")]
-    public Location? Location { get; set; }
+    public Location? Location { get; init; }
 }
 
 public class DateTaken
 {
     [JsonPropertyName("year")]
-    public int? Year { get; set; }
+    public int? Year { get; init; }
 
     [JsonPropertyName("yearRangeStart")]
-    public int? YearRangeStart { get; set; }
+    public int? YearRangeStart { get; init; }
 
     [JsonPropertyName("yearRangeEnd")]
-    public int? YearRangeEnd { get; set; }
+    public int? YearRangeEnd { get; init; }
 
     [JsonPropertyName("precision")]
     [JsonConverter(typeof(JsonStringEnumConverter))]
-    public DatePrecision Precision { get; set; } = DatePrecision.Approximate;
+    public DatePrecision Precision { get; init; } = DatePrecision.Approximate;
 }
 
 public enum DatePrecision
@@ -89,23 +86,23 @@ public enum DatePrecision
 public class TechnicalMetadata
 {
     [JsonPropertyName("medium")]
-    public BilingualText? Medium { get; set; }
+    public BilingualText Medium { get; init; } = new();
 
     [JsonPropertyName("format")]
-    public BilingualText? Format { get; set; }
+    public BilingualText Format { get; init; } = new();
 
     [JsonPropertyName("dimensions")]
-    public Dimensions? Dimensions { get; set; }
+    public Dimensions Dimensions { get; init; } = new();
 }
 
 public class Dimensions
 {
     [JsonPropertyName("width")]
-    public double Width { get; set; }
+    public double? Width { get; init; }
 
     [JsonPropertyName("height")]
-    public double Height { get; set; }
+    public double? Height { get; init; }
 
     [JsonPropertyName("unit")]
-    public string Unit { get; set; } = "cm";
+    public string Unit { get; init; } = "cm";
 }

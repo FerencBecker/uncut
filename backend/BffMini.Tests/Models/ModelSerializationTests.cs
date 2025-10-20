@@ -17,7 +17,7 @@ public class ModelSerializationTests
     public void BilingualText_SerializesCorrectly()
     {
         // Arrange
-        var text = new BilingualText("Máté Lajos", "Lajos Máté");
+        var text = new BilingualText { Hungarian = "Máté Lajos", English = "Lajos Máté" };
 
         // Act
         var json = JsonSerializer.Serialize(text, _jsonOptions);
@@ -30,27 +30,14 @@ public class ModelSerializationTests
     }
 
     [Fact]
-    public void BilingualText_GetText_ReturnsCorrectLanguage()
-    {
-        // Arrange
-        var text = new BilingualText("Magyar", "English");
-
-        // Act & Assert
-        Assert.Equal("Magyar", text.GetText("hu"));
-        Assert.Equal("English", text.GetText("en"));
-        Assert.Equal("Magyar", text.GetText("unknown")); // Falls back to Hungarian
-    }
-
-    [Fact]
     public void Location_SerializesCorrectly()
     {
         // Arrange
         var location = new Location
         {
-            PlaceName = new BilingualText("Dombóvár", "Dombóvár"),
-            Latitude = 46.3761,
-            Longitude = 18.1300,
-            County = new BilingualText("Tolna", "Tolna")
+            PlaceName = new BilingualText { Hungarian = "Dombóvár", English = "Dombóvár" },
+            Coordinates = new Coordinates { Latitude = 46.3761, Longitude = 18.1300 },
+            County = new BilingualText { Hungarian = "Tolna", English = "Tolna" }
         };
 
         // Act
@@ -60,8 +47,9 @@ public class ModelSerializationTests
         // Assert
         Assert.NotNull(deserialized);
         Assert.Equal("Dombóvár", deserialized.PlaceName.Hungarian);
-        Assert.Equal(46.3761, deserialized.Latitude);
-        Assert.Equal(18.1300, deserialized.Longitude);
+        Assert.NotNull(deserialized.Coordinates);
+        Assert.Equal(46.3761, deserialized.Coordinates.Latitude);
+        Assert.Equal(18.1300, deserialized.Coordinates.Longitude);
     }
 
     [Fact]
@@ -73,14 +61,14 @@ public class ModelSerializationTests
             Id = "mate-lajos-dombovar",
             Photographer = new Photographer
             {
-                Name = new BilingualText("Máté Lajos", "Lajos Máté"),
+                Name = new BilingualText { Hungarian = "Máté Lajos", English = "Lajos Máté" },
                 BirthYear = 1896,
                 DeathYear = 1937
             },
             StudioAddress = new StudioAddress
             {
-                City = new BilingualText("Dombóvár", "Dombóvár"),
-                Street = new BilingualText("Esterházy utca 7.", "7 Esterházy Street")
+                City = new BilingualText { Hungarian = "Dombóvár", English = "Dombóvár" },
+                Street = new BilingualText { Hungarian = "Esterházy utca 7.", English = "7 Esterházy Street" }
             },
             OperatingPeriod = new OperatingPeriod
             {
@@ -111,13 +99,14 @@ public class ModelSerializationTests
             StudioId = "mate-lajos-dombovar",
             InventoryNumber = "F41074",
             MuseumCatalogNumber = "NM F 41074",
-            Description = new BilingualText(
-                "Szüreti mulatság népies ruhába öltözött társasága",
-                "Members of grape harvest festival in Hungarian costume"
-            ),
+            Description = new BilingualText
+            {
+                Hungarian = "Szüreti mulatság népies ruhába öltözött társasága",
+                English = "Members of grape harvest festival in Hungarian costume"
+            },
             ShootingLocation = new ShootingLocation
             {
-                PlaceName = new BilingualText("Szakcs", "Szakcs")
+                PlaceName = new BilingualText { Hungarian = "Szakcs", English = "Szakcs" }
             },
             DateTaken = new DateTaken
             {
@@ -127,8 +116,8 @@ public class ModelSerializationTests
             },
             Technical = new TechnicalMetadata
             {
-                Medium = new BilingualText("üvegnegatív", "glass negative"),
-                Format = new BilingualText("fekete-fehér", "black-and-white"),
+                Medium = new BilingualText { Hungarian = "üvegnegatív", English = "glass negative" },
+                Format = new BilingualText { Hungarian = "fekete-fehér", English = "black-and-white" },
                 Dimensions = new Dimensions { Width = 10, Height = 15, Unit = "cm" }
             },
             PhotographerSignatureVisible = true
@@ -148,33 +137,25 @@ public class ModelSerializationTests
     }
 
     [Fact]
-    public void Manifest_SerializesCorrectly()
+    public void ImagesManifest_SerializesCorrectly()
     {
         // Arrange
-        var manifest = new Manifest
+        var manifest = new ImagesManifest
         {
-            Type = ManifestType.Studios,
-            TotalCount = 1,
-            Items = new[]
-            {
-                new ManifestItem
-                {
-                    Id = "mate-lajos-dombovar",
-                    Order = 1,
-                    Featured = true
-                }
-            }
+            StudioId = "mate-lajos-dombovar",
+            ImageIds = ["f41074", "f41159", "f41160"]
         };
 
         // Act
         var json = JsonSerializer.Serialize(manifest, _jsonOptions);
-        var deserialized = JsonSerializer.Deserialize<Manifest>(json, _jsonOptions);
+        var deserialized = JsonSerializer.Deserialize<ImagesManifest>(json, _jsonOptions);
 
         // Assert
         Assert.NotNull(deserialized);
-        Assert.Equal(ManifestType.Studios, deserialized.Type);
-        Assert.Equal(1, deserialized.TotalCount);
-        Assert.Single(deserialized.Items);
-        Assert.Equal("mate-lajos-dombovar", deserialized.Items[0].Id);
+        Assert.Equal("mate-lajos-dombovar", deserialized.StudioId);
+        Assert.Equal(3, deserialized.ImageIds.Length);
+        Assert.Equal("f41074", deserialized.ImageIds[0]);
+        Assert.Equal("f41159", deserialized.ImageIds[1]);
+        Assert.Equal("f41160", deserialized.ImageIds[2]);
     }
 }

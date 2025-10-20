@@ -7,93 +7,72 @@ public class Studio
 {
     [JsonPropertyName("id")]
     [Required]
-    public string Id { get; set; } = string.Empty;
-
-    [JsonPropertyName("version")]
-    public string Version { get; set; } = "1.0.0";
+    public string Id { get; init; } = string.Empty;
 
     [JsonPropertyName("photographer")]
     [Required]
-    public Photographer Photographer { get; set; } = new();
+    public Photographer Photographer { get; init; } = new();
 
     [JsonPropertyName("studioAddress")]
     [Required]
-    public StudioAddress StudioAddress { get; set; } = new();
+    public StudioAddress StudioAddress { get; init; } = new();
 
     [JsonPropertyName("operatingPeriod")]
-    public OperatingPeriod? OperatingPeriod { get; set; }
+    public OperatingPeriod? OperatingPeriod { get; init; }
 
     [JsonPropertyName("characteristics")]
-    public StudioCharacteristics? Characteristics { get; set; }
-
-    [JsonPropertyName("collection")]
-    public CollectionInfo? Collection { get; set; }
+    public StudioCharacteristics Characteristics { get; init; } = new();
 
     [JsonPropertyName("catchmentArea")]
-    public string[] CatchmentArea { get; set; } = Array.Empty<string>();
+    public string[] CatchmentArea { get; init; } = [];
 
     [JsonPropertyName("createdAt")]
-    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+    public DateTime CreatedAt { get; init; } = DateTime.UtcNow;
 
     [JsonPropertyName("updatedAt")]
-    public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
+    public DateTime UpdatedAt { get; init; } = DateTime.UtcNow;
 }
 
 public class Photographer
 {
     [JsonPropertyName("name")]
     [Required]
-    public BilingualText Name { get; set; } = new();
+    public BilingualText Name { get; init; } = new();
 
     [JsonPropertyName("birthYear")]
-    public int? BirthYear { get; set; }
+    public int? BirthYear { get; init; }
 
     [JsonPropertyName("deathYear")]
-    public int? DeathYear { get; set; }
+    public int? DeathYear { get; init; }
 }
 
 public class StudioAddress
 {
     [JsonPropertyName("street")]
-    public BilingualText? Street { get; set; }
+    public BilingualText Street { get; init; } = new();
 
     [JsonPropertyName("city")]
     [Required]
-    public BilingualText City { get; set; } = new();
+    public BilingualText City { get; init; } = new();
 
     [JsonPropertyName("location")]
-    public Location? Location { get; set; }
+    public Location? Location { get; init; }
 }
 
 public class OperatingPeriod
 {
     [JsonPropertyName("startYear")]
-    public int? StartYear { get; set; }
+    public int? StartYear { get; init; }
 
     [JsonPropertyName("endYear")]
-    public int? EndYear { get; set; }
+    public int? EndYear { get; init; }
 }
 
 public class StudioCharacteristics
 {
     [JsonPropertyName("signatureStyle")]
-    public BilingualText? SignatureStyle { get; set; }
-
-    [JsonPropertyName("backdrop")]
-    public BilingualText? Backdrop { get; set; }
+    public BilingualText SignatureStyle { get; init; } = new();
 
     [JsonPropertyName("specialties")]
-    public BilingualText[] Specialties { get; set; } = Array.Empty<BilingualText>();
-}
-
-public class CollectionInfo
-{
-    [JsonPropertyName("totalImages")]
-    public int TotalImages { get; set; }
-
-    [JsonPropertyName("inventoryRangeStart")]
-    public string? InventoryRangeStart { get; set; }
-
-    [JsonPropertyName("inventoryRangeEnd")]
-    public string? InventoryRangeEnd { get; set; }
+    public BilingualText[] Specialties { get; init; } = [];
 }

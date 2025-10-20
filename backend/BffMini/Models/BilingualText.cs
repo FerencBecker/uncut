@@ -5,25 +5,8 @@ namespace BffMini.Models;
 public class BilingualText
 {
     [JsonPropertyName("hu")]
-    public string Hungarian { get; set; } = string.Empty;
+    public string Hungarian { get; init; } = string.Empty;
 
     [JsonPropertyName("en")]
-    public string? English { get; set; }
-
-    public BilingualText() { }
-
-    public BilingualText(string hungarian, string? english = null)
-    {
-        Hungarian = hungarian;
-        English = english;
-    }
-
-    public string GetText(string language = "hu")
-    {
-        return language.ToLowerInvariant() switch
-        {
-            "en" => English ?? Hungarian,
-            _ => Hungarian
-        };
-    }
+    public string English { get; init; } = string.Empty;
 }

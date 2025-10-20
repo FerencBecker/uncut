@@ -3,44 +3,20 @@ using System.Text.Json.Serialization;
 
 namespace BffMini.Models;
 
-public class Manifest
+/// <summary>
+/// Defines the curated display order of images for a studio's gallery.
+/// One manifest file per studio containing ordered array of image IDs.
+/// </summary>
+public class ImagesManifest
 {
-    [JsonPropertyName("version")]
-    public string Version { get; set; } = "1.0.0";
-
-    [JsonPropertyName("type")]
-    [JsonConverter(typeof(JsonStringEnumConverter))]
-    public ManifestType Type { get; set; }
-
-    [JsonPropertyName("totalCount")]
-    public int TotalCount { get; set; }
-
-    [JsonPropertyName("items")]
+    [JsonPropertyName("studioId")]
     [Required]
-    public ManifestItem[] Items { get; set; } = Array.Empty<ManifestItem>();
+    public string StudioId { get; init; } = string.Empty;
 
-    [JsonPropertyName("lastUpdated")]
-    public DateTime LastUpdated { get; set; } = DateTime.UtcNow;
-}
-
-public enum ManifestType
-{
-    Studios,
-    Images
-}
-
-public class ManifestItem
-{
-    [JsonPropertyName("id")]
+    [JsonPropertyName("imageIds")]
     [Required]
-    public string Id { get; set; } = string.Empty;
+    public string[] ImageIds { get; init; } = [];
 
-    [JsonPropertyName("order")]
-    public int Order { get; set; }
-
-    [JsonPropertyName("featured")]
-    public bool Featured { get; set; }
-
-    [JsonPropertyName("metadata")]
-    public Dictionary<string, object>? Metadata { get; set; }
+    [JsonPropertyName("updatedAt")]
+    public DateTime UpdatedAt { get; init; } = DateTime.UtcNow;
 }
