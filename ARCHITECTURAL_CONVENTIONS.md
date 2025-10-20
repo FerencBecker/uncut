@@ -14,10 +14,17 @@ Project-specific architectural preferences for VÁGATLANUL. These are not univer
 ## Data Modeling
 
 **Null Object Pattern**
-- Non-nullable objects with empty defaults (`new()`)
-- Nullable primitives at leaf level (`int?`, `double?`, `DateTime?`)
-- Never nullable: complex objects, collections, strings, value objects
-- Rationale: No cascading null checks, cleaner navigation, domain accuracy
+- Non-nullable objects with empty defaults (`new()`) for objects that always exist in the domain model
+- Nullable complex objects when JSON schema marks them optional AND absence has clear semantic meaning
+- Nullable primitives at leaf level (`int?`, `double?`, `DateTime?`) to represent unknown/absent values
+- Never nullable: collections, strings, value objects that always exist
+- Rationale: Balance between cleaner navigation (avoid `?.` chains) and domain accuracy (distinguish "absent" from "empty")
+
+**Examples:**
+- `Photographer` → Non-nullable (every studio has a photographer, even if details are unknown)
+- `OperatingPeriod?` → Nullable (historical records may lack this information entirely)
+- `DateTaken?` → Nullable (not all images have date information)
+- `StartYear` inside OperatingPeriod → `int?` (the period exists but year is unknown)
 
 ## Data Access
 

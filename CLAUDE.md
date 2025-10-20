@@ -143,6 +143,23 @@ When completing tasks, always update the architecture document (docs/architectur
 
 This ensures the architecture document remains the living source of truth for the project.
 
+### Git Workflow
+
+**IMPORTANT: Never commit code or create pull requests without explicit user permission.**
+
+**Workflow:**
+1. Make code changes as requested
+2. Run tests to verify changes work
+3. Show summary of changes to user
+4. **STOP and ASK the user for permission to commit and create PR**
+5. Only after explicit approval, proceed with:
+   - Create git commit with appropriate message
+   - Push changes to remote branch
+   - Create pull request
+   - Return the PR URL to the user
+
+**Rationale:** The user wants to review all code changes before they are committed to version control. Single approval covers both commit and PR creation for efficiency. Always wait for explicit "yes, commit and create PR" from the user.
+
 ### Commit Messages
 
 **Keep commits brief** - focus on high-level achievements only:

@@ -90,10 +90,17 @@
       "required": ["placeName"],
       "properties": {
         "placeName": { "$ref": "#/definitions/bilingualText" },
-        "latitude": { "type": "number", "minimum": 45.7, "maximum": 48.6 },
-        "longitude": { "type": "number", "minimum": 16.1, "maximum": 22.9 },
+        "coordinates": { "$ref": "#/definitions/coordinates" },
         "region": { "$ref": "#/definitions/bilingualText" },
         "county": { "$ref": "#/definitions/bilingualText" }
+      }
+    },
+    "coordinates": {
+      "type": "object",
+      "required": ["latitude", "longitude"],
+      "properties": {
+        "latitude": { "type": "number", "minimum": 45.7, "maximum": 48.6 },
+        "longitude": { "type": "number", "minimum": 16.1, "maximum": 22.9 }
       }
     }
   }

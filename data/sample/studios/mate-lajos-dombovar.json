@@ -23,8 +23,10 @@
         "hu": "Dombóvár",
         "en": "Dombóvár"
       },
-      "latitude": 46.3761,
-      "longitude": 18.1300,
+      "coordinates": {
+        "latitude": 46.3761,
+        "longitude": 18.1300
+      },
       "county": {
         "hu": "Tolna",
         "en": "Tolna"
