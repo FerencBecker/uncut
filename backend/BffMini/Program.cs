@@ -1,4 +1,7 @@
 using BffMini.Extensions;
+using BffMini.Studio;
+using BffMini.Image;
+using BffMini.Manifest;
 using Serilog;
 using Serilog.Context;
 
@@ -35,6 +38,13 @@ builder.Services.AddCors(options =>
 
 builder.Services.AddHealthChecks();
 builder.Services.AddHttpContextAccessor();
+
+// Configure and validate data paths at startup
+builder.Services.AddOptions<BffMini.Shared.DataPathsOptions>()
+    .BindConfiguration("DataPaths")
+    .ValidateDataAnnotations()
+    .ValidateOnStart();
+
 builder.Services.AddBffMiniServices(builder.Configuration);
 
 // Add API documentation
@@ -85,6 +95,11 @@ app.MapGet("/", () => new
     Timestamp = DateTime.UtcNow
 })
 .WithName("Root");
+
+// Register API endpoints
+app.MapStudiosEndpoints();
+app.MapImagesEndpoints();
+app.MapManifestEndpoints();
 
 // Graceful shutdown
 var lifetime = app.Services.GetRequiredService<IHostApplicationLifetime>();

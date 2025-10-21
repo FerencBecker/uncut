@@ -1,13 +1,13 @@
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
-namespace BffMini.Models;
+namespace BffMini.Manifest;
 
 /// <summary>
 /// Defines the curated display order of images for a studio's gallery.
 /// One manifest file per studio containing ordered array of image IDs.
 /// </summary>
-public class ImagesManifest
+public record ImagesManifest
 {
     [JsonPropertyName("studioId")]
     [Required]

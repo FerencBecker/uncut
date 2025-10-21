@@ -1,5 +1,8 @@
 using System.Text.Json;
-using BffMini.Models;
+using BffMini.Shared;
+using BffMini.Studio;
+using BffMini.Image;
+using BffMini.Manifest;
 using Xunit;
 
 namespace BffMini.Tests.Models;
@@ -56,7 +59,7 @@ public class ModelSerializationTests
     public void Studio_SerializesCorrectly()
     {
         // Arrange
-        var studio = new Studio
+        var studio = new BffMini.Studio.Studio
         {
             Id = "mate-lajos-dombovar",
             Photographer = new Photographer
@@ -79,7 +82,7 @@ public class ModelSerializationTests
 
         // Act
         var json = JsonSerializer.Serialize(studio, _jsonOptions);
-        var deserialized = JsonSerializer.Deserialize<Studio>(json, _jsonOptions);
+        var deserialized = JsonSerializer.Deserialize<BffMini.Studio.Studio>(json, _jsonOptions);
 
         // Assert
         Assert.NotNull(deserialized);
@@ -93,7 +96,7 @@ public class ModelSerializationTests
     public void Image_SerializesCorrectly()
     {
         // Arrange
-        var image = new Image
+        var image = new BffMini.Image.Image
         {
             Id = "f41074",
             StudioId = "mate-lajos-dombovar",
@@ -125,7 +128,7 @@ public class ModelSerializationTests
 
         // Act
         var json = JsonSerializer.Serialize(image, _jsonOptions);
-        var deserialized = JsonSerializer.Deserialize<Image>(json, _jsonOptions);
+        var deserialized = JsonSerializer.Deserialize<BffMini.Image.Image>(json, _jsonOptions);
 
         // Assert
         Assert.NotNull(deserialized);

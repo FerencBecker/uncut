@@ -1,9 +1,10 @@
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
+using BffMini.Shared;
 
-namespace BffMini.Models;
+namespace BffMini.Studio;
 
-public class Studio
+public record Studio
 {
     [JsonPropertyName("id")]
     [Required]
@@ -33,7 +34,7 @@ public class Studio
     public DateTime UpdatedAt { get; init; } = DateTime.UtcNow;
 }
 
-public class Photographer
+public record Photographer
 {
     [JsonPropertyName("name")]
     [Required]
@@ -46,7 +47,7 @@ public class Photographer
     public int? DeathYear { get; init; }
 }
 
-public class StudioAddress
+public record StudioAddress
 {
     [JsonPropertyName("street")]
     public BilingualText Street { get; init; } = new();
@@ -59,7 +60,7 @@ public class StudioAddress
     public Location? Location { get; init; }
 }
 
-public class OperatingPeriod
+public record OperatingPeriod
 {
     [JsonPropertyName("startYear")]
     public int? StartYear { get; init; }
@@ -68,7 +69,7 @@ public class OperatingPeriod
     public int? EndYear { get; init; }
 }
 
-public class StudioCharacteristics
+public record StudioCharacteristics
 {
     [JsonPropertyName("signatureStyle")]
     public BilingualText SignatureStyle { get; init; } = new();

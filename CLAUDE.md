@@ -103,9 +103,11 @@ The architecture document is maintained as a living document and updated as part
 
 These principles prevent over-engineering, premature abstraction, and unnecessary complexity.
 
-**Architectural preferences:** See [ARCHITECTURAL_CONVENTIONS.md](ARCHITECTURAL_CONVENTIONS.md) for project-specific patterns (vertical slicing, null object pattern, repository pattern).
+**Coding preferences:** See [CODING_PREFERENCES.md](CODING_PREFERENCES.md) for project-specific patterns (vertical slicing, null object pattern, repository pattern, interface co-location).
 
 ### Code Review Process
+
+**See [CODE_REVIEW_GUIDELINES.md](CODE_REVIEW_GUIDELINES.md) for detailed review methodologies.**
 
 **Verify all coding principles, guidelines, and standards were followed. Question whether code should exist at all, even if tests pass and it compiles.**
 
