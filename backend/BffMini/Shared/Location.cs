@@ -1,8 +1,8 @@
 using System.Text.Json.Serialization;
 
-namespace BffMini.Models;
+namespace BffMini.Shared;
 
-public class Location
+public record Location
 {
     [JsonPropertyName("placeName")]
     public BilingualText PlaceName { get; init; } = new();
@@ -17,7 +17,7 @@ public class Location
     public BilingualText County { get; init; } = new();
 }
 
-public class Coordinates
+public record Coordinates
 {
     [JsonPropertyName("latitude")]
     public double Latitude { get; init; }

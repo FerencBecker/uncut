@@ -1,5 +1,8 @@
 using System.Text.Json;
-using BffMini.Models;
+using BffMini.Shared;
+using BffMini.Studio;
+using BffMini.Image;
+using BffMini.Manifest;
 using Xunit;
 
 namespace BffMini.Tests.Models;
@@ -56,9 +59,9 @@ public class ModelSerializationTests
     public void Studio_SerializesCorrectly()
     {
         // Arrange
-        var studio = new Studio
+        var studio = new BffMini.Studio.Studio
         {
-            Id = "mate-lajos-dombovar",
+            Id = 1,
             Photographer = new Photographer
             {
                 Name = new BilingualText { Hungarian = "Máté Lajos", English = "Lajos Máté" },
@@ -79,11 +82,11 @@ public class ModelSerializationTests
 
         // Act
         var json = JsonSerializer.Serialize(studio, _jsonOptions);
-        var deserialized = JsonSerializer.Deserialize<Studio>(json, _jsonOptions);
+        var deserialized = JsonSerializer.Deserialize<BffMini.Studio.Studio>(json, _jsonOptions);
 
         // Assert
         Assert.NotNull(deserialized);
-        Assert.Equal("mate-lajos-dombovar", deserialized.Id);
+        Assert.Equal(1, deserialized.Id);
         Assert.Equal("Máté Lajos", deserialized.Photographer.Name.Hungarian);
         Assert.Equal(1896, deserialized.Photographer.BirthYear);
         Assert.Equal(1921, deserialized.OperatingPeriod?.StartYear);
@@ -93,10 +96,10 @@ public class ModelSerializationTests
     public void Image_SerializesCorrectly()
     {
         // Arrange
-        var image = new Image
+        var image = new BffMini.Image.Image
         {
-            Id = "f41074",
-            StudioId = "mate-lajos-dombovar",
+            Id = 1,
+            StudioId = 1,
             InventoryNumber = "F41074",
             MuseumCatalogNumber = "NM F 41074",
             Description = new BilingualText
@@ -125,12 +128,12 @@ public class ModelSerializationTests
 
         // Act
         var json = JsonSerializer.Serialize(image, _jsonOptions);
-        var deserialized = JsonSerializer.Deserialize<Image>(json, _jsonOptions);
+        var deserialized = JsonSerializer.Deserialize<BffMini.Image.Image>(json, _jsonOptions);
 
         // Assert
         Assert.NotNull(deserialized);
-        Assert.Equal("f41074", deserialized.Id);
-        Assert.Equal("mate-lajos-dombovar", deserialized.StudioId);
+        Assert.Equal(1, deserialized.Id);
+        Assert.Equal(1, deserialized.StudioId);
         Assert.Equal("F41074", deserialized.InventoryNumber);
         Assert.Equal("NM F 41074", deserialized.MuseumCatalogNumber);
         Assert.True(deserialized.PhotographerSignatureVisible);
@@ -142,8 +145,8 @@ public class ModelSerializationTests
         // Arrange
         var manifest = new ImagesManifest
         {
-            StudioId = "mate-lajos-dombovar",
-            ImageIds = ["f41074", "f41159", "f41160"]
+            StudioId = 1,
+            ImageIds = [1, 2, 3]
         };
 
         // Act
@@ -152,10 +155,10 @@ public class ModelSerializationTests
 
         // Assert
         Assert.NotNull(deserialized);
-        Assert.Equal("mate-lajos-dombovar", deserialized.StudioId);
+        Assert.Equal(1, deserialized.StudioId);
         Assert.Equal(3, deserialized.ImageIds.Length);
-        Assert.Equal("f41074", deserialized.ImageIds[0]);
-        Assert.Equal("f41159", deserialized.ImageIds[1]);
-        Assert.Equal("f41160", deserialized.ImageIds[2]);
+        Assert.Equal(1, deserialized.ImageIds[0]);
+        Assert.Equal(2, deserialized.ImageIds[1]);
+        Assert.Equal(3, deserialized.ImageIds[2]);
     }
 }

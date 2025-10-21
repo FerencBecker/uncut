@@ -1,8 +1,8 @@
 using System.Text.Json.Serialization;
 
-namespace BffMini.Models;
+namespace BffMini.Shared;
 
-public class BilingualText
+public record BilingualText
 {
     [JsonPropertyName("hu")]
     public string Hungarian { get; init; } = string.Empty;

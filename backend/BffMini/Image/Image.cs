@@ -1,17 +1,18 @@
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
+using BffMini.Shared;
 
-namespace BffMini.Models;
+namespace BffMini.Image;
 
-public class Image
+public record Image
 {
     [JsonPropertyName("id")]
     [Required]
-    public string Id { get; init; } = string.Empty;
+    public int Id { get; init; }
 
     [JsonPropertyName("studioId")]
     [Required]
-    public string StudioId { get; init; } = string.Empty;
+    public int StudioId { get; init; }
 
     [JsonPropertyName("inventoryNumber")]
     [Required]
@@ -49,7 +50,7 @@ public class Image
     public DateTime UpdatedAt { get; init; } = DateTime.UtcNow;
 }
 
-public class ShootingLocation
+public record ShootingLocation
 {
     [JsonPropertyName("placeName")]
     [Required]
@@ -59,7 +60,7 @@ public class ShootingLocation
     public Location? Location { get; init; }
 }
 
-public class DateTaken
+public record DateTaken
 {
     [JsonPropertyName("year")]
     public int? Year { get; init; }
@@ -83,7 +84,7 @@ public enum DatePrecision
     Unknown
 }
 
-public class TechnicalMetadata
+public record TechnicalMetadata
 {
     [JsonPropertyName("medium")]
     public BilingualText Medium { get; init; } = new();
@@ -95,7 +96,7 @@ public class TechnicalMetadata
     public Dimensions Dimensions { get; init; } = new();
 }
 
-public class Dimensions
+public record Dimensions
 {
     [JsonPropertyName("width")]
     public double? Width { get; init; }

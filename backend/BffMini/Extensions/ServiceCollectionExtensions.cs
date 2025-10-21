@@ -1,3 +1,7 @@
+using BffMini.Studio;
+using BffMini.Image;
+using BffMini.Manifest;
+
 namespace BffMini.Extensions;
 
 /// <summary>
@@ -12,7 +16,9 @@ public static class ServiceCollectionExtensions
         this IServiceCollection services,
         IConfiguration configuration)
     {
-        // TODO: Register repository services when implemented (Issue #50)
+        services.AddSingleton<Studio.Repository>();
+        services.AddSingleton<Image.Repository>();
+        services.AddSingleton<Manifest.Repository>();
         return services;
     }
 }
