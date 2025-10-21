@@ -28,14 +28,14 @@ public class ImageTests(CustomWebApplicationFactory factory) : IClassFixture<Cus
     {
         var client = factory.CreateClient();
 
-        var response = await client.GetAsync("/api/images/f41074");
+        var response = await client.GetAsync("/api/images/1");
 
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         var content = await response.Content.ReadAsStringAsync();
         var image = JsonSerializer.Deserialize<BffMini.Image.Image>(content, JsonOptions.Default);
 
         Assert.NotNull(image);
-        Assert.Equal("f41074", image.Id);
+        Assert.Equal(1, image.Id);
     }
 
     [Fact]
@@ -43,7 +43,7 @@ public class ImageTests(CustomWebApplicationFactory factory) : IClassFixture<Cus
     {
         var client = factory.CreateClient();
 
-        var response = await client.GetAsync("/api/images/non-existing-image");
+        var response = await client.GetAsync("/api/images/999");
 
         Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
     }
@@ -53,7 +53,7 @@ public class ImageTests(CustomWebApplicationFactory factory) : IClassFixture<Cus
     {
         var client = factory.CreateClient();
 
-        var response = await client.GetAsync("/api/images/studio/mate-lajos-dombovar");
+        var response = await client.GetAsync("/api/images/studio/1");
 
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         var content = await response.Content.ReadAsStringAsync();
@@ -62,7 +62,7 @@ public class ImageTests(CustomWebApplicationFactory factory) : IClassFixture<Cus
         Assert.NotNull(images);
         Assert.NotEmpty(images);
         Assert.All(images, image =>
-            Assert.Equal("mate-lajos-dombovar", image.StudioId, ignoreCase: true));
+            Assert.Equal(1, image.StudioId));
     }
 
     [Fact]
@@ -70,7 +70,7 @@ public class ImageTests(CustomWebApplicationFactory factory) : IClassFixture<Cus
     {
         var client = factory.CreateClient();
 
-        var response = await client.GetAsync("/api/images/studio/non-existing-studio");
+        var response = await client.GetAsync("/api/images/studio/999");
 
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         var content = await response.Content.ReadAsStringAsync();

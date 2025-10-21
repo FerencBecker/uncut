@@ -8,7 +8,7 @@ public record Studio
 {
     [JsonPropertyName("id")]
     [Required]
-    public string Id { get; init; } = string.Empty;
+    public int Id { get; init; }
 
     [JsonPropertyName("photographer")]
     [Required]

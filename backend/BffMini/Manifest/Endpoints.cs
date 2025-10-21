@@ -13,11 +13,12 @@ public static class Endpoints
             .WithName("GetStudioImagesManifest")
             .WithSummary("Get the curated image ordering for a specific studio's gallery")
             .Produces<ImagesManifest>(StatusCodes.Status200OK)
+            .Produces(StatusCodes.Status400BadRequest)
             .Produces(StatusCodes.Status404NotFound);
     }
 
     private static async Task<IResult> GetByStudioId(
-        string studioId,
+        int studioId,
         [FromServices] Repository repository,
         [FromServices] ILogger<Program> logger)
     {
@@ -28,11 +29,11 @@ public static class Endpoints
         }
         catch (FileNotFoundException)
         {
-            return Results.NotFound(new { message = $"Image manifest for studio '{studioId}' not found" });
+            return Results.NotFound(new { message = "Image manifest not found" });
         }
         catch (Exception ex)
         {
-            logger.LogError(ex, "Error retrieving image manifest for studio {StudioId}", studioId);
+            logger.LogError(ex, "Error retrieving image manifest");
             return Results.Problem(title: "Error retrieving image manifest", statusCode: StatusCodes.Status500InternalServerError);
         }
     }

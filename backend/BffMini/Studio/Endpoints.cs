@@ -18,6 +18,7 @@ public static class Endpoints
             .WithName("GetStudioById")
             .WithSummary("Get a specific studio by ID")
             .Produces<Studio>(StatusCodes.Status200OK)
+            .Produces(StatusCodes.Status400BadRequest)
             .Produces(StatusCodes.Status404NotFound);
 
         group.MapGet("/city/{city}", GetByCity)
@@ -43,7 +44,7 @@ public static class Endpoints
     }
 
     private static async Task<IResult> GetById(
-        string id,
+        int id,
         [FromServices] Repository repository,
         [FromServices] ILogger<Program> logger)
     {
@@ -54,11 +55,11 @@ public static class Endpoints
         }
         catch (FileNotFoundException)
         {
-            return Results.NotFound(new { message = $"Studio '{id}' not found" });
+            return Results.NotFound(new { message = "Studio not found" });
         }
         catch (Exception ex)
         {
-            logger.LogError(ex, "Error retrieving studio {StudioId}", id);
+            logger.LogError(ex, "Error retrieving studio");
             return Results.Problem(title: "Error retrieving studio", statusCode: StatusCodes.Status500InternalServerError);
         }
     }

@@ -14,7 +14,7 @@ public class ManifestTests(CustomWebApplicationFactory factory) : IClassFixture<
     {
         var client = factory.CreateClient();
 
-        var response = await client.GetAsync("/api/manifests/studio/mate-lajos-dombovar");
+        var response = await client.GetAsync("/api/manifests/studio/1");
 
         if (response.StatusCode == HttpStatusCode.OK)
         {
@@ -22,7 +22,7 @@ public class ManifestTests(CustomWebApplicationFactory factory) : IClassFixture<
             var manifest = JsonSerializer.Deserialize<ImagesManifest>(content, JsonOptions.Default);
 
             Assert.NotNull(manifest);
-            Assert.Equal("mate-lajos-dombovar", manifest.StudioId);
+            Assert.Equal(1, manifest.StudioId);
             Assert.NotNull(manifest.ImageIds);
         }
         else
@@ -36,7 +36,7 @@ public class ManifestTests(CustomWebApplicationFactory factory) : IClassFixture<
     {
         var client = factory.CreateClient();
 
-        var response = await client.GetAsync("/api/manifests/studio/non-existing-studio");
+        var response = await client.GetAsync("/api/manifests/studio/999");
 
         Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
     }

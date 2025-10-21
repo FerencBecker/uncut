@@ -28,14 +28,14 @@ public class StudioTests(CustomWebApplicationFactory factory) : IClassFixture<Cu
     {
         var client = factory.CreateClient();
 
-        var response = await client.GetAsync("/api/studios/mate-lajos-dombovar");
+        var response = await client.GetAsync("/api/studios/1");
 
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         var content = await response.Content.ReadAsStringAsync();
         var studio = JsonSerializer.Deserialize<BffMini.Studio.Studio>(content, JsonOptions.Default);
 
         Assert.NotNull(studio);
-        Assert.Equal("mate-lajos-dombovar", studio.Id);
+        Assert.Equal(1, studio.Id);
     }
 
     [Fact]
@@ -43,7 +43,7 @@ public class StudioTests(CustomWebApplicationFactory factory) : IClassFixture<Cu
     {
         var client = factory.CreateClient();
 
-        var response = await client.GetAsync("/api/studios/non-existing-studio");
+        var response = await client.GetAsync("/api/studios/999");
 
         Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
     }

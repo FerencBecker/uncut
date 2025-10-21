@@ -18,12 +18,14 @@ public static class Endpoints
             .WithName("GetImageById")
             .WithSummary("Get a specific image by ID")
             .Produces<Image>()
+            .Produces(StatusCodes.Status400BadRequest)
             .Produces(StatusCodes.Status404NotFound);
 
         group.MapGet("/studio/{studioId}", GetByStudioId)
             .WithName("GetImagesByStudioId")
             .WithSummary("Get images for a specific studio")
-            .Produces<Image[]>();
+            .Produces<Image[]>()
+            .Produces(StatusCodes.Status400BadRequest);
     }
 
     private static async Task<IResult> GetAll(
@@ -43,7 +45,7 @@ public static class Endpoints
     }
 
     private static async Task<IResult> GetById(
-        string id,
+        int id,
         [FromServices] Repository repository,
         [FromServices] ILogger<Program> logger)
     {
@@ -54,17 +56,17 @@ public static class Endpoints
         }
         catch (FileNotFoundException)
         {
-            return Results.NotFound(new { message = $"Image '{id}' not found" });
+            return Results.NotFound(new { message = "Image not found" });
         }
         catch (Exception ex)
         {
-            logger.LogError(ex, "Error retrieving image {ImageId}", id);
+            logger.LogError(ex, "Error retrieving image");
             return Results.Problem(title: "Error retrieving image", statusCode: StatusCodes.Status500InternalServerError);
         }
     }
 
     private static async Task<IResult> GetByStudioId(
-        string studioId,
+        int studioId,
         [FromServices] Repository repository,
         [FromServices] ILogger<Program> logger)
     {
@@ -75,7 +77,7 @@ public static class Endpoints
         }
         catch (Exception ex)
         {
-            logger.LogError(ex, "Error retrieving images for studio {StudioId}", studioId);
+            logger.LogError(ex, "Error retrieving images for studio");
             return Results.Problem(title: "Error retrieving images by studio", statusCode: StatusCodes.Status500InternalServerError);
         }
     }

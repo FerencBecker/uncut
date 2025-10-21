@@ -14,7 +14,7 @@ public class Repository(IOptions<DataPathsOptions> options)
         return await Task.WhenAll(files.Select(GetStudioAsync));
     }
 
-    public async Task<Studio> GetByIdAsync(string id)
+    public async Task<Studio> GetByIdAsync(int id)
     {
         var filePath = Path.Combine(_dataDirectory, $"{id}.json");
         return await GetStudioAsync(filePath);

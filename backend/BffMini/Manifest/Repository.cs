@@ -8,7 +8,7 @@ public class Repository(IOptions<DataPathsOptions> options)
 {
     private readonly string _manifestsDirectory = options.Value.Manifests;
 
-    public async Task<ImagesManifest> GetByStudioIdAsync(string studioId)
+    public async Task<ImagesManifest> GetByStudioIdAsync(int studioId)
     {
         var filePath = Path.Combine(_manifestsDirectory, $"{studioId}.json");
         return await GetManifestAsync(filePath);

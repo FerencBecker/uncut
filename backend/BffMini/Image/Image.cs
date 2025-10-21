@@ -8,11 +8,11 @@ public record Image
 {
     [JsonPropertyName("id")]
     [Required]
-    public string Id { get; init; } = string.Empty;
+    public int Id { get; init; }
 
     [JsonPropertyName("studioId")]
     [Required]
-    public string StudioId { get; init; } = string.Empty;
+    public int StudioId { get; init; }
 
     [JsonPropertyName("inventoryNumber")]
     [Required]
