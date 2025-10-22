@@ -1,0 +1,38 @@
+version: '3.8'
+
+services:
+  bffmini:
+    build:
+      context: ./BffMini
+      dockerfile: Dockerfile
+      platforms:
+        - linux/amd64
+        - linux/arm64
+    image: bffmini:latest
+    container_name: bffmini
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./data:/app/data:ro
+      - bffmini-logs:/app/logs
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_URLS=http://+:8080
+      - DOTNET_RUNNING_IN_CONTAINER=true
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
+      interval: 30s
+      timeout: 3s
+      start_period: 5s
+      retries: 3
+    networks:
+      - bffmini-network
+
+volumes:
+  bffmini-logs:
+    driver: local
+
+networks:
+  bffmini-network:
+    driver: bridge

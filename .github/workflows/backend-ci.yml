@@ -1,0 +1,71 @@
+name: Backend CI
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'backend/**'
+      - '.github/workflows/backend-ci.yml'
+  pull_request:
+    branches: [ main ]
+    paths:
+      - 'backend/**'
+      - '.github/workflows/backend-ci.yml'
+
+jobs:
+  test:
+    name: Test Backend
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '10.0.x'
+        dotnet-quality: 'preview'
+
+    - name: Restore dependencies
+      run: dotnet restore
+      working-directory: ./backend
+
+    - name: Build
+      run: dotnet build --no-restore --configuration Release
+      working-directory: ./backend
+
+    - name: Run tests with coverage
+      run: dotnet test --no-build --configuration Release --verbosity normal --collect:"XPlat Code Coverage" --results-directory ./coverage
+      working-directory: ./backend
+
+    - name: Generate coverage report
+      uses: danielpalme/ReportGenerator-GitHub-Action@5.3.11
+      with:
+        reports: 'backend/coverage/**/coverage.cobertura.xml'
+        targetdir: 'backend/coveragereport'
+        reporttypes: 'HtmlInline;Cobertura;MarkdownSummaryGithub'
+
+    - name: Add coverage comment to PR
+      uses: marocchino/sticky-pull-request-comment@v2
+      if: github.event_name == 'pull_request'
+      with:
+        recreate: true
+        path: backend/coveragereport/SummaryGithub.md
+
+    - name: Upload coverage report
+      uses: actions/upload-artifact@v4
+      with:
+        name: coverage-report
+        path: backend/coveragereport/
+
+    - name: Check coverage threshold
+      run: |
+        COVERAGE=$(grep -oP 'Line coverage: \K[\d.]+' backend/coveragereport/Summary.txt | head -1)
+        echo "Line coverage: $COVERAGE%"
+        if (( $(echo "$COVERAGE < 80" | bc -l) )); then
+          echo "Coverage $COVERAGE% is below 80% threshold"
+          exit 1
+        fi
