@@ -103,11 +103,16 @@ The architecture document is maintained as a living document and updated as part
 
 These principles prevent over-engineering, premature abstraction, and unnecessary complexity.
 
-**Coding preferences:** See [CODING_PREFERENCES.md](CODING_PREFERENCES.md) for project-specific patterns (vertical slicing, null object pattern, repository pattern, interface co-location).
+**Coding preferences:**
+- Backend (C#): [CODING_PREFERENCES_BACKEND.md](CODING_PREFERENCES_BACKEND.md) - Vertical slicing, null object pattern, repository pattern
+- Frontend (React): [CODING_PREFERENCES_FRONTEND.md](CODING_PREFERENCES_FRONTEND.md) - Arrow functions, types, component organization
 
 ### Code Review Process
 
-**See [CODE_REVIEW_GUIDELINES.md](CODE_REVIEW_GUIDELINES.md) for detailed review methodologies.**
+**Review guidelines:**
+- Universal principles: [CODE_REVIEW_GUIDELINES.md](CODE_REVIEW_GUIDELINES.md)
+- Backend-specific (C#): [CODE_REVIEW_GUIDELINES_BACKEND.md](CODE_REVIEW_GUIDELINES_BACKEND.md)
+- Frontend-specific (React): [CODE_REVIEW_GUIDELINES_FRONTEND.md](CODE_REVIEW_GUIDELINES_FRONTEND.md)
 
 **Verify all coding principles, guidelines, and standards were followed. Question whether code should exist at all, even if tests pass and it compiles.**
 
