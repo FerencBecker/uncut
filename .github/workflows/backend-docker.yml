@@ -70,7 +70,7 @@ jobs:
       - name: Run Trivy vulnerability scanner
         uses: aquasecurity/trivy-action@master
         with:
-          image-ref: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
+          image-ref: ghcr.io/ferencbecker/uncut/bffmini:latest
           format: 'sarif'
           output: 'trivy-results.sarif'
         if: github.event_name != 'pull_request'
