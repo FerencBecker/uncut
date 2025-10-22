@@ -1,6 +1,6 @@
-# Coding Preferences
+# Backend Coding Preferences (C# / .NET)
 
-Coding patterns for Vertical Slice Architecture projects. These preferences balance pragmatism, maintainability, and minimalism.
+Coding patterns for Vertical Slice Architecture backend projects. These preferences balance pragmatism, maintainability, and minimalism.
 
 ## Development Approach
 
