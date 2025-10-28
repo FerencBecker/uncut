@@ -1,0 +1,124 @@
+/* VÁGATLANUL - Theme System */
+/* CSS Variables for Light/Dark Mode Support */
+
+:root {
+  /* Typography */
+  --font-primary: 'Source Sans Pro', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-serif: 'Source Serif Pro', Georgia, serif;
+  --font-header: 'Playfair Display', Georgia, serif;
+  --font-body: 'Source Sans Pro', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-ui: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+
+  /* Touch targets - 55-inch kiosk display */
+  --touch-min: 44px;
+  --touch-kiosk: 64px; /* 1.45x for large touchscreen */
+
+  /* Spacing */
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
+  --spacing-xl: 32px;
+  --spacing-2xl: 48px;
+
+  /* Border radius */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-full: 9999px;
+
+  /* Shadows */
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+
+  /* Transitions */
+  --transition-fast: 0.15s ease;
+  --transition-base: 0.3s ease;
+  --transition-slow: 0.5s ease;
+}
+
+/* Light Theme (Default) */
+:root,
+:root[data-theme='light'] {
+  /* Background colors */
+  --bg-color: #FEFCF7;
+  --surface-color: #FFFFFF;
+  --surface-secondary: #F5F3EC;
+
+  /* Text colors */
+  --text-color: #2D3748;
+  --text-secondary: #718096;
+  --text-muted: #A0AEC0;
+
+  /* Brand colors */
+  --heritage-gold: #D4AF74;
+  --museum-deep-blue: #1B365D;
+
+  /* Border colors */
+  --border-color: #E2E8F0;
+  --border-light: #EDF2F7;
+  --border-dark: #CBD5E0;
+
+  /* Interactive states */
+  --hover-overlay: rgba(0, 0, 0, 0.05);
+  --active-overlay: rgba(0, 0, 0, 0.1);
+  --focus-ring: rgba(66, 153, 225, 0.5);
+
+  /* Status colors */
+  --success: #2F855A;
+  --warning: #C05621;
+  --error: #9B2C2C;
+  --info: #2C5282;
+}
+
+/* Dark Theme */
+:root[data-theme='dark'] {
+  /* Background colors */
+  --bg-color: #1A1A1A;
+  --surface-color: #2C2C2C;
+  --surface-secondary: #3A3A3A;
+
+  /* Text colors */
+  --text-color: #E8E8E8;
+  --text-secondary: #A0AEC0;
+  --text-muted: #718096;
+
+  /* Brand colors */
+  --heritage-gold: #D4AF74;
+  --museum-deep-blue: #2B4A7C;
+
+  /* Border colors */
+  --border-color: #4A5568;
+  --border-light: #2D3748;
+  --border-dark: #718096;
+
+  /* Interactive states */
+  --hover-overlay: rgba(255, 255, 255, 0.1);
+  --active-overlay: rgba(255, 255, 255, 0.15);
+  --focus-ring: rgba(66, 153, 225, 0.5);
+
+  /* Status colors */
+  --success: #48BB78;
+  --warning: #ED8936;
+  --error: #FC8181;
+  --info: #4299E1;
+}
+
+/* Theme transition support */
+* {
+  transition-property: background-color, border-color, color, fill, stroke;
+  transition-duration: var(--transition-base);
+  transition-timing-function: ease;
+}
+
+/* Disable transitions for users who prefer reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

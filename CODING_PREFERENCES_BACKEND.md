@@ -18,6 +18,7 @@ public async Task<Product[]> GetAllAsync()
 ```
 
 **Principles:**
+
 - Use LINQ (`Select`, `Where`) over `foreach` when transforming collections
 - Short local names - context makes meaning clear (`files` not `jsonFilePathList`)
 - Eliminate intermediate variables - LINQ produces results directly
@@ -42,11 +43,13 @@ backend/
 ```
 
 **Placement rules:**
+
 - Slice-specific entities: Inside their slice (`Order.cs` in `/Order`)
 - Shared value objects: In `/Shared` when used across multiple slices
 - Entity-specific value objects: Same file as parent entity (until file >400 lines)
 
 **Principles:**
+
 - Each task delivers working feature, not infrastructure
 - Repository methods emerge from endpoint requirements
 - Use singular folder names (`Order/` not `Orders/`)
@@ -65,6 +68,7 @@ Namespace provides context - don't repeat it in class/method names.
 | Cross-domain refs        | `GetAll()`        | `GetByOrderIdAsync()`  | External domain name needed for clarity               |
 
 **DI Registration (namespace-qualified):**
+
 ```csharp
 services.AddSingleton<Order.Repository>();
 services.AddSingleton<Product.Repository>();
@@ -88,6 +92,7 @@ private static async Task<IResult> GetAll(
 ```
 
 **When to use interfaces:**
+
 - Multiple implementations exist (`IPaymentProvider` → `StripeProvider`, `PayPalProvider`)
 - External dependencies requiring test doubles (third-party APIs)
 - Cross-assembly abstractions
@@ -107,6 +112,7 @@ public record Money { ... }
 Benefits: Immutability, value equality for testing, concise syntax, with-expressions.
 
 **Null Object Pattern**
+
 - Non-nullable objects with empty defaults when object always exists conceptually
 - Nullable complex objects when absence has clear semantic meaning
 - Nullable primitives at leaf level (`int?`, `DateTime?`) for unknown/absent values
@@ -200,6 +206,7 @@ private static async Task<IResult> GetById(
 ```
 
 **Fail Fast**
+
 - Constructor validates configuration (fail at startup)
 - Don't check `File.Exists()` - let I/O throw naturally
 - Deserialization returns null → throw `InvalidOperationException`

@@ -41,4 +41,3 @@ export type StudioManifest = {
 };
 
 export type Language = 'hu' | 'en';
-export type Theme = 'light' | 'dark';
