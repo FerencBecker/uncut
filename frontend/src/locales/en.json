@@ -1,0 +1,17 @@
+{
+  "common": {
+    "appTitle": "UNCUT",
+    "loading": "Loading...",
+    "error": "An error occurred"
+  },
+  "language": {
+    "hungarian": "Magyar",
+    "english": "English",
+    "switchTo": "Switch to"
+  },
+  "theme": {
+    "light": "Light",
+    "dark": "Dark",
+    "switchTo": "Switch to"
+  }
+}

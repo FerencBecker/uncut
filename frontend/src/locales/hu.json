@@ -1,0 +1,17 @@
+{
+  "common": {
+    "appTitle": "VÁGATLANUL",
+    "loading": "Betöltés...",
+    "error": "Hiba történt"
+  },
+  "language": {
+    "hungarian": "Magyar",
+    "english": "English",
+    "switchTo": "Váltás erre:"
+  },
+  "theme": {
+    "light": "Világos",
+    "dark": "Sötét",
+    "switchTo": "Váltás erre:"
+  }
+}

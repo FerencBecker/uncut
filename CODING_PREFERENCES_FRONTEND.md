@@ -1,6 +1,12 @@
 # Frontend Coding Preferences (TypeScript / React)
 
-Coding patterns for React 18 TypeScript frontend.
+## AI Code Generation Rules
+
+**After EVERY Write tool:** `cd frontend && npx prettier --write "path/to/file"`
+**CSS variables:** Check `themes.css` first - use `--text-color` not `--color-text`
+**Custom hooks:** Only extract if used in 2+ places. Don't wrap library APIs.
+**Testing:** Don't test ternary operators, library code, or demo scaffolding.
+**Self-review:** Grep for consumers before presenting code. Single consumer = inline it.
 
 ## Component Style
 
@@ -164,5 +170,5 @@ expect(result.current.isOpen).toBe(false); // ❌ implementation detail
 
 1. `getByRole('button', { name: /submit/i })` - Best
 2. `getByLabelText('Email')` - Forms
-3. `getByText('VÁGATLANUL')` - Content
+3. `getByText('App Title')` - Content
 4. `getByTestId('custom-element')` - Last resort

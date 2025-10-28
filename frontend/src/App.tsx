@@ -1,23 +1,21 @@
-import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { ThemeToggle } from '@/components/ui/ThemeToggle';
+import { LanguageToggle } from '@/components/ui/LanguageToggle';
 import '@/styles/globals.css';
 
 const App = () => {
-  const [count, setCount] = useState(0);
+  const { t } = useTranslation();
 
   return (
     <div className="app">
       <header className="app-header">
-        <h1>VÁGATLANUL</h1>
+        <h1>{t('common.appTitle')}</h1>
         <p>Fotóműtermek - Néprajzi Múzeum</p>
-        <ThemeToggle />
-      </header>
-      <main>
-        <div className="card">
-          <button onClick={() => setCount((count) => count + 1)}>Count is {count}</button>
-          <p>React 18 + TypeScript + Vite setup with theme system is working!</p>
+        <div style={{ display: 'flex', gap: '1rem' }}>
+          <ThemeToggle />
+          <LanguageToggle />
         </div>
-      </main>
+      </header>
     </div>
   );
 };

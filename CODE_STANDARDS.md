@@ -8,8 +8,8 @@
    - Code must be self-explanatory through naming and structure.
    - Comments are a code smell! They always indicate wrong placement, naming, or a violation of SLA.
    - **Exception:** Comments explaining **WHY** (business context, decisions, constraints) are acceptable:
-     - Business rules: "VAT per Hungarian law 2024/XYZ"
-     - External constraints: "Polling due to MuseumPlus API rate limits"
+     - Business rules: "VAT calculation per local tax law 2024/XYZ"
+     - External constraints: "Polling due to third-party API rate limits"
      - Workarounds: "Temporary fix for upstream bug #1234"
    - **Never comment WHAT or HOW** - that's what code does.
 
@@ -88,6 +88,7 @@
 ---
 
 ## Naming, Placement, and Structure (refined)
+
 - **Naming and structure of data and APIs are driven by the consumer and interactions.**
 - **Placement is not driven by the client. Placement expresses the server's own structure and is a server-driven decision.**
 - Structure code to match the client's workflow and the lifecycle of the thing, but place it according to the server's logical organization.
@@ -95,6 +96,7 @@
 ---
 
 ## Anti-Patterns to Avoid (if they violate the basics)
+
 - **Overengineering:** Adding complexity for "flexibility" that isn't needed → Start simple, refactor when needed (violates KISS, YAGNI).
 - **Wrong data structures:** Using arrays when objects/maps are more appropriate → Use maps/objects for lookups, arrays for sequences (violates KISS).
 - **Lists instead of arrays:** Using `List<T>` for read-only data → Prefer arrays for immutable/fixed data, use List only when you need Add/Remove operations (violates KISS, wastes memory).
@@ -145,6 +147,7 @@
 ---
 
 **Summary:**
+
 - The only basics: NO COMMENTS (except WHY), SRP, Context Boundaries, DRY (within boundaries), KISS, YAGNI, SLA.
 - SRP is the foundation—it drives boundary definition and scoped DRY.
 - Context boundaries preserve independence—duplication across contexts is the price of autonomy.
