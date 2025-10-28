@@ -1,185 +1,63 @@
 # CLAUDE.md
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+Guidance for Claude Code when working in this repository.
 
-## Project Overview
+**Project-specific details:** See [PROJECT.md](PROJECT.md)
 
-**VÁGATLANUL** - Historical Photography Map Application for the Museum of Ethnography (Néprajzi Múzeum)
+## Workflow
 
-A dual-platform solution showcasing historical photography studios and their work through an interactive map interface:
-- **Phase 1 (Kiosk)**: Exhibition touchscreen application (Deadline: January 2026, Opening: February 12, 2026)
-- **Phase 2 (Web)**: Online platform with CMS (Deadline: July 5, 2026)
+### Task Execution
 
-## Project Structure
-
-```
-docs/
-├── specs/           # Original specifications - for scope and requirements understanding
-├── prps/            # Product Requirement Prompts - business context and "why"
-├── prds/            # Product Requirements Documents - detailed feature definitions
-├── architecture/    # Architecture (LIVING) - technical decisions and patterns
-├── designs/         # Design specifications - UI/UX details, colors, typography
-│   └── {timestamp}/ # Static HTML demos of designs
-└── data/            # Example and reference data
-
-backend/             # .NET backend services
-frontend/            # React frontend applications
-```
-
-**Note:** User stories and tasks are managed as GitHub issues, not files. Use `gh issue list` and `gh issue view <number>` to review them.
-
-## Architecture & Technology Stack
-
-**Source of Truth:** See [Architecture Document](docs/architecture/) for detailed system design, technology decisions, and rationale.
-
-The architecture document is maintained as a living document and updated as part of each task's acceptance criteria.
-
-**Quick Reference:**
-- **Frontend**: React + Ant Design (antd)
-- **Backend**: .NET 10.0 ASP.NET Core Minimal APIs
-- **Phase 1 Database**: SQLite (embedded, offline)
-- **Phase 2 Database**: PostgreSQL with MuseumPlus API integration
-- **Deployment**: Electron (kiosk), Web (nginx/CDN)
-- **Testing**: xUnit + Playwright
-
-## Development Workflow
-
-### When to Consult Which Documents
-
-**Executing a task:**
-1. Start with the GitHub issue (`gh issue view <number>`) - contains synthesized requirements and acceptance criteria
+1. Read GitHub issue (`gh issue view <number>`) for requirements
 2. Implement based on task specifications
-3. Only consult upstream documents if clarification needed
+3. Consult project documentation only if unclear
+4. **When unclear: ASK USER** - never guess
 
-**When a task needs clarification:**
-1. Check related GitHub issues (stories/parent tasks)
-2. For design details: `docs/designs/`
-3. For architecture decisions: `docs/architecture/`
-4. For business context: `docs/prds/` or `docs/prps/`
-5. For data structure examples: `docs/data/`
+### Coding Standards
 
-**When still unclear - ASK THE USER:**
-- If documentation is ambiguous or contradictory
-- If task requirements are incomplete
-- If implementation approach is uncertain
-- If you need business/scope clarification
-- Always prefer asking over guessing
+**Follow strictly:**
 
-**Design implementation:**
-- Extract timestamp from design filename (format: `design_YYYYMMDD-HHMMSS.md`)
-- Reference `docs/designs/{timestamp}/` for static HTML demos
-- See `DESIGN_TO_HTML_INSTRUCTIONS.md` for detailed conversion process
+- [CODE_STANDARDS.md](CODE_STANDARDS.md) - Universal principles
+- [CODING_PREFERENCES_FRONTEND.md](CODING_PREFERENCES_FRONTEND.md) - Frontend patterns
+- [CODING_PREFERENCES_BACKEND.md](CODING_PREFERENCES_BACKEND.md) - Backend patterns
 
-### Key Constraints
+**Core principles:** Minimalism, SRP, YAGNI, KISS, single abstraction level
 
-**Data:**
-- Hungarian place names only (no GPS coordinates)
-- No locations outside Hungary
-- Languages: Hungarian (default) + English
-- 70-80 photography studios, ~3000 images
-
-**Hardware:**
-- Raspberry Pi 5 (or alternative PC with Fedora Linux) for kiosk
-- Offline operation required for Phase 1
-- Performance: <2s gallery loading, 60fps animations
-
-**Integration:**
-- MuseumPlus API: https://docs.zetcom.com/framework-public/index.html
-- One-way sync, rate-limited, circuit breaker pattern
-
-## Development Guidelines
-
-### Coding Principles
-
-**Follow [CODE_STANDARDS.md](CODE_STANDARDS.md) strictly** - these are behavioral guardrails to prevent common AI mistakes:
-- **Minimalism first**: Smallest solution that works
-- **SRP is foundation**: Single responsibility drives all design decisions
-- **Context boundaries**: Independent features, duplication across contexts is acceptable
-- **DRY within boundaries only**: Eliminate duplication inside contexts, not across them
-- **KISS, YAGNI, SLA**: Keep simple, build only what's needed, single abstraction level
-- **No obvious comments**: Code explains WHAT/HOW, comments only explain WHY
-- **Client-driven design**: Consumer needs shape APIs, not server convenience
-- **Lifecycle-first thinking**: Understand creation/ownership/death before coding
-
-These principles prevent over-engineering, premature abstraction, and unnecessary complexity.
-
-**Coding preferences:**
-- Backend (C#): [CODING_PREFERENCES_BACKEND.md](CODING_PREFERENCES_BACKEND.md) - Vertical slicing, null object pattern, repository pattern
-- Frontend (React): [CODING_PREFERENCES_FRONTEND.md](CODING_PREFERENCES_FRONTEND.md) - Arrow functions, types, component organization
-
-### Code Review Process
+### Code Review
 
 **Review guidelines:**
-- Universal principles: [CODE_REVIEW_GUIDELINES.md](CODE_REVIEW_GUIDELINES.md)
-- Backend-specific (C#): [CODE_REVIEW_GUIDELINES_BACKEND.md](CODE_REVIEW_GUIDELINES_BACKEND.md)
-- Frontend-specific (React): [CODE_REVIEW_GUIDELINES_FRONTEND.md](CODE_REVIEW_GUIDELINES_FRONTEND.md)
 
-**Verify all coding principles, guidelines, and standards were followed. Question whether code should exist at all, even if tests pass and it compiles.**
+- [CODE_REVIEW_GUIDELINES_FRONTEND.md](CODE_REVIEW_GUIDELINES_FRONTEND.md)
+- [CODE_REVIEW_GUIDELINES_BACKEND.md](CODE_REVIEW_GUIDELINES_BACKEND.md)
 
-**Review order:**
-1. **Check issue** - What was actually requested?
-2. **Review each file** - Apply 5-question framework:
-   - Is it used? (Grep for actual callers)
-   - What problem does it solve? (Must be explicit in issue)
-   - What are the trade-offs? (Costs vs. benefits for this project)
-   - Does YAGNI apply? (Needed now or solving future problems?)
-   - Hype vs. reality? (Industry pattern vs. actual project needs)
-3. **Verify architecture fit** - Does this match documented approach?
-4. **Check coding standards** - SRP, YAGNI, KISS, null object pattern, etc.
+**Before presenting code:**
 
-**Red flags indicating violations:**
-- Code with tests but no callers
-- Abstraction layers with single implementation
-- Features not mentioned in issue
-- Horizontal infrastructure without vertical features
-- Patterns designed for scale/complexity we don't have
+1. Check issue - what was requested?
+2. Grep for consumers - is code actually used?
+3. Question whether code should exist at all
 
-**Remove code that:**
-- Solves future problems (YAGNI violation)
-- Wrong abstraction level (doesn't match consumer needs)
-- Built before features need it (speculative infrastructure)
-- Implements something not requested (issue mismatch)
-
-### Documentation Updates
-
-When completing tasks, always update the architecture document (docs/architecture/) with:
-- New patterns or architectural decisions
-- Component additions or changes
-- Integration implementations
-- Technology stack changes
-
-This ensures the architecture document remains the living source of truth for the project.
+**Red flags:** Code with tests but no callers, single-use abstractions, features not in issue
 
 ### Git Workflow
 
-**IMPORTANT: Never commit code or create pull requests without explicit user permission.**
+**IMPORTANT: Never commit without explicit user permission.**
 
-**Workflow:**
-1. Make code changes as requested
-2. Run tests to verify changes work
-3. Show summary of changes to user
-4. **STOP and ASK the user for permission to commit and create PR**
-5. Only after explicit approval, proceed with:
-   - Create git commit with appropriate message
-   - Push changes to remote branch
-   - Create pull request
-   - Return the PR URL to the user
+1. Make changes
+2. Run tests
+3. Show summary
+4. **STOP and ASK user for permission**
+5. Only after approval: commit → push → create PR
 
-**Rationale:** The user wants to review all code changes before they are committed to version control. Single approval covers both commit and PR creation for efficiency. Always wait for explicit "yes, commit and create PR" from the user.
+**Commit format:** Brief (1-2 sentences), reference issue number, no implementation details
 
-### Commit Messages
+### Documentation
 
-**Keep commits brief** - focus on high-level achievements only:
-- ❌ No implementation details, no file lists
-- One or two sentences maximum describing what was accomplished
-- Always reference the GitHub issue number
+Update architecture documentation when completing tasks with new patterns, components, or tech decisions.
 
-### Testing Requirements
+### Testing
 
-- Unit tests: 95% coverage target (xUnit for backend, Jest/RTL for frontend)
-- E2E tests: 70% coverage on critical paths (Playwright)
-- See `docs/architecture/` for detailed testing strategy
+See PROJECT.md for coverage targets and testing strategy.
 
-### Design System
+### Design
 
-All design details (colors, typography, touch targets, etc.) are documented in `docs/designs/`. Always reference the latest design document for UI implementation.
+Reference project design documentation for UI/UX implementation details.
