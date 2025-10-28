@@ -1,0 +1,100 @@
+/* AccessibilityToggle Component Styles */
+
+.accessibility-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-sm);
+
+  /* Touch-optimized sizing for kiosk */
+  min-width: var(--touch-kiosk);
+  min-height: var(--touch-kiosk);
+  padding: var(--spacing-sm) var(--spacing-md);
+
+  /* Visual styling */
+  background-color: var(--surface-color);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-full);
+
+  /* Typography */
+  font-family: var(--font-ui);
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--text-color);
+
+  /* Interaction */
+  cursor: pointer;
+  transition: all var(--transition-base);
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.accessibility-toggle:hover {
+  background-color: var(--surface-secondary);
+  border-color: var(--border-dark);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+}
+
+.accessibility-toggle:active {
+  transform: translateY(0);
+  box-shadow: var(--shadow-sm);
+}
+
+.accessibility-toggle:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
+.accessibility-toggle:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.accessibility-toggle[aria-pressed='true'] {
+  background-color: var(--brand-primary);
+  border-color: var(--brand-primary);
+  color: white;
+}
+
+.accessibility-toggle__icon {
+  font-size: 1.5rem;
+  line-height: 1;
+  transition: transform var(--transition-base);
+}
+
+.accessibility-toggle:hover .accessibility-toggle__icon {
+  transform: scale(1.1);
+}
+
+.accessibility-toggle__label {
+  font-size: 0.875rem;
+  font-weight: 600;
+  letter-spacing: 0.025em;
+  text-transform: uppercase;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .accessibility-toggle__label {
+    display: none;
+  }
+
+  .accessibility-toggle {
+    min-width: var(--touch-kiosk);
+    padding: var(--spacing-sm);
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .accessibility-toggle,
+  .accessibility-toggle__icon {
+    transition: none;
+  }
+
+  .accessibility-toggle:hover .accessibility-toggle__icon {
+    transform: none;
+  }
+}
