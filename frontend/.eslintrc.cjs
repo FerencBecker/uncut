@@ -29,6 +29,8 @@ module.exports = {
     'prettier/prettier': 'error',
     'prefer-arrow-callback': 'error',
     'prefer-const': 'error',
+    'react-hooks/rules-of-hooks': 'error',
+    'react-hooks/exhaustive-deps': 'error',
   },
   settings: {
     react: {

@@ -1,31 +1,5 @@
-:root {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
-
-  color-scheme: light dark;
-  color: rgba(0, 0, 0, 0.87);
-  background-color: #ffffff;
-
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
-body {
-  margin: 0;
-  display: flex;
-  place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
-}
+/* Demo styles - uses theme variables */
+/* These will be replaced when actual UI components are built */
 
 #root {
   width: 100%;
@@ -35,47 +9,65 @@ body {
   text-align: center;
 }
 
+.app {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
 .app-header {
   margin-bottom: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-md);
 }
 
 .app-header h1 {
   font-size: 3rem;
   font-weight: 700;
   margin-bottom: 0.5rem;
+  color: var(--text-color);
 }
 
 .app-header p {
   font-size: 1.2rem;
-  color: #666;
+  color: var(--text-secondary);
 }
 
 .card {
   padding: 2rem;
-  background-color: #f9f9f9;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  background-color: var(--surface-color);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
 }
 
-button {
-  border-radius: 8px;
-  border: 1px solid transparent;
+.card button {
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-color);
   padding: 0.6em 1.2em;
   font-size: 1em;
   font-weight: 500;
-  font-family: inherit;
-  background-color: #1a1a1a;
+  font-family: var(--font-ui);
+  background-color: var(--museum-deep-blue);
   color: white;
   cursor: pointer;
-  transition: border-color 0.25s;
+  transition: all var(--transition-base);
   margin-bottom: 1rem;
 }
 
-button:hover {
-  border-color: #646cff;
+.card button:hover {
+  background-color: var(--heritage-gold);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
 }
 
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
+.card button:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
+.card p {
+  color: var(--text-secondary);
 }
