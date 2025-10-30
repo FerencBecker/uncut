@@ -11,6 +11,8 @@ import { PerformanceMonitor } from '@/components/PerformanceMonitor/PerformanceM
 import usePerformanceMonitoring from '@/components/PerformanceMonitor/usePerformanceMonitoring';
 import { useReducedMotion } from '@/hooks/useReducedMotion';
 import { withErrorHandling } from '@/utils/withErrorHandling';
+import HungaryMap from '@/components/map/HungaryMap';
+import LocationMarker from '@/components/map/LocationMarker';
 import '@/styles/globals.css';
 
 const App = () => {
@@ -312,6 +314,26 @@ const App = () => {
                         </p>
                       </div>
                     </PageTransition>
+                  </div>
+                </section>
+
+                {/* Hungary Map Component */}
+                <section>
+                  <h2 style={{ marginBottom: '1rem' }}>Hungary Map Component (Issue #66)</h2>
+                  <div
+                    style={{
+                      padding: '2rem',
+                      background: 'var(--surface-color)',
+                      border: '2px solid var(--brand-primary)',
+                      borderRadius: '8px',
+                    }}
+                  >
+                    <HungaryMap showCounties={true} showCountySeats={true}>
+                      <LocationMarker latitude={46.3761} longitude={18.13} label="Dombóvár" />
+                    </HungaryMap>
+                    <p style={{ marginTop: '1rem', color: 'var(--text-secondary)', textAlign: 'center' }}>
+                      19 counties + Budapest • 19 county seats • Theme-aware styling • Responsive scaling
+                    </p>
                   </div>
                 </section>
 
