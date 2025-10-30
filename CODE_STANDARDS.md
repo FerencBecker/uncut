@@ -98,12 +98,7 @@
 ## Anti-Patterns to Avoid (if they violate the basics)
 
 - **Defensive programming:** NO DEFENSIVE PROGRAMMING! Trust your consumers. If cleanup is needed, document it clearly and make it the consumer's responsibility. No "safety nets" or "just in case" code. The consumer knows their lifecycle better than you do (violates YAGNI, SRP).
-  - Real example: Removed defensive useEffect cleanup from usePerformanceMonitoring. Consumer controls lifecycle, not the hook.
-  - Result: -7 lines of unnecessary "just in case" code
 - **Features for tests only:** If production code never uses a feature, DELETE IT. Tests should verify production behavior, not drive speculative features (violates YAGNI).
-  - Real example: usePerformanceMonitoring had `thresholds` and `onAlert` parameters only used in tests, never in App.tsx
-  - Result: -30 lines production code, -62 lines test code = **92 lines destroyed**
-  - Tests went from 44 to 41, production got simpler, same functionality
 - **Overengineering:** Adding complexity for "flexibility" that isn't needed → Start simple, refactor when needed (violates KISS, YAGNI).
 - **Wrong data structures:** Using arrays when objects/maps are more appropriate → Use maps/objects for lookups, arrays for sequences (violates KISS).
 - **Lists instead of arrays:** Using `List<T>` for read-only data → Prefer arrays for immutable/fixed data, use List only when you need Add/Remove operations (violates KISS, wastes memory).
@@ -111,13 +106,11 @@
 - **Excessive filtering/transformation:** Converting efficient structures to inefficient ones → Choose the right structure from the start (violates KISS).
 - **Speculative abstractions:** Creating generic solutions for specific problems → Solve the problem at hand, generalize when you have 3+ cases (violates YAGNI).
 - **Premature shared abstractions:** Extracting common code across contexts too early → Wait for Rule of Three, prefer duplication across contexts (violates Context Boundaries).
-- **Cargo cult optimization (React hooks):** Using `useCallback`/`useMemo`/`memo` without understanding when they're needed → Only use when profiling shows actual performance problems or when preventing expensive re-renders in child components (violates YAGNI, KISS).
-  - **When to use `useCallback`:** Only when the function is passed to a memoized child component that would re-render unnecessarily
-  - **When to use `useMemo`:** Only for expensive calculations (>5ms) that run on every render
-  - **When to use `memo`:** Only for expensive components that re-render frequently with same props
-  - **Default:** Use simple arrow functions. They're fast. Premature optimization makes code harder to read.
-  - Real example: usePerformanceMonitoring had 6 functions wrapped in `useCallback` with no memoized children, re-renders every second anyway
-  - Result: -20 lines of wrapper code, clearer intent, same performance
+- **Cargo cult optimization (React hooks):** Using `useCallback`/`useMemo`/`memo` without profiling first → Only optimize when measurements show actual performance problems (violates YAGNI, KISS).
+  - `useCallback`: Only when function is passed to memoized child that would re-render unnecessarily
+  - `useMemo`: Only for expensive calculations (>5ms) that run on every render
+  - `memo`: Only for expensive components that re-render frequently with same props
+  - Default: Use simple arrow functions. They're fast. Premature optimization hurts readability.
 
 ---
 

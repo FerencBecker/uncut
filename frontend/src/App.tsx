@@ -10,6 +10,7 @@ import { PageTransition } from '@/components/animations/PageTransition';
 import { PerformanceMonitor } from '@/components/PerformanceMonitor/PerformanceMonitor';
 import usePerformanceMonitoring from '@/components/PerformanceMonitor/usePerformanceMonitoring';
 import { useReducedMotion } from '@/hooks/useReducedMotion';
+import { withErrorHandling } from '@/utils/withErrorHandling';
 import '@/styles/globals.css';
 
 const App = () => {
@@ -23,7 +24,8 @@ const App = () => {
   const performanceMonitoring = usePerformanceMonitoring();
   const { recordTouchResponse } = performanceMonitoring;
 
-  const replayAnimation = (id: string) => {
+  const replayAnimation = withErrorHandling((id: string) => {
+    // eslint-disable-next-line react-hooks/purity -- Event handler, not render
     const startTime = performance.now();
     setActiveKeys(prev => ({ ...prev, [id]: (prev[id] || 0) + 1 }));
 
@@ -33,16 +35,11 @@ const App = () => {
         recordTouchResponse(startTime, `animation-${id}`);
       }, 0);
     }
-  };
+  });
 
-  const handleTestError = () => {
-    setShouldThrowError(true);
-  };
+  const handleTestError = withErrorHandling(() => setShouldThrowError(true));
 
-  // Error boundaries only catch errors during render, not in event handlers
-  if (shouldThrowError) {
-    throw new Error('Test error triggered from easter egg');
-  }
+  if (shouldThrowError) throw new Error('Test error triggered from easter egg');
 
   // Reset error flag after it's thrown so retry works
   useEffect(() => {
@@ -52,7 +49,7 @@ const App = () => {
     }
   }, [shouldThrowError]);
 
-  const handleTitleClick = () => {
+  const handleTitleClick = withErrorHandling(() => {
     const newCount = clickCount + 1;
     setClickCount(newCount);
 
@@ -62,7 +59,7 @@ const App = () => {
     }
 
     setTimeout(() => setClickCount(0), 2000);
-  };
+  });
 
   return (
     <div className="app">

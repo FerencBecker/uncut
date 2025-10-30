@@ -177,6 +177,24 @@ const { isDark } = useTheme(); // Consumer just uses
 - Icon selection, labels, ARIA attributes → OK in component
 - State derivation, boolean conversion → belongs in service
 
+## Error Handling
+
+**ErrorBoundary only catches render errors, not event handlers. Wrap handlers with withErrorHandling.**
+
+```typescript
+// ❌ Unprotected
+const handleClick = () => fetch('/api/data');
+
+// ✅ Protected
+const handleClick = withErrorHandling(() => fetch('/api/data'));
+
+// ✅ With callback
+const handleSubmit = withErrorHandling(
+  async () => saveData(),
+  { onError: () => showToast('Failed') }
+);
+```
+
 ## API Integration
 
 **Use Axios:**

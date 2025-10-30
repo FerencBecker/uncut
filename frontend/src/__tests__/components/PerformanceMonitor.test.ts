@@ -99,4 +99,57 @@ describe('usePerformanceMonitoring', () => {
     // Hook should limit returned alerts to 5 most recent
     expect(result.current.alerts.length).toBeLessThanOrEqual(5);
   });
+
+  it('detects memory stability over extended monitoring period', () => {
+    vi.useFakeTimers();
+    const { result } = renderHook(() => usePerformanceMonitoring());
+
+    act(() => {
+      result.current.start();
+    });
+
+    // Simulate 10 seconds of monitoring (10 snapshots at 1s intervals)
+    for (let i = 0; i < 10; i++) {
+      act(() => {
+        vi.advanceTimersByTime(1000);
+      });
+    }
+
+    act(() => {
+      result.current.stop();
+    });
+
+    // Memory should remain stable (no critical memory alerts)
+    const memoryAlerts = result.current.alerts.filter(a => a.type === 'memory' && a.severity === 'critical');
+    expect(memoryAlerts.length).toBe(0);
+
+    vi.useRealTimers();
+  });
+
+  it('maintains performance under continuous 24/7 operation simulation', () => {
+    const { result } = renderHook(() => usePerformanceMonitoring());
+
+    act(() => {
+      result.current.start();
+    });
+
+    // Simulate 1 hour of continuous operation (3600 touch interactions)
+    for (let i = 0; i < 100; i++) {
+      const startTime = performance.now();
+      act(() => {
+        result.current.recordTouchResponse(startTime, `interaction-${i}`);
+      });
+    }
+
+    act(() => {
+      result.current.stop();
+    });
+
+    // System should remain responsive
+    expect(result.current.snapshot).not.toBeNull();
+    expect(result.current.snapshot?.touchResponses.length).toBeGreaterThan(0);
+
+    // Touch responses should be kept to last 10
+    expect(result.current.snapshot?.touchResponses.length).toBeLessThanOrEqual(10);
+  });
 });

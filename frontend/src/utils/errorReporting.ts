@@ -27,16 +27,39 @@ export const determineSeverity = (error: Error): ErrorSeverity => {
   return result ? result[0] : 'low';
 };
 
+const sanitizeUrl = (url: string): string => {
+  try {
+    const urlObj = new URL(url);
+    // Remove query parameters that might contain sensitive data
+    urlObj.search = '';
+    urlObj.hash = '';
+    return urlObj.toString();
+  } catch {
+    return '[invalid-url]';
+  }
+};
+
+const sanitizeMessage = (message: string): string => {
+  // In production, remove potential sensitive patterns
+  if (import.meta.env.PROD) {
+    return message
+      .replace(/[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/g, '[email]') // emails
+      .replace(/\b\d{4}[-\s]?\d{4}[-\s]?\d{4}[-\s]?\d{4}\b/g, '[card]') // credit cards
+      .replace(/\b[A-Za-z0-9]{20,}\b/g, '[token]'); // potential tokens/keys
+  }
+  return message;
+};
+
 export const createApplicationError = (error: Error, componentStack?: string): ApplicationError => ({
   correlationId: generateCorrelationId(),
-  message: error.message,
-  stack: error.stack,
+  message: sanitizeMessage(error.message),
+  stack: import.meta.env.PROD ? undefined : error.stack,
   severity: determineSeverity(error),
   category: categorizeError(error),
   timestamp: Date.now(),
-  componentStack,
+  componentStack: import.meta.env.PROD ? undefined : componentStack,
   userAgent: navigator.userAgent,
-  url: window.location.href,
+  url: sanitizeUrl(window.location.href),
 });
 
 export const reportError = (error: ApplicationError): void =>

@@ -170,4 +170,29 @@ describe('ErrorBoundary', () => {
 
     vi.useRealTimers();
   });
+
+  it('maintains error boundary functionality across theme changes', () => {
+    const { container } = render(
+      <div data-theme="light">
+        <ErrorBoundary>
+          <ThrowError shouldThrow={true} />
+        </ErrorBoundary>
+      </div>
+    );
+
+    // Error boundary should render in light theme
+    const errorBoundary = container.querySelector('.error-boundary');
+    expect(errorBoundary).toBeInTheDocument();
+    expect(screen.getByText(/Hiba történt/i)).toBeInTheDocument();
+
+    // Simulate theme change to dark
+    const themeContainer = container.querySelector('[data-theme]');
+    if (themeContainer) {
+      themeContainer.setAttribute('data-theme', 'dark');
+    }
+
+    // Error boundary should still be functional
+    expect(screen.getByText(/Hiba történt/i)).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /Újrapróbálás/i })).toBeInTheDocument();
+  });
 });
