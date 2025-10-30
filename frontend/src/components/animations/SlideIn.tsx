@@ -11,6 +11,7 @@ type SlideInProps = {
   distance?: number;
   delay?: number;
   className?: string;
+  key?: number | string;
 };
 
 export const SlideIn = ({
@@ -20,6 +21,7 @@ export const SlideIn = ({
   distance = 50,
   delay = 0,
   className,
+  key,
 }: SlideInProps) => {
   const shouldReduceMotion = useReducedMotion();
 
@@ -31,6 +33,7 @@ export const SlideIn = ({
 
   return (
     <motion.div
+      key={key}
       className={className}
       initial={variants.initial}
       animate={variants.animate}

@@ -10,9 +10,10 @@ type ScaleInProps = {
   initialScale?: number;
   delay?: number;
   className?: string;
+  key?: number | string;
 };
 
-export const ScaleIn = ({ children, speed = 'base', initialScale = 0.95, delay = 0, className }: ScaleInProps) => {
+export const ScaleIn = ({ children, speed = 'base', initialScale = 0.95, delay = 0, className, key }: ScaleInProps) => {
   const shouldReduceMotion = useReducedMotion();
 
   if (shouldReduceMotion) {
@@ -23,6 +24,7 @@ export const ScaleIn = ({ children, speed = 'base', initialScale = 0.95, delay =
 
   return (
     <motion.div
+      key={key}
       className={className}
       initial={variants.initial}
       animate={variants.animate}

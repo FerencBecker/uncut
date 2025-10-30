@@ -1,4 +1,4 @@
-import { type ReactNode, createContext, useContext, useState } from 'react';
+import { createContext, type ReactNode, useContext, useState } from 'react';
 
 type AccessibilityContextType = {
   reduceMotion: boolean;
@@ -14,7 +14,6 @@ const STORAGE_KEY = 'accessibility-reduce-motion';
 
 export const AccessibilityProvider = ({ children }: { children: ReactNode }) => {
   const [reduceMotion, setReduceMotionState] = useState(() => {
-    if (typeof window === 'undefined') return false;
     const stored = localStorage.getItem(STORAGE_KEY);
     return stored === 'true';
   });
@@ -25,9 +24,7 @@ export const AccessibilityProvider = ({ children }: { children: ReactNode }) => 
   };
 
   return (
-    <AccessibilityContext.Provider value={{ reduceMotion, setReduceMotion }}>
-      {children}
-    </AccessibilityContext.Provider>
+    <AccessibilityContext.Provider value={{ reduceMotion, setReduceMotion }}>{children}</AccessibilityContext.Provider>
   );
 };
 

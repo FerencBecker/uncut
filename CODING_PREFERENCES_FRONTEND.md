@@ -36,6 +36,34 @@ type Props = { label: string; variant: 'primary' | 'secondary'; size: 'sm' | 'md
 const Button = ({ label, variant, size }: Props) => { ... };
 ```
 
+**No explicit return types for component-specific hooks:**
+
+```typescript
+// ❌ Explicit type (unnecessary duplication)
+export type UsePerformanceMonitoringResult = {
+  snapshot: PerformanceSnapshot | null;
+  start: () => void;
+  stop: () => void;
+};
+const usePerformanceMonitoring = (): UsePerformanceMonitoringResult => {
+  // ... implementation
+  return { snapshot, start, stop };
+};
+
+// ✅ Inferred type (less duplication)
+const usePerformanceMonitoring = () => {
+  // ... implementation
+  return { snapshot, start, stop };
+};
+```
+
+**Rationale:**
+- Component-specific hooks usually have 1 consumer (the component they serve)
+- Explicit types require updating 3 places: type definition, function signature, return statement
+- TypeScript inference provides same safety with less maintenance
+- Single consumer means breaking changes are caught immediately at the call site
+- Exception: Framework-provided or widely shared hooks (3+ consumers) benefit from explicit types
+
 ## File Organization
 
 **Co-locate component-specific code, centralize shared code:**
@@ -81,6 +109,55 @@ const isDark = stored === "dark";
 localStorage.setItem("isDark", String(isDark));
 const isDark = localStorage.getItem("isDark") === "true";
 ```
+
+## No Classes or OOP Patterns
+
+**React provides state primitives. Use them. Don't wrap them in classes or factories:**
+
+```typescript
+// ❌ Class-thinking in React
+export class FPSMonitor {
+  private frames: number[] = [];
+  start() { ... }
+  getMetrics() { ... }
+}
+const monitor = useRef(new FPSMonitor());
+
+// ❌ Factory functions pretending not to be classes
+export const createFPSMonitor = () => {
+  let frames: number[] = [];
+  return { start() { ... }, getMetrics() { ... } };
+};
+const monitor = useRef(createFPSMonitor());
+
+// ✅ State belongs in hooks, operations are functions
+const useFPSMonitoring = () => {
+  const [metrics, setMetrics] = useState<FPSMetrics>(...);
+  const framesRef = useRef<number[]>([]);
+
+  const start = () => { /* operates on framesRef */ };
+  const updateMetrics = () => { /* calculates from framesRef, updates metrics */ };
+
+  return { metrics, start, updateMetrics };
+};
+
+// ✅ Stateless operations are just functions
+export const calculateFPSMetrics = (frames: number[]): FPSMetrics => { ... };
+export const checkFPSThreshold = (fps: number, thresholds: PerformanceThresholds): PerformanceAlert | null => { ... };
+```
+
+**Why:**
+- Classes/factories are indirection - you're wrapping React's state system for no benefit
+- `useRef(new Thing())` means you didn't understand what hooks provide
+- State primitives (useState, useRef) are clear about what changes and when
+- Pure functions are testable without mocking
+- Composition through hooks is more flexible than inheritance or object composition
+
+**Pattern for state + behavior:**
+1. Is there state? → Hook (useState/useRef for local, Context for shared)
+2. Pure computation? → Plain function
+3. Need to compose? → Hooks compose hooks
+4. Zero state? → Don't create an object, just export functions
 
 ## Service vs Consumer Separation
 

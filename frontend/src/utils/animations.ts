@@ -1,4 +1,4 @@
-import type { AnimationSpeed, AnimationDirection, AnimationVariant } from '@/types/animations';
+import type { AnimationDirection, AnimationSpeed, AnimationVariant } from '@/types/animations';
 
 // Animation timing presets (per technical notes: fast 0.15s, base 0.2s, slow 0.3s)
 export const ANIMATION_DURATIONS: Record<AnimationSpeed, number> = {
@@ -33,10 +33,10 @@ export const slideVariants = (
   distance: number = 50
 ): AnimationVariant => {
   const offsets: Record<AnimationDirection, { x?: number; y?: number }> = {
-    left: { x: distance },
-    right: { x: -distance },
-    up: { y: distance },
-    down: { y: -distance },
+    left: { x: distance }, // Starts right, slides leftward (← motion)
+    right: { x: -distance }, // Starts left, slides rightward (→ motion)
+    up: { y: distance }, // Starts below, slides upward (↑ motion)
+    down: { y: -distance }, // Starts above, slides downward (↓ motion)
   };
 
   return {

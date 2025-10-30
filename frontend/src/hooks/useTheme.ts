@@ -4,7 +4,7 @@ import { not } from 'ramda';
 const IS_DARK_STORAGE_KEY = 'isDark';
 
 const isSystemDark = (): boolean =>
-  typeof window !== 'undefined' && (window.matchMedia?.('(prefers-color-scheme: dark)')?.matches ?? false);
+  window.matchMedia('(prefers-color-scheme: dark)').matches;
 
 const isInitiallyDark = (): boolean => {
   const stored = localStorage.getItem(IS_DARK_STORAGE_KEY);
