@@ -1,0 +1,17 @@
+.location-marker {
+  fill: var(--heritage-gold);
+  stroke: white;
+  stroke-width: 2;
+  transition:
+    fill var(--transition-base),
+    stroke var(--transition-base);
+}
+
+.location-marker-label {
+  fill: var(--text-color);
+  font-size: 14px;
+  font-weight: 600;
+  pointer-events: none;
+  user-select: none;
+  transition: fill var(--transition-base);
+}

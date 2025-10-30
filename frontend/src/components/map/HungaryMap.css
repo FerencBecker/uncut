@@ -1,0 +1,77 @@
+.hungary-map {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Base map fill (no stroke, just background) */
+.country-fill {
+  fill: var(--surface-color);
+  stroke: none;
+  transition: fill var(--transition-base);
+}
+
+/* Hungary country outline - thick border on top of everything */
+.country-outline {
+  fill: none;
+  stroke: var(--text-color);
+  stroke-width: 3;
+  stroke-linejoin: round;
+  transition: stroke var(--transition-base);
+}
+
+/* County boundaries - thin borders */
+.county-boundary {
+  fill: none;
+  stroke: var(--border-color);
+  stroke-width: 1;
+  stroke-linejoin: round;
+  transition: stroke var(--transition-base);
+}
+
+/* County seats without studios - not clickable */
+.seat-without-studio {
+  fill: var(--text-secondary);
+  stroke: white;
+  stroke-width: 1.5;
+  cursor: default;
+  transition:
+    fill var(--transition-base),
+    stroke var(--transition-base);
+}
+
+/* County seats with studios - clickable */
+.seat-with-studio {
+  fill: var(--heritage-gold);
+  stroke: white;
+  stroke-width: 2;
+  cursor: pointer;
+  transition:
+    fill var(--transition-base),
+    stroke var(--transition-base),
+    transform var(--transition-fast);
+}
+
+.seat-with-studio:hover {
+  transform: scale(1.2);
+  fill: var(--brand-accent);
+}
+
+/* County seat labels */
+.seat-label {
+  fill: var(--text-color);
+  font-size: 12px;
+  font-weight: 600;
+  text-anchor: middle;
+  pointer-events: none;
+  user-select: none;
+  transition: fill var(--transition-base);
+}
+
+/* Responsive scaling for different screen sizes */
+@media (min-width: 3840px) {
+  .hungary-map {
+    transform: scale(1.25);
+    transform-origin: center;
+  }
+}
