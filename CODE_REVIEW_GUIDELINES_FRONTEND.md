@@ -1,5 +1,12 @@
 # Frontend Code Review Guidelines (TypeScript / React)
 
+## Review Method
+
+**Ask "Why?" repeatedly** - Surface root principles, not surface-level fixes
+**Identify concrete issues** - Fixable bugs > theoretical concerns
+**One-line principles** - Conciseness forces clarity
+**Understand before documenting** - Flip-flopping means you don't get it yet
+
 ## Question Everything
 
 Before approving code, ask:
