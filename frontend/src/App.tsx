@@ -24,9 +24,7 @@ const App = () => {
   const performanceMonitoring = usePerformanceMonitoring();
   const { recordTouchResponse } = performanceMonitoring;
 
-  const replayAnimation = withErrorHandling((id: string) => {
-    // eslint-disable-next-line react-hooks/purity -- Event handler, not render
-    const startTime = performance.now();
+  const replayAnimation = withErrorHandling((id: string, startTime: number) => {
     setActiveKeys(prev => ({ ...prev, [id]: (prev[id] || 0) + 1 }));
 
     // Track touch response time
@@ -116,7 +114,7 @@ const App = () => {
                 <section>
                   <h2 style={{ marginBottom: '1rem' }}>FadeIn Animations (Click to Replay)</h2>
                   <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
-                    <div onClick={() => replayAnimation('fade-fast')}>
+                    <div onClick={() => replayAnimation('fade-fast', performance.now())}>
                       <FadeIn key={activeKeys['fade-fast'] || 0} speed="fast">
                         <div
                           style={{
@@ -132,7 +130,7 @@ const App = () => {
                         </div>
                       </FadeIn>
                     </div>
-                    <div onClick={() => replayAnimation('fade-base')}>
+                    <div onClick={() => replayAnimation('fade-base', performance.now())}>
                       <FadeIn key={activeKeys['fade-base'] || 0} speed="base">
                         <div
                           style={{
@@ -148,7 +146,7 @@ const App = () => {
                         </div>
                       </FadeIn>
                     </div>
-                    <div onClick={() => replayAnimation('fade-slow')}>
+                    <div onClick={() => replayAnimation('fade-slow', performance.now())}>
                       <FadeIn key={activeKeys['fade-slow'] || 0} speed="slow">
                         <div
                           style={{
@@ -171,7 +169,7 @@ const App = () => {
                 <section>
                   <h2 style={{ marginBottom: '1rem' }}>SlideIn Animations (Click to Replay)</h2>
                   <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
-                    <div onClick={() => replayAnimation('slide-left')}>
+                    <div onClick={() => replayAnimation('slide-left', performance.now())}>
                       <SlideIn key={activeKeys['slide-left'] || 0} direction="left">
                         <div
                           style={{
@@ -187,7 +185,7 @@ const App = () => {
                         </div>
                       </SlideIn>
                     </div>
-                    <div onClick={() => replayAnimation('slide-right')}>
+                    <div onClick={() => replayAnimation('slide-right', performance.now())}>
                       <SlideIn key={activeKeys['slide-right'] || 0} direction="right">
                         <div
                           style={{
@@ -203,7 +201,7 @@ const App = () => {
                         </div>
                       </SlideIn>
                     </div>
-                    <div onClick={() => replayAnimation('slide-up')}>
+                    <div onClick={() => replayAnimation('slide-up', performance.now())}>
                       <SlideIn key={activeKeys['slide-up'] || 0} direction="up">
                         <div
                           style={{
@@ -219,7 +217,7 @@ const App = () => {
                         </div>
                       </SlideIn>
                     </div>
-                    <div onClick={() => replayAnimation('slide-down')}>
+                    <div onClick={() => replayAnimation('slide-down', performance.now())}>
                       <SlideIn key={activeKeys['slide-down'] || 0} direction="down">
                         <div
                           style={{
@@ -242,7 +240,7 @@ const App = () => {
                 <section>
                   <h2 style={{ marginBottom: '1rem' }}>ScaleIn Animations (Click to Replay)</h2>
                   <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
-                    <div onClick={() => replayAnimation('scale-fast')}>
+                    <div onClick={() => replayAnimation('scale-fast', performance.now())}>
                       <ScaleIn key={activeKeys['scale-fast'] || 0} speed="fast">
                         <div
                           style={{
@@ -258,7 +256,7 @@ const App = () => {
                         </div>
                       </ScaleIn>
                     </div>
-                    <div onClick={() => replayAnimation('scale-base')}>
+                    <div onClick={() => replayAnimation('scale-base', performance.now())}>
                       <ScaleIn key={activeKeys['scale-base'] || 0} speed="base">
                         <div
                           style={{
@@ -274,7 +272,7 @@ const App = () => {
                         </div>
                       </ScaleIn>
                     </div>
-                    <div onClick={() => replayAnimation('scale-slow')}>
+                    <div onClick={() => replayAnimation('scale-slow', performance.now())}>
                       <ScaleIn key={activeKeys['scale-slow'] || 0} speed="slow" initialScale={0.8}>
                         <div
                           style={{
@@ -296,7 +294,7 @@ const App = () => {
                 {/* PageTransition Example */}
                 <section>
                   <h2 style={{ marginBottom: '1rem' }}>PageTransition Animation (Click to Replay)</h2>
-                  <div onClick={() => replayAnimation('page-transition')}>
+                  <div onClick={() => replayAnimation('page-transition', performance.now())}>
                     <PageTransition key={activeKeys['page-transition'] || 0} direction="forward">
                       <div
                         style={{

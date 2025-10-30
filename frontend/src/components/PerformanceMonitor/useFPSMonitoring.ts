@@ -19,6 +19,14 @@ const useFPSMonitoring = () => {
 
   const measureFrame = () => {
     const currentTime = window.performance.now();
+
+    // Skip first frame - no delta time yet
+    if (lastFrameTimeRef.current === 0) {
+      lastFrameTimeRef.current = currentTime;
+      animationIdRef.current = requestAnimationFrame(measureFrame);
+      return;
+    }
+
     const fps = 1000 / (currentTime - lastFrameTimeRef.current);
     framesRef.current.push(fps);
     if (framesRef.current.length > MAX_FPS_SAMPLES) framesRef.current.shift();

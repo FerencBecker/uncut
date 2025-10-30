@@ -159,6 +159,8 @@ export const checkFPSThreshold = (fps: number, thresholds: PerformanceThresholds
 3. Need to compose? → Hooks compose hooks
 4. Zero state? → Don't create an object, just export functions
 
+**Hook cleanup:** If you expose start/stop, document it. If consumer can't control it, clean it up.
+
 ## Service vs Consumer Separation
 
 **Services provide everything consumers need:**

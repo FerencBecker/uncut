@@ -45,7 +45,7 @@ const sanitizeMessage = (message: string): string => {
     return message
       .replace(/[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/g, '[email]') // emails
       .replace(/\b\d{4}[-\s]?\d{4}[-\s]?\d{4}[-\s]?\d{4}\b/g, '[card]') // credit cards
-      .replace(/\b[A-Za-z0-9]{20,}\b/g, '[token]'); // potential tokens/keys
+      .replace(/\b[A-Za-z0-9_-]{32,}\b/g, '[token]'); // API keys/tokens (32+ chars with underscores/hyphens)
   }
   return message;
 };
