@@ -97,6 +97,8 @@
 
 ## Anti-Patterns to Avoid (if they violate the basics)
 
+- **Defensive programming:** NO DEFENSIVE PROGRAMMING! Trust your consumers. If cleanup is needed, document it clearly and make it the consumer's responsibility. No "safety nets" or "just in case" code. The consumer knows their lifecycle better than you do (violates YAGNI, SRP).
+- **Features for tests only:** If production code never uses a feature, DELETE IT. Tests should verify production behavior, not drive speculative features (violates YAGNI).
 - **Overengineering:** Adding complexity for "flexibility" that isn't needed → Start simple, refactor when needed (violates KISS, YAGNI).
 - **Wrong data structures:** Using arrays when objects/maps are more appropriate → Use maps/objects for lookups, arrays for sequences (violates KISS).
 - **Lists instead of arrays:** Using `List<T>` for read-only data → Prefer arrays for immutable/fixed data, use List only when you need Add/Remove operations (violates KISS, wastes memory).
@@ -104,6 +106,11 @@
 - **Excessive filtering/transformation:** Converting efficient structures to inefficient ones → Choose the right structure from the start (violates KISS).
 - **Speculative abstractions:** Creating generic solutions for specific problems → Solve the problem at hand, generalize when you have 3+ cases (violates YAGNI).
 - **Premature shared abstractions:** Extracting common code across contexts too early → Wait for Rule of Three, prefer duplication across contexts (violates Context Boundaries).
+- **Cargo cult optimization (React hooks):** Using `useCallback`/`useMemo`/`memo` without profiling first → Only optimize when measurements show actual performance problems (violates YAGNI, KISS).
+  - `useCallback`: Only when function is passed to memoized child that would re-render unnecessarily
+  - `useMemo`: Only for expensive calculations (>5ms) that run on every render
+  - `memo`: Only for expensive components that re-render frequently with same props
+  - Default: Use simple arrow functions. They're fast. Premature optimization hurts readability.
 
 ---
 
@@ -143,6 +150,36 @@
 - **Clarity over micro-optimizations**: Readable code that's 5% slower is better than clever code
 - **Measure, don't assume**: Use profiling tools to find real bottlenecks
 - **For small applications**: Common sense and simple algorithms are sufficient
+
+## React Optimization Checklist (Prevent Cargo Cult)
+
+**Before adding `useCallback`, ask:**
+1. Is this function passed to a memoized component? (If no → DON'T use `useCallback`)
+2. Does the child component re-render unnecessarily? (If no → DON'T use `useCallback`)
+3. Is the re-render expensive (>16ms)? (If no → DON'T use `useCallback`)
+4. Have you profiled to confirm the problem? (If no → DON'T use `useCallback`)
+
+**Before adding `useMemo`, ask:**
+1. Is this calculation expensive (>5ms)? (If no → DON'T use `useMemo`)
+2. Does it run on every render? (If no → DON'T use `useMemo`)
+3. Have you profiled to confirm the cost? (If no → DON'T use `useMemo`)
+
+**Before adding `memo` to a component, ask:**
+1. Does it re-render frequently with the same props? (If no → DON'T use `memo`)
+2. Is the render expensive (>16ms)? (If no → DON'T use `memo`)
+3. Have you profiled to confirm the problem? (If no → DON'T use `memo`)
+
+**Default approach:**
+- Start with simple arrow functions
+- Start with regular components
+- Only optimize when profiling shows actual performance issues
+- Performance issues are real problems with measurements, not theoretical concerns
+
+**Red flags (cargo cult symptoms):**
+- "It's a best practice" (without understanding why)
+- "We might need it later" (YAGNI violation)
+- "All the tutorials do it" (blindly copying patterns)
+- "It can't hurt" (adds complexity, hurts readability)
 
 ---
 

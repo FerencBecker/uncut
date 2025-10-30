@@ -7,9 +7,10 @@ type PageTransitionProps = {
   children: ReactNode;
   direction?: 'forward' | 'backward';
   className?: string;
+  key?: number | string;
 };
 
-export const PageTransition = ({ children, direction = 'forward', className }: PageTransitionProps) => {
+export const PageTransition = ({ children, direction = 'forward', className, key }: PageTransitionProps) => {
   const shouldReduceMotion = useReducedMotion();
 
   if (shouldReduceMotion) {
@@ -20,6 +21,7 @@ export const PageTransition = ({ children, direction = 'forward', className }: P
 
   return (
     <motion.div
+      key={key}
       className={className}
       initial={variants.initial}
       animate={variants.animate}

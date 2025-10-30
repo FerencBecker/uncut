@@ -9,9 +9,10 @@ type FadeInProps = {
   speed?: AnimationSpeed;
   delay?: number;
   className?: string;
+  key?: number | string;
 };
 
-export const FadeIn = ({ children, speed = 'base', delay = 0, className }: FadeInProps) => {
+export const FadeIn = ({ children, speed = 'base', delay = 0, className, key }: FadeInProps) => {
   const shouldReduceMotion = useReducedMotion();
 
   if (shouldReduceMotion) {
@@ -22,6 +23,7 @@ export const FadeIn = ({ children, speed = 'base', delay = 0, className }: FadeI
 
   return (
     <motion.div
+      key={key}
       className={className}
       initial={variants.initial}
       animate={variants.animate}

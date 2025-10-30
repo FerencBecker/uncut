@@ -1,5 +1,5 @@
-import { describe, it, expect, beforeEach, afterEach } from 'vitest';
-import { renderHook, act } from '@testing-library/react';
+import { afterEach, beforeEach, describe, expect, it } from 'vitest';
+import { act, renderHook } from '@testing-library/react';
 import { type ReactNode } from 'react';
 import { AccessibilityProvider, useAccessibility } from '@/contexts/AccessibilityContext';
 
@@ -12,9 +12,7 @@ describe('AccessibilityContext', () => {
     localStorage.clear();
   });
 
-  const wrapper = ({ children }: { children: ReactNode }) => (
-    <AccessibilityProvider>{children}</AccessibilityProvider>
-  );
+  const wrapper = ({ children }: { children: ReactNode }) => <AccessibilityProvider>{children}</AccessibilityProvider>;
 
   it('provides default reduceMotion value of false', () => {
     const { result } = renderHook(() => useAccessibility(), { wrapper });

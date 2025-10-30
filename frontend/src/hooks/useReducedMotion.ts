@@ -6,13 +6,12 @@ import { AccessibilityContext } from '@/contexts/AccessibilityContext';
  * Checks both OS-level prefers-reduced-motion AND manual accessibility toggle
  * Returns true if EITHER preference is enabled
  */
-export const useReducedMotion = (): boolean => {
+export const useReducedMotion = () => {
   // Check manual override from AccessibilityContext
   const { reduceMotion: manualReduceMotion } = useContext(AccessibilityContext);
 
   // Check OS-level preference
   const [osReduceMotion, setOsReduceMotion] = useState(() => {
-    if (typeof window === 'undefined') return false;
     return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   });
 

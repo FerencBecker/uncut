@@ -23,6 +23,11 @@ Guidance for Claude Code when working in this repository.
 
 **Core principles:** Minimalism, SRP, YAGNI, KISS, single abstraction level
 
+**CRITICAL: BE CONCISE. ALWAYS.**
+- Documentation: 1 line > 50 lines of explanation
+- Examples: Show, don't explain
+- If you write a wall of text, you failed
+
 ### Code Review
 
 **Review guidelines:**
@@ -53,6 +58,8 @@ Guidance for Claude Code when working in this repository.
 ### Documentation
 
 Update architecture documentation when completing tasks with new patterns, components, or tech decisions.
+
+**Be ruthlessly concise:** One principle = one line. No verbose explanations. No walls of text.
 
 ### Testing
 

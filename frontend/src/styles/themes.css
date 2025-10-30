@@ -55,6 +55,11 @@
   --heritage-gold: #D4AF74;
   --museum-deep-blue: #1B365D;
 
+  /* Brand aliases for component use */
+  --brand-primary: var(--museum-deep-blue);
+  --brand-accent: var(--heritage-gold);
+  --brand-secondary: #8B7355;
+
   /* Border colors */
   --border-color: #E2E8F0;
   --border-light: #EDF2F7;
@@ -87,6 +92,11 @@
   /* Brand colors */
   --heritage-gold: #D4AF74;
   --museum-deep-blue: #2B4A7C;
+
+  /* Brand aliases for component use */
+  --brand-primary: var(--museum-deep-blue);
+  --brand-accent: var(--heritage-gold);
+  --brand-secondary: #9B8468;
 
   /* Border colors */
   --border-color: #4A5568;
