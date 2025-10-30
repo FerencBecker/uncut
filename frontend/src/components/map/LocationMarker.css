@@ -1,5 +1,4 @@
 .location-marker {
-  r: 8;
   fill: var(--heritage-gold);
   stroke: white;
   stroke-width: 2;
@@ -12,7 +11,6 @@
   fill: var(--text-color);
   font-size: 14px;
   font-weight: 600;
-  text-anchor: middle;
   pointer-events: none;
   user-select: none;
   transition: fill var(--transition-base);

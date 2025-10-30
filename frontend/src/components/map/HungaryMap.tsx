@@ -15,14 +15,10 @@ type HungaryMapProps = {
 };
 
 type CountyBoundaryProps = {
-  countyName: string;
   path: string;
 };
 
-const CountyBoundary = ({ countyName, path }: CountyBoundaryProps) => {
-  if (countyName === 'Budapest') return <path className="budapest-boundary" d={path} />;
-  return <path className="county-boundary" d={path} />;
-};
+const CountyBoundary = ({ path }: CountyBoundaryProps) => <path className="county-boundary" d={path} />;
 
 const CountySeatMarker = ({ seat }: { seat: CountySeat }) => {
   const { x, y } = coordsToSVG(seat.latitude, seat.longitude);
@@ -30,7 +26,7 @@ const CountySeatMarker = ({ seat }: { seat: CountySeat }) => {
   return (
     <g>
       <circle cx={x} cy={y} r="6" className={markerClass} />
-      <text x={x} y={y - 10} textAnchor="middle" className="seat-label" fontSize="12" fontWeight="600">
+      <text x={x} y={y - 10} className="seat-label">
         {seat.name}
       </text>
     </g>
@@ -48,9 +44,7 @@ const HungaryMap = ({ showCounties, showCountySeats, children }: HungaryMapProps
     >
       <path className="country-fill" d={HUNGARY_PATH} />
       {showCounties &&
-        Object.entries(COUNTY_PATHS).map(([countyName, path]) => (
-          <CountyBoundary key={countyName} countyName={countyName} path={path} />
-        ))}
+        Object.entries(COUNTY_PATHS).map(([countyName, path]) => <CountyBoundary key={countyName} path={path} />)}
 
       {showCountySeats && COUNTY_SEATS.map(seat => <CountySeatMarker key={seat.name} seat={seat} />)}
       <path className="country-outline" d={HUNGARY_PATH} />

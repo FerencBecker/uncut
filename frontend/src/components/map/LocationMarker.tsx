@@ -11,7 +11,7 @@ const LocationMarker = ({ latitude, longitude, label }: LocationMarkerProps) => 
   const { x, y } = coordsToSVG(latitude, longitude);
   return (
     <g>
-      <circle cx={x} cy={y} className="location-marker" data-testid="location-marker-circle" />
+      <circle cx={x} cy={y} r="8" className="location-marker" data-testid="location-marker-circle" />
       <text x={x} y={y - 15} className="location-marker-label" data-testid="location-marker-label">
         {label}
       </text>

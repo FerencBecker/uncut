@@ -29,18 +29,6 @@
   transition: stroke var(--transition-base);
 }
 
-/* Budapest boundary - similar to counties but slightly different */
-.budapest-boundary {
-  fill: none;
-  stroke: var(--brand-primary);
-  stroke-width: 1.5;
-  stroke-linejoin: round;
-  opacity: 0.6;
-  transition:
-    stroke var(--transition-base),
-    opacity var(--transition-base);
-}
-
 /* County seats without studios - not clickable */
 .seat-without-studio {
   fill: var(--text-secondary);
@@ -72,6 +60,9 @@
 /* County seat labels */
 .seat-label {
   fill: var(--text-color);
+  font-size: 12px;
+  font-weight: 600;
+  text-anchor: middle;
   pointer-events: none;
   user-select: none;
   transition: fill var(--transition-base);
