@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import type { Studio } from '@/types/map';
 import { coordsToSVG } from '@/utils/mapCoordinates';
 import { useReducedMotion } from '@/hooks/useReducedMotion';
+import { BATCH_DELAY, BATCH_SIZE } from '@/config/animation';
 import './StudioMarker.css';
 
 type StudioMarkerProps = {
@@ -79,9 +80,6 @@ const instantAppearance = {
     },
   },
 };
-
-const BATCH_SIZE = 5; // Number of markers to animate simultaneously
-const BATCH_DELAY = 0.5; // Delay between batches in seconds
 
 const entranceAnimation = (index: number) => ({
   initial: { scale: 0, opacity: 0 },

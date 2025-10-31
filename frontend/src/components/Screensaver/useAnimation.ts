@@ -1,11 +1,7 @@
 import { useEffect, useState } from 'react';
+import { ANIMATION_DURATION, BATCH_DELAY, BATCH_SIZE, LOOP_PAUSE } from '@/config/animation';
 
-const BATCH_SIZE = 5;
-const BATCH_DELAY = 0.5; // seconds between batches
-const ANIMATION_DURATION = 6; // seconds for each marker animation
-const LOOP_PAUSE = 2; // seconds pause before restarting
-
-type ScreensaverAnimationConfig = {
+type AnimationConfig = {
   studioCount: number;
   enabled: boolean;
 };
@@ -15,11 +11,11 @@ type AnimationState = {
 };
 
 /**
- * Hook to manage continuous loop animation for screensaver mode.
- * Calculates total animation duration based on studio count and batching,
- * then restarts animations with a pause between loops.
+ * Screensaver-specific hook to manage infinite continuous loop animations.
+ * Calculates total animation duration based on studio count and batching strategy,
+ * then automatically restarts animations with a pause between cycles.
  */
-export const useAnimation = ({ studioCount, enabled }: ScreensaverAnimationConfig): AnimationState => {
+export const useAnimation = ({ studioCount, enabled }: AnimationConfig): AnimationState => {
   const [animationKey, setAnimationKey] = useState(0);
 
   useEffect(() => {
