@@ -365,8 +365,7 @@ const App = () => {
                       screensaverMode={false}
                     />
                     <p style={{ marginTop: '1rem', color: 'var(--text-secondary)', textAlign: 'center' }}>
-                      64px touch targets • Hover: scale 1.4 + rotate • Active: scale 1.5 + pulse • Gold gradient • Click
-                      to test
+                      64px touch targets • Hover: scale 1.4 + rotate (disabled in kiosk mode) • Active: scale 1.5 + pulse • Gold gradient
                     </p>
                   </div>
                 </section>
@@ -412,7 +411,7 @@ const App = () => {
                       screensaverMode={true}
                     />
                     <p style={{ marginTop: '1rem', color: 'var(--text-secondary)', textAlign: 'center' }}>
-                      Sequential appearance • 0.3s stagger • Scale 0→1.3→1 over 6s • Continuous pulse animation
+                      Batched appearance (5 at a time) • 0.5s between batches • Scale 0→1.3→1 over 6s • Optimized for performance
                     </p>
                   </div>
                 </section>

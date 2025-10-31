@@ -12,6 +12,7 @@ const COUNTY_PATHS = COUNTY_DATA.counties;
 type HungaryMapProps = {
   studios: Studio[];
   screensaverMode: boolean;
+  kioskMode?: boolean;
 };
 
 type CountyBoundaryProps = {
@@ -33,7 +34,7 @@ const CountySeatMarker = ({ seat }: { seat: CountySeat }) => {
   );
 };
 
-const HungaryMap = ({ studios, screensaverMode }: HungaryMapProps) => {
+const HungaryMap = ({ studios, screensaverMode, kioskMode = false }: HungaryMapProps) => {
   return (
     <svg
       className="hungary-map"
@@ -59,7 +60,7 @@ const HungaryMap = ({ studios, screensaverMode }: HungaryMapProps) => {
       <path className="country-outline" d={HUNGARY_PATH} />
 
       {studios.map((studio, index) => (
-        <StudioMarker key={studio.id} studio={studio} index={index} screensaverMode={screensaverMode} />
+        <StudioMarker key={studio.id} studio={studio} index={index} screensaverMode={screensaverMode} kioskMode={kioskMode} />
       ))}
     </svg>
   );

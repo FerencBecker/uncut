@@ -9,21 +9,23 @@ type StudioMarkerProps = {
   studio: Studio;
   index: number;
   screensaverMode: boolean;
+  kioskMode?: boolean;
 };
 
-const StudioMarker = ({ studio, index, screensaverMode }: StudioMarkerProps) => {
+const StudioMarker = ({ studio, index, screensaverMode, kioskMode = false }: StudioMarkerProps) => {
   const [isHovered, setIsHovered] = useState(false);
   const [isActive, setIsActive] = useState(false);
   const shouldReduceMotion = useReducedMotion();
   const { latitude, longitude } = studio.studioAddress.location.coordinates;
   const { x, y } = coordsToSVG(latitude, longitude);
+  const shouldEnableHover = !kioskMode;
 
   if (shouldReduceMotion) {
     return (
       <g
         className="studio-marker-group"
-        onMouseEnter={() => setIsHovered(true)}
-        onMouseLeave={() => setIsHovered(false)}
+        onMouseEnter={shouldEnableHover ? () => setIsHovered(true) : undefined}
+        onMouseLeave={shouldEnableHover ? () => setIsHovered(false) : undefined}
         onMouseDown={() => setIsActive(true)}
         onMouseUp={() => setIsActive(false)}
         style={{ cursor: 'pointer' }}
@@ -38,8 +40,8 @@ const StudioMarker = ({ studio, index, screensaverMode }: StudioMarkerProps) => 
   return (
     <motion.g
       className="studio-marker-group"
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
+      onMouseEnter={shouldEnableHover ? () => setIsHovered(true) : undefined}
+      onMouseLeave={shouldEnableHover ? () => setIsHovered(false) : undefined}
       onMouseDown={() => setIsActive(true)}
       onMouseUp={() => setIsActive(false)}
       onTouchStart={() => setIsActive(true)}
@@ -50,7 +52,7 @@ const StudioMarker = ({ studio, index, screensaverMode }: StudioMarkerProps) => 
       variants={screensaverMode ? entranceAnimation(index) : instantAppearance}
     >
       <TouchTarget x={x} y={y} />
-      <AnimatedVisibleMarker x={x} y={y} isHovered={isHovered} isActive={isActive} />
+      <AnimatedVisibleMarker x={x} y={y} isHovered={shouldEnableHover && isHovered} isActive={isActive} />
       {isActive && <AnimatedPulseRing x={x} y={y} />}
     </motion.g>
   );
@@ -78,6 +80,9 @@ const instantAppearance = {
   },
 };
 
+const BATCH_SIZE = 5; // Number of markers to animate simultaneously
+const BATCH_DELAY = 0.5; // Delay between batches in seconds
+
 const entranceAnimation = (index: number) => ({
   initial: { scale: 0, opacity: 0 },
   animate: {
@@ -87,7 +92,7 @@ const entranceAnimation = (index: number) => ({
       duration: 6,
       times: [0, 0.3, 1],
       ease: 'easeInOut' as const,
-      delay: index * 0.3,
+      delay: Math.floor(index / BATCH_SIZE) * BATCH_DELAY,
     },
   },
 });
