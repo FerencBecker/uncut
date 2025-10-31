@@ -28,6 +28,8 @@ Guidance for Claude Code when working in this repository.
 - Examples: Show, don't explain
 - If you write a wall of text, you failed
 
+**Line endings:** LF only (Unix style). After using Write tool, run: `dos2unix <file>` or `sed -i 's/\r$//' <file>`
+
 ### Code Review
 
 **Review guidelines:**
