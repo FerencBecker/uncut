@@ -1,17 +1,18 @@
 import type { CountySeat } from '@/data/countySeats';
 import { COUNTY_SEATS } from '@/data/countySeats';
+import type { Studio } from '@/types/map';
 import { HUNGARY_PATH } from './hungaryPath';
 import COUNTY_DATA from './countyPaths.json';
 import { coordsToSVG } from '@/utils/mapCoordinates';
+import StudioMarker from './StudioMarker';
 import './HungaryMap.css';
-import * as React from 'react';
 
 const COUNTY_PATHS = COUNTY_DATA.counties;
 
 type HungaryMapProps = {
-  showCounties: boolean;
-  showCountySeats: boolean;
-  children?: React.ReactNode;
+  studios: Studio[];
+  screensaverMode: boolean;
+  kioskMode?: boolean;
 };
 
 type CountyBoundaryProps = {
@@ -33,7 +34,7 @@ const CountySeatMarker = ({ seat }: { seat: CountySeat }) => {
   );
 };
 
-const HungaryMap = ({ showCounties, showCountySeats, children }: HungaryMapProps) => {
+const HungaryMap = ({ studios, screensaverMode, kioskMode = false }: HungaryMapProps) => {
   return (
     <svg
       className="hungary-map"
@@ -42,15 +43,25 @@ const HungaryMap = ({ showCounties, showCountySeats, children }: HungaryMapProps
       role="img"
       aria-label="Map of Hungary"
     >
-      <path className="country-fill" d={HUNGARY_PATH} />
-      {showCounties &&
-        Object.entries(COUNTY_PATHS).map(([countyName, path]) => <CountyBoundary key={countyName} path={path} />)}
+      {/* SVG Definitions for gradients */}
+      <defs>
+        <radialGradient id="studioMarkerGradient" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stopColor="var(--heritage-gold)" stopOpacity="1" />
+          <stop offset="100%" stopColor="var(--brand-secondary)" stopOpacity="1" />
+        </radialGradient>
+      </defs>
 
-      {showCountySeats && COUNTY_SEATS.map(seat => <CountySeatMarker key={seat.name} seat={seat} />)}
+      <path className="country-fill" d={HUNGARY_PATH} />
+      {Object.entries(COUNTY_PATHS).map(([countyName, path]) => (
+        <CountyBoundary key={countyName} path={path} />
+      ))}
+
+      {!screensaverMode && COUNTY_SEATS.map(seat => <CountySeatMarker key={seat.name} seat={seat} />)}
       <path className="country-outline" d={HUNGARY_PATH} />
 
-      {/* Custom children (e.g., studio markers) */}
-      {children}
+      {studios.map((studio, index) => (
+        <StudioMarker key={studio.id} studio={studio} index={index} screensaverMode={screensaverMode} kioskMode={kioskMode} />
+      ))}
     </svg>
   );
 };
