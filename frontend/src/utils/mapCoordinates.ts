@@ -1,4 +1,4 @@
-import type { SVGPoint, MapBounds } from '@/types/Map';
+import type { MapBounds, SVGPoint } from '@/types/map';
 
 export const HUNGARY_BOUNDS: MapBounds = {
   minLat: 45.7,

@@ -5,56 +5,47 @@ import { coordsToSVG, isWithinHungary, HUNGARY_BOUNDS } from '@/utils/mapCoordin
 
 describe('HungaryMap', () => {
   it('renders SVG with correct viewBox', () => {
-    render(<HungaryMap showCounties={false} showCountySeats={false} />);
+    render(<HungaryMap studios={[]} screensaverMode={false} />);
     const svg = screen.getByRole('img', { name: /map of hungary/i });
     expect(svg).toHaveAttribute('viewBox', '0 0 1000 600');
   });
 
   it('renders country outline path', () => {
-    const { container } = render(<HungaryMap showCounties={false} showCountySeats={false} />);
+    const { container } = render(<HungaryMap studios={[]} screensaverMode={false} />);
     const path = container.querySelector('path');
     expect(path).toBeTruthy();
     expect(path?.getAttribute('d')).toBeTruthy();
   });
 
-  it('renders children elements', () => {
-    render(
-      <HungaryMap showCounties={false} showCountySeats={false}>
-        <circle data-testid="test-marker" cx="500" cy="300" r="10" />
-      </HungaryMap>
-    );
-    expect(screen.getByTestId('test-marker')).toBeInTheDocument();
-  });
-
-  it('renders county boundaries including Budapest when showCounties is true', () => {
-    const { container } = render(<HungaryMap showCounties={true} showCountySeats={false} />);
+  it('renders county boundaries in interactive mode', () => {
+    const { container } = render(<HungaryMap studios={[]} screensaverMode={false} />);
     const paths = container.querySelectorAll('path');
     // Should have base fill + country outline + 20 boundaries (19 counties + Budapest)
     expect(paths.length).toBe(22); // 2 base + 20 county/Budapest boundaries
   });
 
-  it('does not render county boundaries when showCounties is false', () => {
-    const { container } = render(<HungaryMap showCounties={false} showCountySeats={false} />);
+  it('renders county boundaries in screensaver mode', () => {
+    const { container } = render(<HungaryMap studios={[]} screensaverMode={true} />);
     const paths = container.querySelectorAll('path');
-    // Should only have base fill + country outline
-    expect(paths.length).toBe(2);
+    // Should have base fill + country outline + 20 boundaries (19 counties + Budapest)
+    expect(paths.length).toBe(22); // 2 base + 20 county/Budapest boundaries
   });
 
-  it('renders county seats when showCountySeats is true', () => {
-    const { container } = render(<HungaryMap showCounties={false} showCountySeats={true} />);
+  it('renders county seats in interactive mode', () => {
+    const { container } = render(<HungaryMap studios={[]} screensaverMode={false} />);
     const circles = container.querySelectorAll('circle');
     // Should have 19 county seat markers (Budapest is one of the 19)
     expect(circles.length).toBe(19);
   });
 
-  it('does not render county seats when showCountySeats is false', () => {
-    const { container } = render(<HungaryMap showCounties={false} showCountySeats={false} />);
+  it('does not render county seats in screensaver mode', () => {
+    const { container } = render(<HungaryMap studios={[]} screensaverMode={true} />);
     const circles = container.querySelectorAll('circle');
     expect(circles.length).toBe(0);
   });
 
-  it('renders all layers when both flags are true', () => {
-    const { container } = render(<HungaryMap showCounties={true} showCountySeats={true} />);
+  it('renders all layers in interactive mode', () => {
+    const { container } = render(<HungaryMap studios={[]} screensaverMode={false} />);
     const paths = container.querySelectorAll('path');
     const circles = container.querySelectorAll('circle');
 

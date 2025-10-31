@@ -36,6 +36,23 @@ type Props = { label: string; variant: 'primary' | 'secondary'; size: 'sm' | 'md
 const Button = ({ label, variant, size }: Props) => { ... };
 ```
 
+**Props are required by default. Only use `?` when truly optional:**
+
+```typescript
+// ❌ Defensive optional props
+type HungaryMapProps = {
+  studios?: Studio[];
+  screensaverMode?: boolean;
+};
+
+// ✅ Required means required
+type HungaryMapProps = {
+  studios: Studio[];
+  screensaverMode: boolean;
+  children?: React.ReactNode; // Actually optional
+};
+```
+
 **No explicit return types for component-specific hooks:**
 
 ```typescript

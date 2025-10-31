@@ -12,7 +12,6 @@ import usePerformanceMonitoring from '@/components/PerformanceMonitor/usePerform
 import { useReducedMotion } from '@/hooks/useReducedMotion';
 import { withErrorHandling } from '@/utils/withErrorHandling';
 import HungaryMap from '@/components/map/HungaryMap';
-import LocationMarker from '@/components/map/LocationMarker';
 import '@/styles/globals.css';
 
 const App = () => {
@@ -328,11 +327,92 @@ const App = () => {
                       borderRadius: '8px',
                     }}
                   >
-                    <HungaryMap showCounties={true} showCountySeats={true}>
-                      <LocationMarker latitude={46.3761} longitude={18.13} label="Dombóvár" />
-                    </HungaryMap>
+                    <HungaryMap studios={[]} screensaverMode={false} />
                     <p style={{ marginTop: '1rem', color: 'var(--text-secondary)', textAlign: 'center' }}>
                       19 counties + Budapest • 19 county seats • Theme-aware styling • Responsive scaling
+                    </p>
+                  </div>
+                </section>
+
+                {/* Interactive Studio Markers Component */}
+                <section>
+                  <h2 style={{ marginBottom: '1rem' }}>Interactive Studio Markers (Issue #67)</h2>
+                  <div
+                    style={{
+                      padding: '2rem',
+                      background: 'var(--surface-color)',
+                      border: '2px solid var(--heritage-gold)',
+                      borderRadius: '8px',
+                    }}
+                  >
+                    <HungaryMap
+                      studios={[
+                        {
+                          id: 1,
+                          photographer: {
+                            name: { hu: 'Máté Lajos', en: 'Lajos Máté' },
+                          },
+                          studioAddress: {
+                            city: { hu: 'Dombóvár', en: 'Dombóvár' },
+                            location: {
+                              placeName: { hu: 'Dombóvár', en: 'Dombóvár' },
+                              coordinates: { latitude: 46.3761, longitude: 18.13 },
+                              county: { hu: 'Tolna', en: 'Tolna' },
+                            },
+                          },
+                        },
+                      ]}
+                      screensaverMode={false}
+                    />
+                    <p style={{ marginTop: '1rem', color: 'var(--text-secondary)', textAlign: 'center' }}>
+                      64px touch targets • Hover: scale 1.4 + rotate • Active: scale 1.5 + pulse • Gold gradient • Click
+                      to test
+                    </p>
+                  </div>
+                </section>
+
+                {/* Screensaver Mode Demo */}
+                <section>
+                  <h2 style={{ marginBottom: '1rem' }}>Screensaver Animation Mode (Issue #67)</h2>
+                  <div
+                    style={{
+                      padding: '2rem',
+                      background: 'var(--surface-color)',
+                      border: '2px solid var(--brand-accent)',
+                      borderRadius: '8px',
+                    }}
+                  >
+                    <HungaryMap
+                      studios={[
+                        {
+                          id: 1,
+                          photographer: { name: { hu: 'Máté Lajos', en: 'Lajos Máté' } },
+                          studioAddress: {
+                            city: { hu: 'Dombóvár', en: 'Dombóvár' },
+                            location: {
+                              placeName: { hu: 'Dombóvár', en: 'Dombóvár' },
+                              coordinates: { latitude: 46.3761, longitude: 18.13 },
+                              county: { hu: 'Tolna', en: 'Tolna' },
+                            },
+                          },
+                        },
+                        {
+                          id: 2,
+                          photographer: { name: { hu: 'Test Studio', en: 'Test Studio' } },
+                          studioAddress: {
+                            city: { hu: 'Budapest', en: 'Budapest' },
+                            location: {
+                              placeName: { hu: 'Budapest', en: 'Budapest' },
+                              coordinates: { latitude: 47.4979, longitude: 19.0402 },
+                              county: { hu: 'Budapest', en: 'Budapest' },
+                            },
+                          },
+                        },
+                      ]}
+                      screensaverMode={true}
+                    />
+                    <p style={{ marginTop: '1rem', color: 'var(--text-secondary)', textAlign: 'center' }}>
+                      Sequential appearance • 0.3s stagger • Scale 0→1.3→1 over 6s • Continuous pulse animation
                     </p>
                   </div>
                 </section>

@@ -1,0 +1,83 @@
+/* Studio Marker Styling */
+
+.studio-marker-group {
+  cursor: pointer;
+  will-change: transform;
+}
+
+/* 64px touch target (invisible) - kiosk accessibility */
+.studio-marker-touch-target {
+  fill: transparent;
+  pointer-events: all;
+}
+
+/* Visible marker with gold gradient */
+.studio-marker-visible {
+  fill: url(#studioMarkerGradient);
+  stroke: white;
+  stroke-width: 2;
+  transition:
+    fill var(--transition-fast),
+    stroke var(--transition-fast);
+  pointer-events: none; /* Touch target handles interactions */
+}
+
+/* Hover state - blue background */
+.studio-marker-visible[data-hovered='true'] {
+  fill: var(--museum-deep-blue);
+  stroke: white;
+  stroke-width: 2.5;
+}
+
+/* Active state - enhanced blue */
+.studio-marker-visible[data-active='true'] {
+  fill: var(--brand-primary);
+  stroke: var(--heritage-gold);
+  stroke-width: 3;
+}
+
+/* Pulsing ring for active state */
+.studio-marker-pulse-ring {
+  fill: none;
+  stroke: var(--heritage-gold);
+  stroke-width: 2;
+  opacity: 0.8;
+  pointer-events: none;
+}
+
+/* Gold gradient definition */
+.studio-marker-gradient-def {
+  --gold-start: #e8c584;
+  --gold-end: #c4975f;
+}
+
+/* Theme adjustments */
+:root[data-theme='dark'] .studio-marker-gradient-def {
+  --gold-start: #f0d49a;
+  --gold-end: #d4af74;
+}
+
+/* Responsive scaling for 55-inch displays (1.25x multiplier) */
+@media (min-width: 3840px) {
+  .studio-marker-visible {
+    transform: scale(1.25);
+  }
+
+  .studio-marker-touch-target {
+    transform: scale(1.25);
+  }
+}
+
+/* Accessibility: Focus states for keyboard navigation */
+.studio-marker-group:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 4px;
+  border-radius: 50%;
+}
+
+/* Animation performance optimization */
+.studio-marker-group,
+.studio-marker-visible,
+.studio-marker-pulse-ring {
+  will-change: transform;
+}
