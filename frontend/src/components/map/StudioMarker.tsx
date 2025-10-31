@@ -9,23 +9,23 @@ type StudioMarkerProps = {
   studio: Studio;
   index: number;
   screensaverMode: boolean;
-  kioskMode?: boolean;
+  kioskMode: boolean;
 };
 
-const StudioMarker = ({ studio, index, screensaverMode, kioskMode = false }: StudioMarkerProps) => {
+const StudioMarker = ({ studio, index, screensaverMode, kioskMode }: StudioMarkerProps) => {
   const [isHovered, setIsHovered] = useState(false);
   const [isActive, setIsActive] = useState(false);
   const shouldReduceMotion = useReducedMotion();
   const { latitude, longitude } = studio.studioAddress.location.coordinates;
   const { x, y } = coordsToSVG(latitude, longitude);
-  const shouldEnableHover = !kioskMode;
+  const hoverIsEnabled = !kioskMode;
 
   if (shouldReduceMotion) {
     return (
       <g
         className="studio-marker-group"
-        onMouseEnter={shouldEnableHover ? () => setIsHovered(true) : undefined}
-        onMouseLeave={shouldEnableHover ? () => setIsHovered(false) : undefined}
+        onMouseEnter={hoverIsEnabled ? () => setIsHovered(true) : undefined}
+        onMouseLeave={hoverIsEnabled ? () => setIsHovered(false) : undefined}
         onMouseDown={() => setIsActive(true)}
         onMouseUp={() => setIsActive(false)}
         style={{ cursor: 'pointer' }}
@@ -40,8 +40,8 @@ const StudioMarker = ({ studio, index, screensaverMode, kioskMode = false }: Stu
   return (
     <motion.g
       className="studio-marker-group"
-      onMouseEnter={shouldEnableHover ? () => setIsHovered(true) : undefined}
-      onMouseLeave={shouldEnableHover ? () => setIsHovered(false) : undefined}
+      onMouseEnter={hoverIsEnabled ? () => setIsHovered(true) : undefined}
+      onMouseLeave={hoverIsEnabled ? () => setIsHovered(false) : undefined}
       onMouseDown={() => setIsActive(true)}
       onMouseUp={() => setIsActive(false)}
       onTouchStart={() => setIsActive(true)}
@@ -52,7 +52,7 @@ const StudioMarker = ({ studio, index, screensaverMode, kioskMode = false }: Stu
       variants={screensaverMode ? entranceAnimation(index) : instantAppearance}
     >
       <TouchTarget x={x} y={y} />
-      <AnimatedVisibleMarker x={x} y={y} isHovered={shouldEnableHover && isHovered} isActive={isActive} />
+      <AnimatedVisibleMarker x={x} y={y} isHovered={hoverIsEnabled && isHovered} isActive={isActive} />
       {isActive && <AnimatedPulseRing x={x} y={y} />}
     </motion.g>
   );

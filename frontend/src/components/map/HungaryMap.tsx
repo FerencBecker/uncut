@@ -60,7 +60,13 @@ const HungaryMap = ({ studios, screensaverMode, kioskMode = false }: HungaryMapP
       <path className="country-outline" d={HUNGARY_PATH} />
 
       {studios.map((studio, index) => (
-        <StudioMarker key={studio.id} studio={studio} index={index} screensaverMode={screensaverMode} kioskMode={kioskMode} />
+        <StudioMarker
+          key={studio.id}
+          studio={studio}
+          index={index}
+          screensaverMode={screensaverMode}
+          kioskMode={kioskMode}
+        />
       ))}
     </svg>
   );
