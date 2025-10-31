@@ -12,6 +12,7 @@ import usePerformanceMonitoring from '@/components/PerformanceMonitor/usePerform
 import { useReducedMotion } from '@/hooks/useReducedMotion';
 import { withErrorHandling } from '@/utils/withErrorHandling';
 import HungaryMap from '@/components/map/HungaryMap';
+import Screensaver from '@/components/Screensaver/Screensaver';
 import '@/styles/globals.css';
 
 const App = () => {
@@ -414,6 +415,65 @@ const App = () => {
                       Batched appearance (5 at a time) • 0.5s between batches • Scale 0→1.3→1 over 6s • Optimized for performance
                     </p>
                   </div>
+                </section>
+
+                {/* Full Screensaver Component Demo */}
+                <section>
+                  <h2 style={{ marginBottom: '1rem' }}>Full Screensaver Component (Issue #68)</h2>
+                  <div
+                    style={{
+                      height: '600px',
+                      border: '2px solid var(--heritage-gold)',
+                      borderRadius: '8px',
+                      overflow: 'hidden',
+                      position: 'relative',
+                    }}
+                  >
+                    <Screensaver
+                      studios={[
+                        {
+                          id: 1,
+                          photographer: { name: { hu: 'Máté Lajos', en: 'Lajos Máté' } },
+                          studioAddress: {
+                            city: { hu: 'Dombóvár', en: 'Dombóvár' },
+                            location: {
+                              placeName: { hu: 'Dombóvár', en: 'Dombóvár' },
+                              coordinates: { latitude: 46.3761, longitude: 18.13 },
+                              county: { hu: 'Tolna', en: 'Tolna' },
+                            },
+                          },
+                        },
+                        {
+                          id: 2,
+                          photographer: { name: { hu: 'Budapest Studio', en: 'Budapest Studio' } },
+                          studioAddress: {
+                            city: { hu: 'Budapest', en: 'Budapest' },
+                            location: {
+                              placeName: { hu: 'Budapest', en: 'Budapest' },
+                              coordinates: { latitude: 47.4979, longitude: 19.0402 },
+                              county: { hu: 'Budapest', en: 'Budapest' },
+                            },
+                          },
+                        },
+                        {
+                          id: 3,
+                          photographer: { name: { hu: 'Szeged Studio', en: 'Szeged Studio' } },
+                          studioAddress: {
+                            city: { hu: 'Szeged', en: 'Szeged' },
+                            location: {
+                              placeName: { hu: 'Szeged', en: 'Szeged' },
+                              coordinates: { latitude: 46.2530, longitude: 20.1414 },
+                              county: { hu: 'Csongrád-Csanád', en: 'Csongrád-Csanád' },
+                            },
+                          },
+                        },
+                      ]}
+                      kioskMode={true}
+                    />
+                  </div>
+                  <p style={{ marginTop: '1rem', color: 'var(--text-secondary)', textAlign: 'center' }}>
+                    Dark gradient background (#1A1A1A→#2C2C2C) • Rotating gold overlay (30s) • Continuous loop • Full screensaver experience
+                  </p>
                 </section>
 
                 {/* Performance Note */}
