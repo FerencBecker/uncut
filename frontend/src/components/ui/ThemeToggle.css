@@ -7,12 +7,11 @@
   gap: var(--spacing-sm);
 
   /* Touch-optimized sizing for kiosk */
-  min-width: var(--touch-kiosk);
+  width: 140px;
   min-height: var(--touch-kiosk);
   padding: var(--spacing-sm) var(--spacing-md);
 
   /* Visual styling */
-  background-color: var(--surface-color);
   border: 1px solid var(--border-color);
   border-radius: var(--radius-full);
 
@@ -27,6 +26,17 @@
   transition: all var(--transition-base);
   user-select: none;
   -webkit-tap-highlight-color: transparent;
+}
+
+/* Background color shows the theme switching to */
+.theme-toggle--light-preview {
+  background-color: #ffffff;
+  color: #1a1a1a;
+}
+
+.theme-toggle--dark-preview {
+  background-color: #1a1a1a;
+  color: #ffffff;
 }
 
 .theme-toggle:hover {
@@ -60,6 +70,31 @@
 
 .theme-toggle:hover .theme-toggle__icon {
   transform: rotate(20deg) scale(1.1);
+}
+
+/* Kiosk mode: disable hover effects */
+.kiosk-mode .theme-toggle:hover {
+  transform: none;
+  box-shadow: none;
+}
+
+.kiosk-mode .theme-toggle--light-preview:hover {
+  background-color: #ffffff;
+  border-color: var(--border-color);
+}
+
+.kiosk-mode .theme-toggle--dark-preview:hover {
+  background-color: #1a1a1a;
+  border-color: var(--border-color);
+}
+
+.kiosk-mode .theme-toggle:active {
+  transform: scale(0.95);
+  box-shadow: none;
+}
+
+.kiosk-mode .theme-toggle:hover .theme-toggle__icon {
+  transform: none;
 }
 
 .theme-toggle__label {

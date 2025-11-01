@@ -37,7 +37,7 @@ const CountySeatMarker = ({ seat }: { seat: CountySeat }) => {
 const HungaryMap = ({ studios, screensaverMode, kioskMode = false }: HungaryMapProps) => {
   return (
     <svg
-      className="hungary-map"
+      className={`hungary-map ${screensaverMode ? 'hungary-map--screensaver' : ''}`}
       viewBox="0 0 1000 600"
       xmlns="http://www.w3.org/2000/svg"
       role="img"

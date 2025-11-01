@@ -1,22 +1,9 @@
 // Global type definitions
+import type { Studio } from './map';
 
 export type BilingualText = {
   hu: string;
   en: string;
-};
-
-export type YearsActive = {
-  start: number;
-  end: number | null;
-};
-
-export type Studio = {
-  id: number;
-  name: BilingualText;
-  location: string;
-  photographer: string;
-  yearsActive: YearsActive;
-  imageCount: number;
 };
 
 export type Image = {

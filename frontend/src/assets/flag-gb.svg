@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 30">
+  <!-- Left half: US flag -->
+  <g>
+    <clipPath id="us-clip">
+      <rect x="0" y="0" width="30" height="30"/>
+    </clipPath>
+    <g clip-path="url(#us-clip)">
+      <!-- Red and white stripes (13 stripes, each 30/13 = 2.31 height) -->
+      <rect x="0" y="0" width="30" height="30" fill="#B22234"/>
+      <rect x="0" y="2.31" width="30" height="2.31" fill="#FFF"/>
+      <rect x="0" y="6.92" width="30" height="2.31" fill="#FFF"/>
+      <rect x="0" y="11.54" width="30" height="2.31" fill="#FFF"/>
+      <rect x="0" y="16.15" width="30" height="2.31" fill="#FFF"/>
+      <rect x="0" y="20.77" width="30" height="2.31" fill="#FFF"/>
+      <rect x="0" y="25.38" width="30" height="2.31" fill="#FFF"/>
+
+      <!-- Blue canton (7 stripes tall = 16.15) -->
+      <rect x="0" y="0" width="12" height="16.15" fill="#3C3B6E"/>
+
+      <!-- Stars (simplified 5-pointed stars) -->
+      <!-- Row 1: 3 stars -->
+      <path d="M3.5,2 l0.5,1.5 h1.5 l-1.2,0.9 0.5,1.5 -1.3-0.9 -1.3,0.9 0.5-1.5 -1.2-0.9 h1.5z" fill="#FFF" transform="scale(0.8)"/>
+      <path d="M8.5,2 l0.5,1.5 h1.5 l-1.2,0.9 0.5,1.5 -1.3-0.9 -1.3,0.9 0.5-1.5 -1.2-0.9 h1.5z" fill="#FFF" transform="scale(0.8)"/>
+      <path d="M13.5,2 l0.5,1.5 h1.5 l-1.2,0.9 0.5,1.5 -1.3-0.9 -1.3,0.9 0.5-1.5 -1.2-0.9 h1.5z" fill="#FFF" transform="scale(0.8)"/>
+
+      <!-- Row 2: 2 stars (offset) -->
+      <path d="M6,5 l0.5,1.5 h1.5 l-1.2,0.9 0.5,1.5 -1.3-0.9 -1.3,0.9 0.5-1.5 -1.2-0.9 h1.5z" fill="#FFF" transform="scale(0.8)"/>
+      <path d="M11,5 l0.5,1.5 h1.5 l-1.2,0.9 0.5,1.5 -1.3-0.9 -1.3,0.9 0.5-1.5 -1.2-0.9 h1.5z" fill="#FFF" transform="scale(0.8)"/>
+
+      <!-- Row 3: 3 stars -->
+      <path d="M3.5,8 l0.5,1.5 h1.5 l-1.2,0.9 0.5,1.5 -1.3-0.9 -1.3,0.9 0.5-1.5 -1.2-0.9 h1.5z" fill="#FFF" transform="scale(0.8)"/>
+      <path d="M8.5,8 l0.5,1.5 h1.5 l-1.2,0.9 0.5,1.5 -1.3-0.9 -1.3,0.9 0.5-1.5 -1.2-0.9 h1.5z" fill="#FFF" transform="scale(0.8)"/>
+      <path d="M13.5,8 l0.5,1.5 h1.5 l-1.2,0.9 0.5,1.5 -1.3-0.9 -1.3,0.9 0.5-1.5 -1.2-0.9 h1.5z" fill="#FFF" transform="scale(0.8)"/>
+
+      <!-- Row 4: 2 stars (offset) -->
+      <path d="M6,11 l0.5,1.5 h1.5 l-1.2,0.9 0.5,1.5 -1.3-0.9 -1.3,0.9 0.5-1.5 -1.2-0.9 h1.5z" fill="#FFF" transform="scale(0.8)"/>
+      <path d="M11,11 l0.5,1.5 h1.5 l-1.2,0.9 0.5,1.5 -1.3-0.9 -1.3,0.9 0.5-1.5 -1.2-0.9 h1.5z" fill="#FFF" transform="scale(0.8)"/>
+
+      <!-- Row 5: 3 stars -->
+      <path d="M3.5,14 l0.5,1.5 h1.5 l-1.2,0.9 0.5,1.5 -1.3-0.9 -1.3,0.9 0.5-1.5 -1.2-0.9 h1.5z" fill="#FFF" transform="scale(0.8)"/>
+      <path d="M8.5,14 l0.5,1.5 h1.5 l-1.2,0.9 0.5,1.5 -1.3-0.9 -1.3,0.9 0.5-1.5 -1.2-0.9 h1.5z" fill="#FFF" transform="scale(0.8)"/>
+      <path d="M13.5,14 l0.5,1.5 h1.5 l-1.2,0.9 0.5,1.5 -1.3-0.9 -1.3,0.9 0.5-1.5 -1.2-0.9 h1.5z" fill="#FFF" transform="scale(0.8)"/>
+    </g>
+  </g>
+
+  <!-- Right half: UK flag -->
+  <g>
+    <clipPath id="uk-clip">
+      <rect x="30" y="0" width="30" height="30"/>
+    </clipPath>
+    <g clip-path="url(#uk-clip)">
+      <rect x="30" width="30" height="30" fill="#012169"/>
+      <path d="M30,0 L60,30 M60,0 L30,30" stroke="#fff" stroke-width="6"/>
+      <clipPath id="uk-cross">
+        <path d="M45,15 h15 v15 h-15 z M45,15 h15 v-15 h-15 z M45,15 h-15 v15 h15 z M45,15 h-15 v-15 h15 z"/>
+      </clipPath>
+      <path d="M30,0 L60,30 M60,0 L30,30" clip-path="url(#uk-cross)" stroke="#C8102E" stroke-width="4"/>
+      <path d="M45,0 v30 M30,15 h30" stroke="#fff" stroke-width="10"/>
+      <path d="M45,0 v30 M30,15 h30" stroke="#C8102E" stroke-width="6"/>
+    </g>
+  </g>
+
+  <!-- Dividing line -->
+  <line x1="30" y1="0" x2="30" y2="30" stroke="#ddd" stroke-width="0.5"/>
+</svg>
