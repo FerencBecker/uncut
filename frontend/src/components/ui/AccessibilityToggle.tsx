@@ -4,8 +4,8 @@ import './AccessibilityToggle.css';
 export const AccessibilityToggle = () => {
   const { reduceMotion, setReduceMotion } = useAccessibility();
 
-  const icon = reduceMotion ? '✓' : '∿';
-  const label = reduceMotion ? 'Motion Off' : 'Motion On';
+  const icon = reduceMotion ? '⏸' : '▶';
+  const label = reduceMotion ? 'No Motion' : 'Motion On';
   const ariaLabel = `${reduceMotion ? 'Enable' : 'Disable'} animations`;
 
   return (

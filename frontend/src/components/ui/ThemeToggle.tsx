@@ -9,7 +9,13 @@ export const ThemeToggle = () => {
   const ariaLabel = `Switch to ${isDark ? 'light' : 'dark'} theme`;
 
   return (
-    <button className="theme-toggle" onClick={toggleTheme} aria-label={ariaLabel} title={ariaLabel} type="button">
+    <button
+      className={`theme-toggle ${isDark ? 'theme-toggle--light-preview' : 'theme-toggle--dark-preview'}`}
+      onClick={toggleTheme}
+      aria-label={ariaLabel}
+      title={ariaLabel}
+      type="button"
+    >
       <span className="theme-toggle__icon" aria-hidden="true">
         {icon}
       </span>

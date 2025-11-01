@@ -1,0 +1,33 @@
+.maintenance-page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background: var(--background-color);
+  padding: 2rem;
+}
+
+.maintenance-content {
+  text-align: center;
+  max-width: 600px;
+}
+
+.maintenance-title {
+  font-size: 3rem;
+  color: var(--text-primary);
+  margin-bottom: 2rem;
+  font-weight: 600;
+}
+
+.maintenance-message {
+  font-size: 1.5rem;
+  color: var(--text-secondary);
+  margin-bottom: 1rem;
+  line-height: 1.6;
+}
+
+.maintenance-contact {
+  font-size: 1.5rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}

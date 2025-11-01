@@ -13,5 +13,18 @@
     "light": "Világos",
     "dark": "Sötét",
     "switchTo": "Váltás erre:"
+  },
+  "screensaver": {
+    "title": "VÁGATLANUL",
+    "touchToBegin": "Érintse meg a képernyőt a kezdéshez"
+  },
+  "map": {
+    "title": "VÁGATLANUL",
+    "subtitle": "Magyar Fotóműtermek Interaktív Térképe"
+  },
+  "maintenance": {
+    "title": "Rendszerkarbantartás",
+    "message": "Az alkalmazás átmenetileg nem érhető el.",
+    "contact": "Kérjük, forduljon a múzeum munkatársaihoz."
   }
 }

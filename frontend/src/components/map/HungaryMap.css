@@ -1,7 +1,24 @@
 .hungary-map {
-  width: 100%;
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
   height: auto;
   display: block;
+}
+
+.hungary-map--screensaver {
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+}
+
+.hungary-map--screensaver .country-fill {
+  fill: transparent;
+}
+
+.hungary-map--screensaver .county-boundary {
+  stroke: rgba(255, 255, 255, 0.1);
 }
 
 /* Base map fill (no stroke, just background) */

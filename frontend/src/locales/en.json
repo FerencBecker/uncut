@@ -13,5 +13,18 @@
     "light": "Light",
     "dark": "Dark",
     "switchTo": "Switch to"
+  },
+  "screensaver": {
+    "title": "UNCUT",
+    "touchToBegin": "Touch screen to begin"
+  },
+  "map": {
+    "title": "UNCUT",
+    "subtitle": "Interactive Map of Hungarian Photo Studios"
+  },
+  "maintenance": {
+    "title": "System Maintenance",
+    "message": "The application is temporarily unavailable.",
+    "contact": "Please contact museum staff."
   }
 }

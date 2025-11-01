@@ -21,7 +21,7 @@ const StudioMarker = ({ studio, index, screensaverMode, kioskMode }: StudioMarke
   const { x, y } = coordsToSVG(latitude, longitude);
   const hoverIsEnabled = !kioskMode;
 
-  if (shouldReduceMotion) {
+  if (shouldReduceMotion || kioskMode) {
     return (
       <g
         className="studio-marker-group"
@@ -53,7 +53,7 @@ const StudioMarker = ({ studio, index, screensaverMode, kioskMode }: StudioMarke
       variants={screensaverMode ? entranceAnimation(index) : instantAppearance}
     >
       <TouchTarget x={x} y={y} />
-      <AnimatedVisibleMarker x={x} y={y} isHovered={hoverIsEnabled && isHovered} isActive={isActive} />
+      <AnimatedVisibleMarker x={x} y={y} isHovered={isHovered} isActive={isActive} />
       {isActive && <AnimatedPulseRing x={x} y={y} />}
     </motion.g>
   );
